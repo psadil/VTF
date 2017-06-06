@@ -5,7 +5,7 @@ resp = 0;
 ts = nan;
 [keyIsDown, secs, keyCode] = KbCheck;
 
-if sum(keyCode)>=1   % if at least one key was pressed
+if sum(keyCode) >= 1   % if at least one key was pressed
     keysPressed = find(keyCode);
     % in the case of multiple keypresses, just consider the first one
     if find(keysPressed(1)==possResp)
