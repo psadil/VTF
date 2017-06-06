@@ -1,0 +1,79 @@
+Name   : PS	SubjID:	4	RunNumber:	1
+
+General Info
+Random Number:	5947444
+Reversals per Second:	8
+Expose Time for Each Flip:	125
+Seconds per Cycle:	10
+Number of Cycles:	32
+Fixation Size (pixels):	5
+Initial Fixation Period:	0
+Ending Fixation Period:	6000
+Number of TRs to discard at start:	0
+TR Duration:	2000.000000
+Number of TRs:	163.000000
+Visual angle from center to edge:	12.000000
+Angle per Flip:	0.000000
+Number of Flips per Cycle:	80
+Radius of Inner Circle (deg):	0.300000
+
+Checker Board Info
+Size of Checker Wedge:	6
+Number of Checker Slices:	60
+Millimeters of Cortex Per Patch:	2.000000
+E2:	0.500000
+A:	22.000000
+
+Stimulus Specific Info
+Mapping Style (0=Meridian, 1=Polar, 2=Slotnick, 3=Quadrant):	0
+Visual Angle Subtended By Ring:	0.000000
+Time Stimulated by Ring:	0.000000
+Cortical Magnification For Ecc Ring (Next Three Parameters Not Currently In Use)
+Millimeters of Cortex Per Patch:	0.000000
+E2:	0.000000
+A:	0
+
+Color Info
+Positive Color:	16777215
+Negative Color:	0
+Fixation Color:	16777215
+Background Color:	12632256
+
+Task Info
+Is There a Task(1=Yes):	0
+Target Interval:	6000
+Target Color:	255
+
+End Time Of Cycle...:
+1	0	2001
+2	2001	2001
+3	2001	2002
+4	2002	2003
+5	2003	2004
+6	2004	2006
+7	2006	2007
+8	2007	2008
+9	2008	2008
+10	2008	2009
+11	2009	2010
+12	2010	2011
+13	2011	2012
+14	2012	2013
+15	2013	2013
+16	2013	2014
+17	2014	2015
+18	2015	2016
+19	2016	2017
+20	2017	2018
+21	2018	2019
+22	2019	2019
+23	2019	2020
+24	2020	2021
+25	2021	2022
+26	2022	2023
+27	2023	2024
+28	2024	2025
+29	2025	2025
+30	2025	2026
+31	2026	2027
+32	2027	2028

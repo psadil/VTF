@@ -1,0 +1,79 @@
+Name   : RAC	SubjID:	2	RunNumber:	2
+
+General Info
+Random Number:	38877742
+Reversals per Second:	8
+Expose Time for Each Flip:	125
+Seconds per Cycle:	10
+Number of Cycles:	32
+Fixation Size (pixels):	5
+Initial Fixation Period:	0
+Ending Fixation Period:	6000
+Number of TRs to discard at start:	0
+TR Duration:	2000.000000
+Number of TRs:	163.000000
+Visual angle from center to edge:	12.000000
+Angle per Flip:	0.000000
+Number of Flips per Cycle:	80
+Radius of Inner Circle (deg):	0.300000
+
+Checker Board Info
+Size of Checker Wedge:	6
+Number of Checker Slices:	60
+Millimeters of Cortex Per Patch:	2.000000
+E2:	0.500000
+A:	22.000000
+
+Stimulus Specific Info
+Mapping Style (0=Meridian, 1=Polar, 2=Slotnick, 3=Quadrant):	0
+Visual Angle Subtended By Ring:	0.000000
+Time Stimulated by Ring:	0.000000
+Cortical Magnification For Ecc Ring (Next Three Parameters Not Currently In Use)
+Millimeters of Cortex Per Patch:	0.000000
+E2:	0.000000
+A:	0
+
+Color Info
+Positive Color:	16777215
+Negative Color:	0
+Fixation Color:	16777215
+Background Color:	12632256
+
+Task Info
+Is There a Task(1=Yes):	0
+Target Interval:	6000
+Target Color:	255
+
+End Time Of Cycle...:
+1	0	10000
+2	10000	20000
+3	20000	30000
+4	30000	40001
+5	40001	50001
+6	50001	60001
+7	60001	70001
+8	70001	80002
+9	80002	90002
+10	90002	100003
+11	100003	110003
+12	110003	120003
+13	120003	130004
+14	130004	140004
+15	140004	150005
+16	150005	160005
+17	160005	170005
+18	170005	180005
+19	180005	190006
+20	190006	200006
+21	200006	210006
+22	210006	220006
+23	220006	230007
+24	230007	240007
+25	240007	250007
+26	250007	260007
+27	260007	270007
+28	270007	280007
+29	280007	290007
+30	290007	300008
+31	300008	310008
+32	310008	320008
