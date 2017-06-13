@@ -58,19 +58,18 @@ if strcmp(exitFlag, 'ESCAPE')
     return;
 end
 
+Screen('FillOval', window.pointer, stim.fixColor, stim.fixRect);
+Screen('DrawingFinished', window.pointer);
+[vbl(flipCount), ~, ~, missed(flipCount)] = ...
+    Screen('Flip', window.pointer,...
+    vbl(flipCount-1) + (1 - 0.5) * window.ifi);
+flipCount = flipCount + 1;
+stimDown = vbl(flipCount - 1);
 
-%% soak up any remaining time
 
-% final waiting duration is equal to however much of the trial duration
-% didn't occur. This should keep the time tightly sync'ed to the scanner
-waitTime = vbl(flipCount) - firstCueOn + expParams.trialDur;
-[~, vbl, missed, stimDown, exitFlag] = ...
-    drawCueAndWait(flipCount, vbl, missed, waitTime,...
-    stim, window, responseHandler, constants, keys, exitFlag);
-if strcmp(exitFlag, 'ESCAPE')
-    return;
-end
-
+[response, rt, exitFlag] = ...
+    soakTime(keys.escape + keys.resp, firstCueOn, expParams.trialDur, ...
+    response, rt, exitFlag, responseHandler, constants);
 
 end
 

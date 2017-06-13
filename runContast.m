@@ -8,19 +8,18 @@ qp = setupQParams(expParams, input.fMRI);
 fb = setupFeedback(input.fMRI);
 data = setupDataTable(expParams, input);
 keys = setupKeys(input.fMRI);
-stim = setupStim(expParams, window);
+stim = setupStim(expParams, window, input);
 
 
 %%
 showPrompt(window, 'Attend Contrast (Lower/Higher)', stim);
 
-exitFlag = waitForStart(constants, keys, responseHandler);
+[triggerSent, exitFlag] = waitForStart(constants, keys, responseHandler);
 switch exitFlag{1}
     case 'ESCAPE'
         return
 end
 
-triggerSent = GetSecs;
 data.tStart_expected = ...
     (triggerSent:expParams.trialDur: ...
     (triggerSent + (expParams.trialDur*(expParams.nTrials-1))))';

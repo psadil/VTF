@@ -53,7 +53,8 @@ end
 
 %--------------------------------------------------------------------------
 % Generate time sequence for a trial.
-expParams.totalStimDur = expParams.cueExpose + expParams.stimDur + expParams.delay + expParams.testDur;
+% freqSeq determines flicker of stim
+expParams.stimDur = expParams.cueExpose + expParams.stimDur + expParams.delay + expParams.testDur;
 
 % total duration of trial
 expParams.trialDur = ...

@@ -1,4 +1,4 @@
-function stim = setupStim( expParams, window, input )
+function stim = setupStim( stim, window )
 
 stim.maxJitterAngle = 3*pi/180;
 stim.tempFreq = 10; % in Hz
@@ -45,10 +45,18 @@ stim.fixRect = ...
     (window.yCenter + stim.fixSizePix)];
 
 % flicker sequence
-stim.nFlipsPerSecOfStim = ceil(input.refreshRate / stim.tempFreq);
-stim.nTicksPerStim = ceil(expParams.stimDur * stim.nFlipsPerSecOfStim);
+stim.
+stim.flicker = NaN(100,1);
 
-stim.flicker = repmat([0;1],[stim.nTicksPerStim/2,1]);
+% stim.flicker = [];
+% for ii = 1:(expParams.stimDur/(stim.tempFreq*2))
+%     stim.flicker = [stim.flicker, [ones(1,stim.tempFreq), zeros(1,stim.tempFreq)]];
+% end
+
+% double the length, just in case some monitors refresh rate is slightly
+% above requested (so we don't index beyond the end of the array)
+stim.flicker = [stim.flicker, stim.flicker];
+
 
 end
 

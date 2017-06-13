@@ -1,4 +1,4 @@
-function exitFlag =...
+function [triggerSent, exitFlag] =...
     waitForStart( constants, keys, responseHandler )
 
 KbQueueCreate(constants.device, keys.start);
@@ -10,6 +10,7 @@ while 1
         responseHandler(constants.device, answer, goRobo);
     
     if ~isempty(keys_pressed)
+        triggerSent = press_times(keys_pressed(1));
         [~, ~, exitFlag] = ...
             wrapper_keyProcess(keys_pressed, press_times, GetSecs);
         break;
