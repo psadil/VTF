@@ -1,12 +1,12 @@
-function [ response, rt, firstCueOn, stimDown, vbl, missed, exitFlag ] =...
+function [ response, rt, firstCueOn, stimDown, vbl, missed, exitFlag ] = ...
     elicitContrastResp( window, responseHandler, stim,...
     keys, expParams, roboRT, answer, constants )
 
 response = {[]};
 rt = NaN;
 stimDown = NaN;
-vbl = NaN(expParams.trialFlips,1);
-missed = NaN(expParams.trialFlips,1);
+vbl = NaN(stim.nFlipsPerTrial, 1);
+missed = NaN(stim.nFlipsPerTrial, 1);
 exitFlag = {'OK'};
 
 %% draw initial cue

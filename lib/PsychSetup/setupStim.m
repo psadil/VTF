@@ -50,6 +50,13 @@ stim.nTicksPerStim = ceil(expParams.stimDur * stim.nFlipsPerSecOfStim);
 
 stim.flicker = repmat([0;1],[stim.nTicksPerStim/2,1]);
 
+
+% number of flips in a trial will equal
+% 2x the number of flips in a grating presentation
+% plus the number of delays (2)
+% plus 1 at end of trial
+stim.nFlipsPerTrial = length(stim.flicker)*2 + 2 + 1;
+
 end
 
 function stim = wrapper_deg2pix(stim, window)
