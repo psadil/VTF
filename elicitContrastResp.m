@@ -1,5 +1,5 @@
 function [ response, rt, firstCueOn, stimDown, vbl, missed, exitFlag ] = ...
-    elicitContrastResp( window, responseHandler, stim,...
+    elicitContrastResp(firstFlipTime, window, responseHandler, stim,...
     keys, expParams, roboRT, answer, constants )
 
 response = {[]};
@@ -14,8 +14,9 @@ exitFlag = {'OK'};
 flipCount = 1;
 
 waitTime = expParams.cueExpose;
+flipCueAt = firstFlipTime;
 [flipCount, vbl, missed, firstCueOn, exitFlag] = ...
-    drawCueAndWait(flipCount, vbl, missed, waitTime,...
+    drawCueAndWait(flipCueAt, flipCount, vbl, missed, waitTime,...
     stim, window, responseHandler, constants, keys, exitFlag);
 if strcmp(exitFlag, 'ESCAPE')
     return;
@@ -38,8 +39,9 @@ end
 %% DELAY
 
 waitTime = expParams.delay;
+flipCueAt = vbl(flipCount);
 [flipCount, vbl, missed, delayStart, exitFlag] = ...
-    drawCueAndWait(flipCount, vbl, missed, waitTime,...
+    drawCueAndWait(flipCueAt, flipCount, vbl, missed, waitTime,...
     stim, window, responseHandler, constants, keys, exitFlag);
 if strcmp(exitFlag, 'ESCAPE')
     return;
@@ -65,7 +67,7 @@ end
 % didn't occur. This should keep the time tightly sync'ed to the scanner
 waitTime = vbl(flipCount) - firstCueOn + expParams.trialDur;
 [~, vbl, missed, stimDown, exitFlag] = ...
-    drawCueAndWait(flipCount, vbl, missed, waitTime,...
+    drawCueAndWait(vbl(flipCount), flipCount, vbl, missed, waitTime,...
     stim, window, responseHandler, constants, keys, exitFlag);
 if strcmp(exitFlag, 'ESCAPE')
     return;
@@ -117,10 +119,16 @@ for tick = 1:stim.nTicksPerStim
     flipCount = flipCount + 1;
     
     if acceptResp
-        [keys_pressed, press_times] = responseHandler(constants.device, answer, goRobo);
+        [keys_pressed, press_times] =...
+            responseHandler(constants.device, answer, goRobo);
         if ~isempty(keys_pressed)
             [response, rt, exitFlag] = ...
                 wrapper_keyProcess(keys_pressed, press_times, stimUp, expt);
+            % stop accepting responses after the first one given
+            acceptResp = false;
+            if strcmp(exitFlag, 'ESCAPE')
+                return;
+            end
         end
     end
     
@@ -133,18 +141,22 @@ KbQueueRelease(constants.device);
 end
 
 function [flipCount, vbl, missed, cueOn, exitFlag] = ...
-    drawCueAndWait(flipCount, vbl, missed, waitTime, ...
+    drawCueAndWait(flipCueAt, flipCount, vbl, missed, waitTime, ...
     stim, window, responseHandler, constants, keys, exitFlag)
 
 Screen('FillOval', window.pointer, stim.fixColor, stim.fixRect);
 Screen('DrawingFinished', window.pointer);
-[vbl(flipCount), ~, ~, missed(flipCount)] = Screen('Flip', window.pointer);
-cueOn = vbl(1);
+[vbl(flipCount), ~, ~, missed(flipCount)] = ...
+    Screen('Flip', window.pointer, ...
+    flipCueAt + (1 - 0.5) * window.ifi);
+cueOn = vbl(flipCount);
 flipCount = flipCount + 1;
 
 % soak up the remaining cue expose time, then move on
 [~, ~, exitFlag] =...
     soakTime(keys.escape, cueOn, waitTime, ...
     [], NaN, exitFlag, responseHandler, constants);
-
+if strcmp(exitFlag, 'ESCAPE')
+    return;
+end
 end

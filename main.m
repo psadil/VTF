@@ -1,5 +1,5 @@
 function acc = main(varargin)
-
+acc = NaN;
 
 %% collect input
 % use the inputParser class to deal with arguments
@@ -14,6 +14,7 @@ addParamValue(ip, 'runNumber', 1, @isnumeric);
 addParamValue(ip, 'fMRI', true, @isLogical);
 addParamValue(ip, 'contrastChange', [.08, .08], @isLogical);
 addParamValue(ip, 'debugLevel', 0, @(x) isnumeric(x) && x >= 0);
+addParamValue(ip, 'experiment',  @(x) sum(strcmp(x, {'contrast','localizer'}))==1);
 parse(ip,varargin{:});
 input = ip.Results;
 
@@ -39,16 +40,22 @@ window = setupWindow(constants, input);
 
 
 %% run main experiment
-[data, tInfo, expParams, input, qp, stim] = ...
-    runContrast(input, constants, window, responseHandler);
-acc = checkAccuracy(data);
+
+switch input.experiment
+    case 'contrast'
+        [data, tInfo, expParams, input, qp, stim] = ...
+            runContrast(input, constants, window, responseHandler);
+        acc = checkAccuracy(data);
+    case 'localizer'
+        [data, tInfo, expParams, input, qp, stim] = ...
+            runLocalizer(input, constants, window, responseHandler);
+        acc = checkAccuracy(data);
+end
 
 % save data
-expt = 'contrast';
-structureCleanup(expt, input.subject, data, constants, tInfo, expParams, qp, stim);
+structureCleanup(input.expt, input.subject, data, constants, tInfo, expParams, qp, stim);
 
 windowCleanup(constants);
-
 
 
 return

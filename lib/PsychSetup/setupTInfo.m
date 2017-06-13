@@ -8,6 +8,4 @@ tInfo.tick = repmat((1:nTicks)', [expParams.nTrials, 1]);
 tInfo.vbl = NaN(expParams.nTrials*nTicks, 1);
 tInfo.missed = NaN(expParams.nTrials*nTicks, 1);
 
-
-
 end

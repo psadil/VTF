@@ -1,7 +1,7 @@
 function [ data, tInfo, expParams, input, qp, stim ] = ...
     runContast( input, constants, window, responseHandler )
 
-expParams = setupExpParams(input.debugLevel, input.fMRI);
+expParams = setupExpParams(input.debugLevel, input.fMRI, input.experiment);
 
 qp = setupQParams(expParams, input.fMRI);
 fb = setupFeedback(input.fMRI);
@@ -12,7 +12,9 @@ stim = setupStim(expParams, window, input);
 tInfo = setupTInfo(expParams, stim.nFlipsPerTrial);
 
 %%
-showPrompt(window, 'Attend Contrast (Lower/Higher)', stim);
+showPrompt(window, ['Attend to the contrast /n', ...
+    'When it goes up, use your index finger./n' ,...
+    'When it goes up, use your middle finger./n'], stim);
 
 [triggerSent, exitFlag] = waitForStart(constants, keys, responseHandler);
 switch exitFlag{1}
@@ -20,6 +22,7 @@ switch exitFlag{1}
         return
 end
 
+% these are useful as comparisons against what actually happened
 data.tStart_expected = ...
     (triggerSent:expParams.trialDur: ...
     (triggerSent + (expParams.trialDur*(expParams.nTrials-1))))';
@@ -57,11 +60,16 @@ for trial = 1:expParams.nTrials
     % staircases.
     data.contStair(data.tType(trial), trial) = qp.cdThresh(data.tType(trial));
     
+    if trial == 1
+        firstFlipTime = triggerSent;
+    else
+        firstFlipTime = data.stimOff(trial-1);
+    end
     [data.response(trial), data.rt(trial), ...
         data.stimOn(trial), data.stimOff(trial), ...
         tInfo(tInfo.trial==trial,:).vbl, tInfo(tInfo.trial==trial,:).missed, ...
         data.exitFlag(trial)] = ...
-        elicitContrastResp(window, responseHandler, stim,...
+        elicitContrastResp(firstFlipTime, window, responseHandler, stim,...
         keys, expParams, data.roboRT(trial), data.answer(trial), constants);
     Screen('Close', [stim.tex1, stim.tex2]);
     
@@ -82,8 +90,5 @@ if input.fMRI
     end
 end
 
-% Screen('Flip', window.pointer);
-
 
 end
-
