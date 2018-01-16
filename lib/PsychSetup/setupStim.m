@@ -1,103 +1,110 @@
 function stim = setupStim( expParams, window, input )
 
-% rate at which stimulus will constantly flicker
-stim.tempFreq = 10;
+%{
+TODO:
+
+- make fixation texture for drawing
+
+%}
+
+%%
 
 % degree size of fixation
-stim.fixSizeDeg = .25;
-stim.fixLineSize = 2;
+% values from Liu, Cable, Gardner, 2017
+stim.fixSize_deg = 1;
+stim.fixLineSize = 4;
 
-% amount by which stimuli will be offset from center
-stim.offXDeg = 0;                  
-stim.offYDeg = 0; 
+% number of gabors to draw
+stim.n_gratings = 2; % 2 -> one on left and right
 
-% stim size in degrees (radius)
-stim.stimSizeDeg = 10;
-
-% number of pixels used to draw the stimulus
-stim.n = 2048;
-[stim.x, stim.y] = meshgrid(linspace(-1,1,stim.n));
-
-% radius of inner annulus as proportion of total size
-stim.innerR = .25;
-
-% cycles/image within the grating stimulus (higher value indicates tighter
-% bands)
-stim.sf = 5;
-
-switch input.experiment
-    case 'contrast'
-        stim.maxJitterAngle = 3*pi/180;
-        
-        % this is the contrast of the standard, all target contrasts will be relative to this
-        stim.contrast = [.3, .8];
-        
-        % directions presented
-        stim.targOrients = linspace(0,180-(180/expParams.numOrients), expParams.numOrients)*pi/180;
-        
-        stim.fixColor = window.white;
-        
-        % 1/e half width of gaussian
-        stim.sig = .33;
-        
-    case 'localizer'
-        
-        % 1/e half width of gaussian
-        stim.sig = .66;
-        
-        % stimulus timing stuff (in video frames)
-        p.minTargSep = 5;
-        p.minTargFrame = 6;
-        p.maxTargFrame = 6;
-        p.tempFreq = 6;
-        p.targExpose = 2;
-        p.respWindow = 60;
-        
-        
-end
+% grating parameters
+% values from Liu, Cable, Gardner, 2017
+stim.grating_freq_cpd = .7; % cpd => cycles per degree
+% stim.grating_aperture_deg = 10;
+stim.grating_offset_eccen_deg = 8;
+stim.orientations_deg = linspace(0,180-(180 / expParams.nOrientations), expParams.nOrientations);
+% Spatial constant of the exponential "hull" (directly translates to size)
+stim.sigma = 40;
 
 % convert all of the visual angles into pixels. Calibrated for the monitor
 % on which the stimulus will be drawn
 stim = wrapper_deg2pix(stim, window);
 
+% how often are phases of gabors updated (i.e., once every stim.update_phase_sec)
+% note that in Liu et al., this is 0.2, but the phases update
+% asyncronously. So, there is a new random phase ever 0.2/2 = 0.1 sec
+stim.update_phase_sec = 0.1;
+stim.n_phase_orientations = 16;
 
-% Definition of the drawn source rectangle on the screen:
-stim.srcRect = [window.xCenter - stim.offXPix - stim.stimSizePix,...
-    window.yCenter - stim.offYPix - stim.stimSizePix,...
-    window.xCenter - stim.offXPix + stim.stimSizePix,...
-    window.yCenter - stim.offYPix + stim.stimSizePix];
+% number of pixels used to draw the stimulus
+% Define prototypical gabor patch: si is
+% half the wanted size. Later on, the 'DrawTextures' command will simply
+% scale this patch up and down to draw individual patches of the different
+% wanted sizes:
+stim.si = 2^9;
+
+% Size of support in pixels, derived from si:
+stim.tw = 2*stim.si+1;
+stim.th = 2*stim.si+1;
+
+% % Build a procedural gabor texture for a gabor with a support of tw x th
+% pixels and ...
+% disableNorm := 1
+% contrastPreMultiplicator := 0.5
+stim.tex = CreateProceduralGabor(window.pointer, stim.tw, stim.th, [], [], 1, 0.5);
+% stim.tex = CreateProceduralGabor(window.pointer, stim.tw, stim.th, 1);
+
+% Preallocate array with destination rectangles:
+stim.texrect = Screen('Rect', stim.tex);
+
+stim.dstRects = zeros(4, stim.n_gratings);
+stim.dstRects(:,1) = CenterRectOnPoint(stim.texrect, ...
+    window.xCenter - stim.grating_offset_eccen_pix, window.yCenter)';
+stim.dstRects(:,2) = CenterRectOnPoint(stim.texrect, ...
+    window.xCenter + stim.grating_offset_eccen_pix, window.yCenter)';
+
+switch input.experiment
+    case 'contrast'
+        % Liu, Cable, Gardner, 2017
+        stim.contrast = [.2; .8]*100;
+        
+        % directions presented
+        stim.targOrients = linspace(0,180-(180/expParams.nOrientations), expParams.nOrientations)*pi/180;
+        
+    case 'localizer'
+        
+        stim.contrast = 1;
+        
+end
 
 % cue point coordinates
 stim.fixRect = ...
-    [(window.xCenter  - stim.fixSizePix),...
-    (window.yCenter - stim.fixSizePix),...
-    (window.xCenter  + stim.fixSizePix),...
-    (window.yCenter + stim.fixSizePix)];
+    [[[-stim.fixSize_pix/2,stim.fixSize_pix/2]; ...
+    [0,0]],...
+    [[0,0];...
+    [-stim.fixSize_pix/2,stim.fixSize_pix/2]]];
+
+% flip sequence
+stim.nFlipsPerSecOfTrial = ceil(1 / stim.update_phase_sec);
+stim.nFlipsPerTrial = ceil(expParams.trial_stim_dur_sec * stim.nFlipsPerSecOfTrial);
 
 
-% flicker sequence
-stim.nFlipsPerSecOfStim = ceil(input.refreshRate / stim.tempFreq);
-stim.nTicksPerStim = ceil(expParams.stimDur * stim.nFlipsPerSecOfStim);
-
-stim.flicker = repmat([0;1],[stim.nTicksPerStim/2,1]);
-
-% number of flips in a trial will equal
-% 2x the number of flips in a grating presentation
-% plus the number of delays (2)
-% plus 1 at end of trial
-stim.nFlipsPerTrial = (length(stim.flicker)*2) + 2 + 1;
+% flip gabor once (initial flip has setup costs) and flip again to clear
+% flipped with 0 contrast
+Screen('DrawTexture', window.pointer, stim.tex, [], stim.dstRects(:,1), [], [], [], [], [],...
+    kPsychDontDoRotation, [180, 0.05, 50, 0, 1, 0, 0, 0]);
+Screen('Flip', window.pointer);
+Screen('Flip', window.pointer);
 
 
 end
 
 function stim = wrapper_deg2pix(stim, window)
 
-stim.fixSizePix = deg2pix(stim.fixSizeDeg, window);
-stim.stimSizePix = deg2pix(stim.stimSizeDeg, window);
-stim.fixSizePix = deg2pix(stim.fixSizeDeg, window);
-stim.offXPix = deg2pix(stim.offXDeg, window);
-stim.offYPix = deg2pix(stim.offXDeg, window);
-stim.stimSizePix = deg2pix(stim.stimSizeDeg, window);
-
+stim.fixSize_pix = deg2pix(stim.fixSize_deg, window);
+% stim.grating_aperture_pix = deg2pix(stim.grating_aperture_deg, window);
+stim.grating_offset_eccen_pix = deg2pix(stim.grating_offset_eccen_deg, window);
+% stim.grating_freq_cpp = deg2pix(stim.grating_freq_cpd, window);
+stim.grating_freq_cpp = 0.05;
 end
 

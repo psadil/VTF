@@ -2,10 +2,7 @@ function [constants, input, exit_stat] = setupConstants(input, ip)
 exit_stat = 0;
 defaults = ip.UsingDefaults;
 
-rng('shuffle');
-
 constants.exp_start = GetSecs; % record the time the experiment began
-constants.seed = rng;
 constants.device = [];
 % Get full path to the directory the function lives in, and add it to the path
 constants.root_dir = fileparts(mfilename('fullpath'));
@@ -14,9 +11,10 @@ path(path,constants.root_dir);
 path(path, genpath(constants.lib_dir));
 
 % Define the location of some directories we might want to use
+% constants.stimDir=fullfile(constants.root_dir,'stimuli');
 switch input.responder
     case 'user'
-        constants.savePath=fullfile(constants.root_dir,'analyses','data');
+        constants.savePath=fullfile(constants.root_dir,'analyses','data','behav');
     otherwise
         constants.savePath=fullfile(constants.root_dir,'analyses','robo');
 end
@@ -35,15 +33,16 @@ if any(ismember(defaults, expose))
     else
         input = filterStructs(guiInput, input);
         input.subject = str2double(input.subject);
+%         input.subject = input.subject;
     end
 else
-    [validSubNum, msg] = subjectValidator(input.subject, '.csv', input.debugLevel);
+    [validSubNum, msg] = subjectValidator(input.subject, input.debugLevel);
     assert(validSubNum, msg)
 end
 
 % now that we have all the input and it has passed validation, we can have
 % a file path!
-constants.subDir = fullfile(constants.savePath, ['subject', num2str(input.subject)]);
+constants.subDir = fullfile(constants.savePath, ['sub-', num2str(input.subject, '%02d')]);
 if ~exist(fullfile(constants.subDir), 'dir')
     mkdir(fullfile(constants.subDir));
 end
@@ -62,7 +61,7 @@ function overwriteCheck = makeSubjectDataChecker(directory, debugLevel)
         % the actual validation logic
         
         subnum = str2double(value);
-        if (~isnumeric(subnum) || isnan(subnum)) && ~isnumeric(value);
+        if (~isnumeric(subnum) || isnan(subnum)) && ~isnumeric(value)
             valid = false;
             msg = 'Subject Number must be greater than 0';
             return

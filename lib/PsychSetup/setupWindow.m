@@ -1,11 +1,12 @@
 function window = setupWindow(constants, input)
+PsychDefaultSetup(2);
 
 % viewing distance and screen width, in CM...used to convert degrees visual
 % angle to pixel units later on for drawing stuff
 if input.fMRI
     window.screenWidthCM = 70;
     window.vDistCM = 137;
-    window.res_input = [1920, 1080];
+%     window.res_input = [1920, 1080];
 else
     window.screenWidthCM = 34.29;
     window.vDistCM = 50.8;
@@ -16,32 +17,29 @@ end
 window.screenNumber = max(Screen('Screens')); % Choose a monitor to display on
 window.oldRes = Screen('Resolution',window.screenNumber,[],[],input.refreshRate); % get screen resolution, set refresh rate
 
-correctGamma = linspace(0,1,256)';
-window.LUT = correctGamma*255; %LUT is look-up-table
 
-window.bckGrnd = window.LUT(round(window.bckGrnd*255));
-
-%Start setting up the display
-AssertOpenGL; % bail if current version of PTB does not use OpenGL
-
-
-window.black = BlackIndex(s);
-window.white = WhiteIndex(s);
-window.gray=ceil((window.white+window.black)/2);
-if round(window.gray)==window.white
-    window.gray=window.black;
+switch input.debugLevel
+    case 0
+        [window.pointer, window.winRect] = ...
+            Screen('OpenWindow', window.screenNumber, 127);
+    otherwise
+        Screen('Preference', 'SkipSyncTests', 1);
+        [window.pointer, window.winRect] = ...
+            Screen('OpenWindow', window.screenNumber, 127, [0, 0, 1920, 600]);
 end
 
-% find the 'real' value for gray after gamma correction using our
-% Look-Up-Table. This gray will be used for the background so that our
-% gaussian-windowed grating blend in smoothly with the background
-window.gray = window.LUT(window.gray);
-
-[window.pointer, window.winRect] = ...
-    Screen('OpenWindow', window.screenNumber, window.gray);
+% these need to be called after OpenWindow, otherwise colors will still be
+% 0-255
+window.black = BlackIndex(window.screenNumber);
+window.white = WhiteIndex(window.screenNumber);
+window.gray = GrayIndex(window.screenNumber);
 
 topPriorityLevel = MaxPriority(window.pointer);
 Priority(topPriorityLevel);
+
+% enable blending (needed so that neighboring textures show proper grey
+% background)
+Screen('BlendFunction', window.pointer, GL_ONE, GL_ONE);
 
 % define some landmark locations to be used throughout
 [window.xCenter, window.yCenter] = RectCenter(window.winRect);
@@ -59,9 +57,9 @@ window.fontSize = 24;
 
 Screen('TextFont',window.pointer, 'Arial');
 Screen('TextSize',window.pointer, window.fontSize);
-Screen('TextStyle', window.pointer, 0);
-Screen('TextColor', window.pointer, window.black);
-Screen('TextBackgroundColor', window.pointer, window.gray);
+Screen('TextStyle', window.pointer, window.black);
+Screen('TextColor', window.pointer, window.white);
+% Screen('TextBackgroundColor', window.pointer, window.gray);
 
 
 end

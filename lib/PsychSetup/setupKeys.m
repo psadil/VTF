@@ -10,11 +10,11 @@ keys.resp = codes;
 keys.start = codes;
 switch fMRI
     case true
-        keys.resp(KbName({'1!','2@'})) = 1; % decreased constrast, increased contrast
+        keys.resp(KbName({'1!'})) = 1; % decreased luminance
         keys.start(KbName('5%')) = 1;
 
     case false
-        keys.resp(KbName({'DownArrow','UpArrow'})) = 1; % decreased constrast, increased contrast
+        keys.resp(KbName({'DownArrow'})) = 1; % decreased luminance
         keys.start(KbName({'space'})) = 1;
 end
 

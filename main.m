@@ -5,21 +5,15 @@ acc = NaN;
 % use the inputParser class to deal with arguments
 ip = inputParser;
 %#ok<*NVREPL> dont warn about addParamValue
-addParamValue(ip, 'subInitials', 'PS', @isnumeric);
 addParamValue(ip, 'subject', 0, @isnumeric);
-addParamValue(ip, 'sessNumb', 1, @isnumeric);
 addParamValue(ip, 'responder', 'user', @(x) sum(strcmp(x, {'user','simpleKeypressRobot'}))==1);
-addParamValue(ip, 'refreshRate', 120, @(x) x==120);
+addParamValue(ip, 'refreshRate', 60, @(x) x==60);
 addParamValue(ip, 'runNumber', 1, @isnumeric);
-addParamValue(ip, 'fMRI', true, @isLogical);
-addParamValue(ip, 'contrastChange', [.08, .08], @isLogical);
+addParamValue(ip, 'fMRI', false, @isLogical);
 addParamValue(ip, 'debugLevel', 0, @(x) isnumeric(x) && x >= 0);
-addParamValue(ip, 'experiment',  @(x) sum(strcmp(x, {'contrast','localizer'}))==1);
+addParamValue(ip, 'experiment', 'contrast',  @(x) sum(strcmp(x, {'contrast','localizer'}))==1);
 parse(ip,varargin{:});
 input = ip.Results;
-
-%200 TRs @ 1.5s/TR
-%150 TRs @ 2s/TR
 
 %% setup
 [constants, input, exit_stat] = setupConstants(input, ip);
@@ -31,7 +25,6 @@ if input.fMRI && input.runNumber == 1
     demographics(constants.subDir);
 end
 
-PsychDefaultSetup(2);
 ListenChar(-1);
 responseHandler = makeInputHandlerFcn(input.responder);
 
@@ -43,7 +36,7 @@ window = setupWindow(constants, input);
 
 switch input.experiment
     case 'contrast'
-        [data, tInfo, expParams, input, qp, stim] = ...
+        [data, tInfo, expParams, qp, stim] = ...
             runContrast(input, constants, window, responseHandler);
         acc = checkAccuracy(data);
     case 'localizer'
@@ -53,9 +46,12 @@ switch input.experiment
 end
 
 % save data
-structureCleanup(input.expt, input.subject, data, constants, tInfo, expParams, qp, stim);
+expt = input.experiment;
+subject = input.subject;
+structureCleanup(expt, subject, data, constants, tInfo, expParams, qp, stim);
 
+showPrompt(window, sprintf('You were %01d %% correct', acc*100), 0);
+WaitSecs(3);
 windowCleanup(constants);
-
 
 return

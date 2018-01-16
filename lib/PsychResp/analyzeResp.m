@@ -1,19 +1,16 @@
-function correct = analyzeResp( response, answer, keys )
+function correct = analyzeResp( response, answer )
 
-
-if answer < 0 % contrast decrement
-    if KbName(response) == find(keys.resp,1,'first')
-        correct = 1;
-    else
-        correct = 0;
+correct = zeros([1,length(answer)]);
+for a = 1:length(answer)
+    switch answer{a}
+        case response{a}
+            correct(a) = 1;
+        otherwise
+            correct(a) = 0;
     end
-else  % contrast increment
-    if KbName(response) == find(keys.resp,1,'last')
-        correct = 1;
-    else
-        correct = 0;
-    end
+    
 end
 
 end
+
 

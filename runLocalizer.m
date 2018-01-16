@@ -27,89 +27,20 @@ tInfo = setupTInfo(expParams, stim.nFlipsPerTrial);
 %%
 
 
+img = makeGrating(p, stim.sf,...
+    data.targOrient(trial), data.firstContrast(trial));
+img_rev = makeGrating(p, stim.sf,...
+    data.targOrient(trial), data.firstContrast(trial));
+targ = makeGrating(p, stim.sf,...
+    data.targOrient(trial), data.firstContrast(trial));
+targ_rev = makeGrating(p, stim.sf,...
+    data.targOrient(trial), data.firstContrast(trial));
+gratings(1) = Screen('MakeTexture', window.pointer, img);
+gratings(1) = Screen('MakeTexture', window.pointer, img_rev);
+gratings(1) = Screen('MakeTexture', window.pointer, targ);
+gratings(1) = Screen('MakeTexture', window.pointer, targ_rev);
 
-% destination rects for stim and fixation point
-fixRect = [(p.xCenter  - p.fixSizePix),(p.yCenter - p.fixSizePix),(p.xCenter  + p.fixSizePix), (p.yCenter + p.fixSizePix)];
-p.dstRect = [p.xCenter-p.stimSizePix, p.yCenter-p.stimSizePix, p.xCenter+p.stimSizePix, p.yCenter+p.stimSizePix];
 
-
-% allocate some arrays for storing subject response
-p.fTime = zeros(p.nTrials, p.stimExpose);
-p.resp =      zeros(p.nTrials, p.nTargs);        % store the response
-p.correct =   0;
-p.guess = 0;
-p.rt =        nan(p.nTrials, p.nTargs);        % store the response
-p.trialStart =  zeros(1, p.nTrials);
-p.trialEnd   =  zeros(1, p.nTrials);
-p.stimEnd   =  zeros(1, p.nTrials);
-p.stimStart =   zeros(1, p.nTrials);
-p.targetContrast =  nan(1, p.nTrials);
-p.stimSequ   =  zeros(p.nTrials, p.stimExpose);
-p.targetContrast =  nan(1, p.nTrials);
-p.targFrame = zeros(p.nTrials, p.nTargs);
-p.targOnTime = zeros(p.nTrials, p.nTargs);
-p.targMaxRespTime = zeros(p.nTrials, p.nTargs);
-
-% generate a distribution for choosing the target time
-nStims = (p.stimExpose/p.RefreshRate)*((p.RefreshRate/p.tempFreq)/2);
-p.targX = p.minTargFrame:p.minTargSep:nStims-p.maxTargFrame;
-for ii=1:p.nTrials
-    tmp = randperm(length(p.targX));
-    p.targFrame(ii,:) = sort(p.targX(tmp(1:p.nTargs)))*(p.tempFreq*2)-(p.tempFreq*2)+1;
-    p.targOnTime(ii,:) = p.targFrame(ii,:).*(1/p.RefreshRate);
-    p.targMaxRespTime(ii,:) = (p.targFrame(ii,:).*(1/p.RefreshRate))+p.respWindow;
-end
-
-% compute the ramp for the gabor, then make the target sequence for
-% this trial
-p.targetContrast = p.cThresh1;
-
-%make matrices x and y with meshgrid to hold pixel locations in terms
-%of visual angle.
-tmpX  = linspace(-p.stimSizePix,p.stimSizePix,p.stimSizePix*2);
-[x,y] = meshgrid(tmpX);
-
-%make a checkerboard image containing -1's and 1's.
-chex = sign(sin(2*pi*p.sf*x).*sin(2*pi*p.sf*y));
-circle = x.^2+y.^2<=(p.stimSizePix)^2;
-id  = x.^2 + y.^2 <= p.innerRPix^2;
-
-% first make the standard checkerboards
-img1 = chex.*circle;
-img2 = -1*img1; % contrast reversal
-
-img1(id) = 0;
-img2(id) = 0;
-
-tmpImg = p.LUT(round(((1*img1)+1)*127)+1);
-stims(1)=Screen('MakeTexture', w, tmpImg);
-
-tmpImg = p.LUT(round(((1*img2)+1)*127)+1);
-stims(2)=Screen('MakeTexture', w, tmpImg); % other checkerboard
-
-% then make the targets
-tmpImg = p.LUT(round((((1-p.targetContrast)*img1)+1)*127)+1);
-stims(3)=Screen('MakeTexture', w, tmpImg);
-
-tmpImg = p.LUT(round((((1-p.targetContrast)*img2)+1)*127)+1);
-stims(4)=Screen('MakeTexture', w, tmpImg); % other checkerboard
-
-% pick the stimulus sequence for every trial (the exact grating to be shown)
-for i=1:p.nTrials
-    p.flickerSequ=[];
-    for ii=1:(p.stimExpose/(p.tempFreq*2))
-        % when picking the stim sequence, randomly alternate the phase
-        % to attenuate apparent motion
-        p.flickerSequ = [p.flickerSequ, [repmat(1,1,p.tempFreq),repmat(2,1,p.tempFreq)]];            % pick a stim sequence
-    end
-    
-    p.stimSequ(i,:)=p.flickerSequ;
-    
-    % mark the tarket spots with low contrast stims
-    for j=1:p.nTargs
-        p.stimSequ(i,p.targFrame(i,j):p.targFrame(i,j)+(p.tempFreq)-1)=p.stimSequ(i,p.targFrame(i,j):p.targFrame(i,j)+(p.tempFreq)-1)+2;
-    end
-end
 
 %%
 showPrompt(window, ['Attend to the contrast /n', ...
@@ -122,31 +53,46 @@ switch exitFlag{1}
         return
 end
 
-%%
 
-% here is the start of the trial loop
-for t=1:p.nTrials
-    % start a rendering loop to put up a stimulus
-    p.trialStart(t) = GetSecs;   % start a clock to get the RT
+for trial = 1:expParams.nTrials
+    
+    % record the trial onset time
+    data.trialStart(trial) = GetSecs;
+    
+    if trial == 1
+        firstFlipTime = triggerSent;
+    else
+        firstFlipTime = data.stimOff(trial-1);
+    end
+    [data.response(trial), data.rt(trial), ...
+        data.stimOn(trial), data.stimOff(trial), ...
+        tInfo(tInfo.trial==trial,:).vbl, tInfo(tInfo.trial==trial,:).missed, ...
+        data.exitFlag(trial)] = ...
+        elicitLocalizerResp(firstFlipTime, window, responseHandler, stim,...
+        keys, expParams, data.roboRT(trial), data.answer(trial), constants);
+    
+    data.correct(trial) = analyzeResp(data.response(trial), data.answer(trial));
+    giveFeedBack(data.correct(trial), fb);
+    
     % start main rendering loop
     frmCnt=1; rCnt = 1;
-    p.stimStart(t) = GetSecs;   % start a clock to get the RT
+    p.stimStart(trial) = GetSecs;   % start a clock to get the RT
     while frmCnt<=p.stimExpose
-        if p.stimSequ(t,frmCnt)
-            Screen('DrawTexture', w, stims(p.stimSequ(t,frmCnt)), [], p.dstRect, [], 1);
+        if p.stimSequ(trial,frmCnt)
+            Screen('DrawTexture', w, stims(p.stimSequ(trial,frmCnt)), [], p.dstRect, [], 1);
         end
         % redraw attention cue
         Screen('FillOval', w, p.fixColor, fixRect);
         Screen('DrawingFinished', w);
         Screen('Flip', w);
-        p.fTime(t,frmCnt)=GetSecs;
+        p.fTime(trial,frmCnt)=GetSecs;
         
         % Read the keyboard, checking for response or 'escape'
         [resp, timeStamp] = checkForRespLoc([27,p.keys]);
         if resp==-1; ListenChar(0); return; end;
         if resp==p.keys
-            p.resp(t,rCnt) = frmCnt;
-            p.rt(t,rCnt) = GetSecs;
+            p.resp(trial,rCnt) = frmCnt;
+            p.rt(trial,rCnt) = GetSecs;
             rCnt=rCnt + 1;
         end
         
@@ -158,19 +104,19 @@ for t=1:p.nTrials
     Screen('DrawingFinished', w);
     Screen('Flip', w);
     
-    p.stimEnd(t) = GetSecs;
+    p.stimEnd(trial) = GetSecs;
     
     % compute accuracy on this trial
-    p.actualRespFrm(t).d = p.resp(t,diff([0,p.resp(t,:)])>1);
+    p.actualRespFrm(trial).d = p.resp(trial,diff([0,p.resp(trial,:)])>1);
     for i=1:p.nTargs
-        for ii=1:length(p.actualRespFrm(t).d)
-            if p.actualRespFrm(t).d(ii)>p.targFrame(t,i) && p.actualRespFrm(t).d(ii)<=p.targFrame(t,i)+p.respWindow
+        for ii=1:length(p.actualRespFrm(trial).d)
+            if p.actualRespFrm(trial).d(ii)>p.targFrame(trial,i) && p.actualRespFrm(trial).d(ii)<=p.targFrame(trial,i)+p.respWindow
                 p.correct = p.correct+1;
             end
         end
     end
-    if length(p.actualRespFrm(t).d)>p.nTargs
-        p.guess = p.guess + (length(p.actualRespFrm(t).d)-p.correct);
+    if length(p.actualRespFrm(trial).d)>p.nTargs
+        p.guess = p.guess + (length(p.actualRespFrm(trial).d)-p.correct);
     end
     
     % wait the ITI
@@ -179,7 +125,7 @@ for t=1:p.nTrials
         if resp==-1; ListenChar(0); return; end;
     end
     cumTime = cumTime+p.trialTime;
-    p.trialEnd(t) = GetSecs;
+    p.trialEnd(trial) = GetSecs;
     
 end % end trial loop
 
