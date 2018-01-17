@@ -13,6 +13,7 @@ addParamValue(ip, 'fMRI', false, @islogical);
 addParamValue(ip, 'debugLevel', 0, @(x) isnumeric(x) && x >= 0);
 addParamValue(ip, 'experiment', 'contrast',  @(x) sum(strcmp(x, {'contrast','localizer'}))==1);
 addParamValue(ip, 'delta_luminance_guess', 0.3,  @isnumeric);
+addParamValue(ip, 'TR', 1.5,  @isnumeric);
 parse(ip,varargin{:});
 input = ip.Results;
 
@@ -36,17 +37,9 @@ window = setupWindow(constants, input);
 
 
 %% run main experiment
-
-switch input.experiment
-    case 'contrast'
-        [data, tInfo, expParams, stairs, stim] = ...
-            runContrast(input, constants, window, responseHandler);
-        acc = checkAccuracy(data);
-    case 'localizer'
-        [data, tInfo, expParams, input, stairs, stim] = ...
-            runLocalizer(input, constants, window, responseHandler);
-        acc = checkAccuracy(data);
-end
+[data, tInfo, expParams, stairs, stim] = ...
+    runContrast(input, constants, window, responseHandler);
+acc = checkAccuracy(data);
 
 % save data
 expt = input.experiment;

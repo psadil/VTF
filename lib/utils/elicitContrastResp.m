@@ -1,6 +1,6 @@
 function [ response, rt, vbl, missed, exitFlag, tStart, phaseStart ] = ...
-    elicitContrastResp(firstFlipTime, window, responseHandler, stim,...
-    keys, expParams, roboRT, roboResp, constants, phases, angles, dim_sequence, luminance, contrasts )
+    elicitContrastResp(vbl_expected, window, responseHandler, stim, keys, expParams,...
+    roboRT, roboResp, constants, phases, angles, dim_sequence, luminance, contrasts, experiment )
 
 %{
     Each trial has 5 phases. Trials begin and end with fixation presented
@@ -21,45 +21,40 @@ function [ response, rt, vbl, missed, exitFlag, tStart, phaseStart ] = ...
     % default return parameters
     response = repelem({'NO RESPONSE'},expParams.nPhasePerTrial)';
     rt = NaN([expParams.nPhasePerTrial,1]);
-    vbl = NaN(stim.nFlipsPerTrial, 1);
-    missed = NaN(stim.nFlipsPerTrial, 1);
     exitFlag = repelem({'OK'}, expParams.nPhasePerTrial)';
     tStart = NaN(expParams.nPhasePerTrial,1);
     phaseStart = NaN(expParams.nPhasePerTrial,1);
-    
-    % gabor parameters that are constant through trial
-    
+    vbl = NaN(stim.nFlipsPerTrial-1, 1);
+    missed = NaN(stim.nFlipsPerTrial-1, 1);
+        
     %% start flipping stims
     phase = 1;
+    goRobo = 0;
     KbQueueCreate(constants.device, keys.resp + keys.escape);
-    for flip = 1:stim.nFlipsPerTrial
+    for flip = 1:(stim.nFlipsPerTrial-1)
         
         % Batch-Draw all gratings 
         Screen('DrawTextures', window.pointer, stim.tex, [],...
             stim.dstRects, angles, [], [], [], [], [], ...
-            [phases(flip,:); repelem(stim.grating_freq_cpp,2);...
-            contrasts; zeros(1,2)]);
+            [phases(flip,:); repelem(stim.grating_freq_cpp, stim.n_gratings);...
+            contrasts; zeros(1,stim.n_gratings)]);
         
         % always draw central fixation cross
-        drawFixation(window, stim.fixRect, stim.fixLineSize, luminance(dim_sequence(flip)+1));
+        drawFixation(window, stim.fixRect, stim.fixLineSize, luminance(dim_sequence(flip)+1), experiment);
         
         Screen('DrawingFinished', window.pointer);
+
+        [vbl(flip), ~, ~, missed(flip)] = ...
+            Screen('Flip', window.pointer, ...
+            vbl_expected(flip));
         
         if flip == 1
-            [vbl(flip), ~, ~, missed(flip)] = ...
-                Screen('Flip', window.pointer, ...
-                firstFlipTime + (1 - 0.5) * window.ifi);
             tStart(1:expParams.nPhasePerTrial) = vbl(flip);
             phaseStart(1) = vbl(flip);
 
             % open up response cue and allow response
             KbQueueStart(constants.device);
-            goRobo = 0;
         else
-            [vbl(flip), ~, ~, missed(flip)] = ...
-                Screen('Flip', window.pointer, ...
-                vbl(flip-1) + ((1/stim.update_phase_sec) - 0.5) * window.ifi);
-            
             % allow robot to respond if enough time has passed
             if (vbl(flip) - vbl(1)) > roboRT
                 goRobo = 1;
@@ -70,7 +65,7 @@ function [ response, rt, vbl, missed, exitFlag, tStart, phaseStart ] = ...
             end
         end
         
-        [keys_pressed, press_times] =...
+        [keys_pressed, press_times] = ...
             responseHandler(constants.device, roboResp(phase), goRobo);
         if ~isempty(keys_pressed)
             [response(phase), rt(phase), exitFlag(phase)] = ...

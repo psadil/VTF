@@ -27,13 +27,12 @@ window.gray = GrayIndex(window.screenNumber);
 
 PsychImaging('PrepareConfiguration');
 PsychImaging('AddTask', 'General', 'NormalizedHighresColorRange', 1);
-
 % need 32Bit for proper alpha blending, which only barely happens here (and
 % maybe not at all). Though, this asks for the higher precision nicely, and
 % defaults to 16 if not possible
 PsychImaging('AddTask', 'General', 'FloatingPoint32BitIfPossible');
 switch input.debugLevel
-    case 2
+    case 1
         Screen('Preference', 'SkipSyncTests', 1);
         [window.pointer, window.winRect] = ...
             PsychImaging('OpenWindow', window.screenNumber, window.gray);
@@ -50,10 +49,6 @@ AssertGLSL;
 
 topPriorityLevel = MaxPriority(window.pointer);
 Priority(topPriorityLevel);
-
-% enable blending (needed so that neighboring textures show proper grey
-% background)
-Screen('BlendFunction', window.pointer, GL_ONE, GL_ONE);
 
 % define some landmark locations to be used throughout
 [window.xCenter, window.yCenter] = RectCenter(window.winRect);

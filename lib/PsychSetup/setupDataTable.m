@@ -35,43 +35,44 @@ data.exitFlag = repmat({[]}, [expParams.nPhasesInRun,1]);
 
 data.correct = NaN(expParams.nPhasesInRun,1);
 
+data.rt_given = NaN([expParams.nPhasesInRun,1]);
+data.response_given = repmat({[]}, [expParams.nPhasesInRun,1]);
+
+% phaseTypeindicates whether dimming happens (1) or not (0) in phase
+data.phaseType = repmat([repmat([0;1], [expParams.n_fix_dims,1]);0],... 
+    [expParams.nTrials,1]);
+
+data.answer = repmat({[]}, [expParams.nPhasesInRun,1]);
+data.answer(data.phaseType == 0) = ...
+    repmat({'NO RESPONSE'},[expParams.nTrials*(expParams.n_fix_dims+1),1]);
+data.answer(data.phaseType == 1) = ...
+    repmat({'DownArrow'}, [expParams.nTrials*expParams.n_fix_dims,1]);
+
+data.roboResponse_expected = repmat({[]}, [expParams.nPhasesInRun,1]);
+data.roboResponse_expected(data.phaseType == 0) = ...
+    repmat({''},[expParams.nTrials*(expParams.n_fix_dims+1),1]);
+data.roboResponse_expected(data.phaseType == 1) = ...
+    repmat({'\DOWN'}, [expParams.nTrials*expParams.n_fix_dims,1]);
+
+data.luminance_difference = NaN([expParams.nPhasesInRun,1]);
+
 switch expt
     case 'contrast'
-        data.rt_given = NaN([expParams.nPhasesInRun,1]);
-        data.response_given = repmat({[]}, [expParams.nPhasesInRun,1]);
-        
-        % phaseTypeindicates whether dimming happens (1) or not (0) in phase
-        data.phaseType = repmat([0,1,0,1,0]', [expParams.nTrials,1]);
         
         [data.orientation_left, data.contrast_left] = setupBlocking(expParams, stim);
         [data.orientation_right, data.contrast_right] = setupBlocking(expParams, stim);
         
-        data.answer = repmat({[]}, [expParams.nPhasesInRun,1]);
-        data.answer(data.phaseType == 0) = ...
-            repmat({'NO RESPONSE'},[expParams.nTrials*(expParams.n_fix_dims+1),1]);
-        data.answer(data.phaseType == 1) = ...
-            repmat({'DownArrow'}, [expParams.nTrials*expParams.n_fix_dims,1]);
-        
-        data.roboResponse_expected = repmat({[]}, [expParams.nPhasesInRun,1]);
-        data.roboResponse_expected(data.phaseType == 0) = ...
-            repmat({''},[expParams.nTrials*(expParams.n_fix_dims+1),1]);
-        data.roboResponse_expected(data.phaseType == 1) = ...
-            repmat({'\DOWN'}, [expParams.nTrials*expParams.n_fix_dims,1]);
-        
-        data.luminance_difference = NaN([expParams.nPhasesInRun,1]);
-        
     case 'localizer'
-        data.rt = repmat({repelem({NaN},expParams.nTargs)}, ...
-            [expParams.nTrials,1]);
-        data.response = repmat({repelem({[]},expParams.nTargs)}, ...
-            [expParams.nTrials,1]);
         
-        data.targFrame = repmat({repelem({NaN},expParams.nTargs)}, ...
-            [expParams.nTrials,1]);
-        data.targOnTime = repmat({repelem({NaN},expParams.nTargs)}, ...
-            [expParams.nTrials,1]);
-        data.targMaxRespTime = repmat({repelem({NaN},expParams.nTargs)}, ...
-            [expParams.nTrials,1]);
+        data.orientation_left1 = repelem(stim.orientations_deg(1),expParams.nPhasesInRun)';
+        data.orientation_left2 = repelem(stim.orientations_deg(2),expParams.nPhasesInRun)';
+        data.orientation_right1 = data.orientation_left1;
+        data.orientation_right2 = data.orientation_left2;
+        
+        data.contrast_left1 = ones([expParams.nPhasesInRun,1]) * stim.contrast;
+        data.contrast_right1 = ones([expParams.nPhasesInRun,1]) * stim.contrast;
+        data.contrast_left2 = ones([expParams.nPhasesInRun,1]) * stim.contrast;
+        data.contrast_right2 = ones([expParams.nPhasesInRun,1]) * stim.contrast;
         
 end
 
