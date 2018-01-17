@@ -58,6 +58,8 @@ switch expt
         data.roboResponse_expected(data.phaseType == 1) = ...
             repmat({'\DOWN'}, [expParams.nTrials*expParams.n_fix_dims,1]);
         
+        data.luminance_difference = NaN([expParams.nPhasesInRun,1]);
+        
     case 'localizer'
         data.rt = repmat({repelem({NaN},expParams.nTargs)}, ...
             [expParams.nTrials,1]);

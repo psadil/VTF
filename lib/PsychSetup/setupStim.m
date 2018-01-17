@@ -3,7 +3,6 @@ function stim = setupStim( expParams, window, input )
 %{
 TODO:
 
-- make fixation texture for drawing
 
 %}
 
@@ -12,7 +11,7 @@ TODO:
 % degree size of fixation
 % values from Liu, Cable, Gardner, 2017
 stim.fixSize_deg = 1;
-stim.fixLineSize = 4;
+stim.fixLineSize = 2;
 
 % number of gabors to draw
 stim.n_gratings = 2; % 2 -> one on left and right
@@ -20,11 +19,9 @@ stim.n_gratings = 2; % 2 -> one on left and right
 % grating parameters
 % values from Liu, Cable, Gardner, 2017
 stim.grating_freq_cpd = .7; % cpd => cycles per degree
-% stim.grating_aperture_deg = 10;
-stim.grating_offset_eccen_deg = 8;
+stim.grating_offset_eccen_deg = 16;
 stim.orientations_deg = linspace(0,180-(180 / expParams.nOrientations), expParams.nOrientations);
-% Spatial constant of the exponential "hull" (directly translates to size)
-stim.sigma = 40;
+stim.grating_aperture_deg = 10;
 
 % convert all of the visual angles into pixels. Calibrated for the monitor
 % on which the stimulus will be drawn
@@ -40,7 +37,7 @@ stim.n_phase_orientations = 16;
 % Define prototypical gabor patch: si is
 % half the wanted size. Later on, the 'DrawTextures' command will simply
 % scale this patch up and down to draw individual patches of the different
-% wanted sizes:
+% wanted sizes: (also, radius will change what happens)
 stim.si = 2^9;
 
 % Size of support in pixels, derived from si:
@@ -49,10 +46,10 @@ stim.th = 2*stim.si+1;
 
 % % Build a procedural gabor texture for a gabor with a support of tw x th
 % pixels and ...
-% disableNorm := 1
-% contrastPreMultiplicator := 0.5
-stim.tex = CreateProceduralGabor(window.pointer, stim.tw, stim.th, [], [], 1, 0.5);
-% stim.tex = CreateProceduralGabor(window.pointer, stim.tw, stim.th, 1);
+backgroundOffset = []; % no offset for proper alpha
+preContrastMultiplier = 0.5;
+stim.tex = CreateProceduralSineGrating(window.pointer, stim.tw, stim.th,...
+    backgroundOffset, stim.grating_aperture_pix, preContrastMultiplier);
 
 % Preallocate array with destination rectangles:
 stim.texrect = Screen('Rect', stim.tex);
@@ -66,7 +63,7 @@ stim.dstRects(:,2) = CenterRectOnPoint(stim.texrect, ...
 switch input.experiment
     case 'contrast'
         % Liu, Cable, Gardner, 2017
-        stim.contrast = [.2; .8]*100;
+        stim.contrast = [.2; .8];
         
         % directions presented
         stim.targOrients = linspace(0,180-(180/expParams.nOrientations), expParams.nOrientations)*pi/180;
@@ -79,10 +76,8 @@ end
 
 % cue point coordinates
 stim.fixRect = ...
-    [[[-stim.fixSize_pix/2,stim.fixSize_pix/2]; ...
-    [0,0]],...
-    [[0,0];...
-    [-stim.fixSize_pix/2,stim.fixSize_pix/2]]];
+    [[[-stim.fixSize_pix/2, stim.fixSize_pix/2];[0,0]],...
+    [[0,0];[-stim.fixSize_pix/2, stim.fixSize_pix/2]]];
 
 % flip sequence
 stim.nFlipsPerSecOfTrial = ceil(1 / stim.update_phase_sec);
@@ -90,9 +85,11 @@ stim.nFlipsPerTrial = ceil(expParams.trial_stim_dur_sec * stim.nFlipsPerSecOfTri
 
 
 % flip gabor once (initial flip has setup costs) and flip again to clear
-% flipped with 0 contrast
-Screen('DrawTexture', window.pointer, stim.tex, [], stim.dstRects(:,1), [], [], [], [], [],...
-    kPsychDontDoRotation, [180, 0.05, 50, 0, 1, 0, 0, 0]);
+contrast_tmp = max(stim.contrast) * 0;
+angle = 45;
+freq = stim.grating_freq_cpp;
+Screen('DrawTexture', window.pointer, stim.tex, [], stim.dstRects(:,1), angle, [], [], [], [],...
+    [], [180, freq, contrast_tmp, 0]);
 Screen('Flip', window.pointer);
 Screen('Flip', window.pointer);
 
@@ -101,10 +98,16 @@ end
 
 function stim = wrapper_deg2pix(stim, window)
 
-stim.fixSize_pix = deg2pix(stim.fixSize_deg, window);
-% stim.grating_aperture_pix = deg2pix(stim.grating_aperture_deg, window);
-stim.grating_offset_eccen_pix = deg2pix(stim.grating_offset_eccen_deg, window);
-% stim.grating_freq_cpp = deg2pix(stim.grating_freq_cpd, window);
-stim.grating_freq_cpp = 0.05;
+stim.fixSize_pix = deg2pix(window.screen_w_cm, window.winRect(3), ...
+    window.view_distance_cm, stim.fixSize_deg);
+stim.grating_aperture_pix = deg2pix( window.screen_w_cm, window.winRect(3), ...
+    window.view_distance_cm, stim.grating_aperture_deg );
+stim.grating_offset_eccen_pix = deg2pix(window.screen_w_cm, window.winRect(3), ...
+    window.view_distance_cm, stim.grating_offset_eccen_deg);
+
+% cycles per degree is inverted from the others
+stim.grating_freq_cpp = 1/deg2pix( window.screen_w_cm, window.winRect(3), ...
+    window.view_distance_cm, stim.grating_freq_cpd );
+
 end
 

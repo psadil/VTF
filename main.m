@@ -8,10 +8,11 @@ ip = inputParser;
 addParamValue(ip, 'subject', 0, @isnumeric);
 addParamValue(ip, 'responder', 'user', @(x) sum(strcmp(x, {'user','simpleKeypressRobot'}))==1);
 addParamValue(ip, 'refreshRate', 60, @(x) x==60);
-addParamValue(ip, 'runNumber', 1, @isnumeric);
-addParamValue(ip, 'fMRI', false, @isLogical);
+addParamValue(ip, 'run', 1, @isnumeric);
+addParamValue(ip, 'fMRI', false, @islogical);
 addParamValue(ip, 'debugLevel', 0, @(x) isnumeric(x) && x >= 0);
 addParamValue(ip, 'experiment', 'contrast',  @(x) sum(strcmp(x, {'contrast','localizer'}))==1);
+addParamValue(ip, 'delta_luminance_guess', 0.3,  @isnumeric);
 parse(ip,varargin{:});
 input = ip.Results;
 
@@ -25,6 +26,8 @@ if input.fMRI && input.runNumber == 1
     demographics(constants.subDir);
 end
 
+
+PsychDefaultSetup(2);
 ListenChar(-1);
 responseHandler = makeInputHandlerFcn(input.responder);
 
@@ -36,11 +39,11 @@ window = setupWindow(constants, input);
 
 switch input.experiment
     case 'contrast'
-        [data, tInfo, expParams, qp, stim] = ...
+        [data, tInfo, expParams, stairs, stim] = ...
             runContrast(input, constants, window, responseHandler);
         acc = checkAccuracy(data);
     case 'localizer'
-        [data, tInfo, expParams, input, qp, stim] = ...
+        [data, tInfo, expParams, input, stairs, stim] = ...
             runLocalizer(input, constants, window, responseHandler);
         acc = checkAccuracy(data);
 end
@@ -48,9 +51,11 @@ end
 % save data
 expt = input.experiment;
 subject = input.subject;
-structureCleanup(expt, subject, data, constants, tInfo, expParams, qp, stim);
+run = input.run;
+structureCleanup(expt, subject, run, data, constants, tInfo, expParams, stairs, stim);
 
-showPrompt(window, sprintf('You were %01d %% correct', acc*100), 0);
+% NOTE: correct is for both finding and refraining from pressing
+showPrompt(window, sprintf('You were %.0f%% correct', acc*100), 0);
 WaitSecs(3);
 windowCleanup(constants);
 

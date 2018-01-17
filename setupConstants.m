@@ -14,7 +14,7 @@ path(path, genpath(constants.lib_dir));
 % constants.stimDir=fullfile(constants.root_dir,'stimuli');
 switch input.responder
     case 'user'
-        constants.savePath=fullfile(constants.root_dir,'analyses','data','behav');
+        constants.savePath=fullfile(constants.root_dir,'analyses','data','beh');
     otherwise
         constants.savePath=fullfile(constants.root_dir,'analyses','robo');
 end

@@ -34,3 +34,6 @@ vignettes/*.pdf
 
 # Temporary files created by matlab
 *.asv
+
+*.mat
+*.ps

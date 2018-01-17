@@ -1,4 +1,4 @@
-function [ data, tInfo, expParams, qp, stim ] = ...
+function [ data, tInfo, expParams, stairs, stim ] = ...
     runContrast( input, constants, window, responseHandler )
 
 %{
@@ -38,16 +38,11 @@ Overall Flow:
       presented during this flip?
     
 TODO:
-- setup fixation dimming schedule
-- QEUST
-- feedback for outside of fMRI
 - testing?
     %}
     
     expParams = setupExpParams(input.debugLevel, input.fMRI, input.experiment);
-    
-    %     qp = setupQParams(expParams, input.fMRI);
-    qp = struct;
+    stairs = setupStaircase(input.delta_luminance_guess, expParams.nTrials);
     fb = setupFeedback();
     keys = setupKeys(input.fMRI);
     stim = setupStim(expParams, window, input);
@@ -69,6 +64,7 @@ TODO:
     end
     
     for trial = 1:expParams.nTrials
+        
         index_tInfo = 0;
         if trial == 1
             firstFlipTime = triggerSent;
@@ -80,6 +76,9 @@ TODO:
         angles = [data.orientation_left(index_data(1)), data.orientation_right(index_data(1))];
         contrasts = [data.contrast_left(index_data(1)), data.contrast_right(index_data(1))];
         
+        % get luminance differ to test on this trial
+        data.luminance_difference(index_data) = stairs.luminance_difference(trial);
+        
         % present stimuli and get responses (main task is here)
         [data.response_given(index_data), data.rt_given(index_data), ...
             tInfo.vbl(index_tInfo), tInfo.missed(index_tInfo), ...
@@ -88,16 +87,17 @@ TODO:
             elicitContrastResp(firstFlipTime, window, responseHandler, stim,...
             keys, expParams, data.roboRT_expected(index_data), data.roboResponse_expected(index_data), constants,...
             [tInfo.phase_orientation_left(index_tInfo), tInfo.phase_orientation_right(index_tInfo)],...
-            angles, tInfo.dimmed(index_tInfo), [1, .1]*255, contrasts);
+            angles, tInfo.dimmed(index_tInfo), [1, 1 - stairs.luminance_difference(trial)], contrasts);
         
         if any(strcmp(data.exitFlag(index_data), 'ESCAPE'))
             return
         else
+            stairs.correct(trial) = all(data.correct(index_data));
             data.correct(index_data) = analyzeResp(data.response_given(index_data), data.answer(index_data));
-            fbwrapper(all(data.correct(index_data)), fb, input.fMRI);
-
+            fbwrapper(stairs.correct(trial), fb, input.fMRI);
+            
             % draw and flip regular fixation
-            drawFixation(window, stim.fixRect, stim.fixLineSize, 255);
+            drawFixation(window, stim.fixRect, stim.fixLineSize, 1);
             [tInfo.vbl(index_tInfo(end)+1), ~, ~, tInfo.missed(index_tInfo(end)+1)] = ...
                 Screen('Flip', window.pointer, ...
                 tInfo.vbl(index_tInfo(end)) + ((1/stim.update_phase_sec) - 0.5) * window.ifi);
@@ -108,9 +108,9 @@ TODO:
                 return
             end
         end
-                
-        %         qp = updateQ(data.correct(index_data), data.tType(index_data), qp);
         
+        % update QUEST parameters based on whether all phases were correct
+        stairs = update_stairs(stairs, trial);
         data.tEnd_realized(index_data) = GetSecs;
         
     end
@@ -147,5 +147,27 @@ if ~fMRI
     end
 end
 
+end
+
+function stairs = update_stairs(stairs, trial)
+
+if stairs.correct(trial)
+    % make task more difficult
+    location = find(stairs.options == stairs.luminance_difference(trial));
+    if location > 2
+        location = location - 2;
+    elseif location == 2 || location == 1
+        location = 1;
+    end
+    stairs.luminance_difference(trial+1) = stairs.options(location);
+else
+    % make task a bit easier (but only if there's room to do so)
+    location = find(stairs.options == stairs.luminance_difference(trial));
+    if location < length(stairs.options)
+        location = location + 1;
+    end
+    stairs.luminance_difference(trial+1) = stairs.options(location);
+end
 
 end
+

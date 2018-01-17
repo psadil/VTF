@@ -1,38 +1,52 @@
 function window = setupWindow(constants, input)
-PsychDefaultSetup(2);
+
 
 % viewing distance and screen width, in CM...used to convert degrees visual
 % angle to pixel units later on for drawing stuff
 if input.fMRI
-    window.screenWidthCM = 70;
-    window.vDistCM = 137;
-%     window.res_input = [1920, 1080];
+    % https://www.umass.edu/ials/sites/default/files/hmrc_tn_bold_screen_view_angle.pdf
+    window.screen_w_cm = 35;
+    window.screen_h_cm = 19.6;
+    window.view_distance_cm = 137;
 else
-    window.screenWidthCM = 34.29;
-    window.vDistCM = 50.8;
+    % MSI parameters
+    window.screen_w_cm = convlength(15.5,'in','m')*100;
+    window.screen_h_cm = convlength(8.98,'in','m')*100;
+    window.view_distance_cm = convlength(24,'in','m')*100;
 end
 
 
 %%
 window.screenNumber = max(Screen('Screens')); % Choose a monitor to display on
-window.oldRes = Screen('Resolution',window.screenNumber,[],[],input.refreshRate); % get screen resolution, set refresh rate
+% get screen resolution, set refresh rate
+window.oldRes = Screen('Resolution',window.screenNumber,[],[],input.refreshRate);
 
-
-switch input.debugLevel
-    case 0
-        [window.pointer, window.winRect] = ...
-            Screen('OpenWindow', window.screenNumber, 127);
-    otherwise
-        Screen('Preference', 'SkipSyncTests', 1);
-        [window.pointer, window.winRect] = ...
-            Screen('OpenWindow', window.screenNumber, 127, [0, 0, 1920, 600]);
-end
-
-% these need to be called after OpenWindow, otherwise colors will still be
-% 0-255
 window.black = BlackIndex(window.screenNumber);
 window.white = WhiteIndex(window.screenNumber);
 window.gray = GrayIndex(window.screenNumber);
+
+PsychImaging('PrepareConfiguration');
+PsychImaging('AddTask', 'General', 'NormalizedHighresColorRange', 1);
+
+% need 32Bit for proper alpha blending, which only barely happens here (and
+% maybe not at all). Though, this asks for the higher precision nicely, and
+% defaults to 16 if not possible
+PsychImaging('AddTask', 'General', 'FloatingPoint32BitIfPossible');
+switch input.debugLevel
+    case 2
+        Screen('Preference', 'SkipSyncTests', 1);
+        [window.pointer, window.winRect] = ...
+            PsychImaging('OpenWindow', window.screenNumber, window.gray);
+    case 10
+        Screen('Preference', 'SkipSyncTests', 1);
+        [window.pointer, window.winRect] = ...
+            PsychImaging('OpenWindow', window.screenNumber, window.gray, [0, 0, 1920, 600]);
+    otherwise
+        [window.pointer, window.winRect] = ...
+            PsychImaging('OpenWindow', window.screenNumber, window.gray);
+end
+% Make sure the GLSL shading language is supported:
+AssertGLSL;
 
 topPriorityLevel = MaxPriority(window.pointer);
 Priority(topPriorityLevel);
@@ -55,11 +69,10 @@ checkRefreshRate(window.hertz, input.refreshRate, constants);
 % Font Configuration
 window.fontSize = 24;
 
-Screen('TextFont',window.pointer, 'Arial');
+% Screen('TextFont',window.pointer, 'Arial');
 Screen('TextSize',window.pointer, window.fontSize);
-Screen('TextStyle', window.pointer, window.black);
+% Screen('TextStyle', window.pointer, 1); % 0=normal,1=bold,2=italic,4=underline,8=outline,32=condense,64=extend.
 Screen('TextColor', window.pointer, window.white);
-% Screen('TextBackgroundColor', window.pointer, window.gray);
 
 
 end
