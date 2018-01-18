@@ -1,13 +1,14 @@
-function data = setupDataTable( expParams, input, stim, expt )
+function data = setupDataTable( expParams, input, stim, expt, keys )
 %setupDataTable setup data table for this participant.
 
 data = table;
 data.subject = repelem(input.subject, expParams.nPhasesInRun)';
 data.trial = repelem(1:expParams.nTrials, expParams.nPhasePerTrial)';
+data.phase = repmat((1:expParams.nPhasePerTrial)', [expParams.nTrials,1]);
 
 data.tStart_expected = repelem((0:expParams.trial_total_dur: ...
     (expParams.trial_total_dur*(expParams.nTrials-1)))', expParams.nPhasePerTrial);
-data.tEnd_expected = repelem((expParams.trial_total_dur:expParams.trial_total_dur: ...
+data.tEnd_expected = repelem((expParams.trial_stim_dur_sec:expParams.trial_total_dur: ...
     (expParams.trial_total_dur*(expParams.nTrials)))', expParams.nPhasePerTrial);
 
 data.phaseStart_expected = NaN([expParams.nPhasesInRun,1]);
@@ -46,13 +47,13 @@ data.answer = repmat({[]}, [expParams.nPhasesInRun,1]);
 data.answer(data.phaseType == 0) = ...
     repmat({'NO RESPONSE'},[expParams.nTrials*(expParams.n_fix_dims+1),1]);
 data.answer(data.phaseType == 1) = ...
-    repmat({'DownArrow'}, [expParams.nTrials*expParams.n_fix_dims,1]);
+    repmat({KbName(keys.resp)}, [expParams.nTrials*expParams.n_fix_dims,1]);
 
 data.roboResponse_expected = repmat({[]}, [expParams.nPhasesInRun,1]);
 data.roboResponse_expected(data.phaseType == 0) = ...
-    repmat({''},[expParams.nTrials*(expParams.n_fix_dims+1),1]);
+    repmat({'z'},[expParams.nTrials*(expParams.n_fix_dims+1),1]);
 data.roboResponse_expected(data.phaseType == 1) = ...
-    repmat({'\DOWN'}, [expParams.nTrials*expParams.n_fix_dims,1]);
+    repmat({keys.robo_resp}, [expParams.nTrials*expParams.n_fix_dims,1]);
 
 data.luminance_difference = NaN([expParams.nPhasesInRun,1]);
 

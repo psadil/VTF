@@ -7,7 +7,7 @@ KbQueueStart(constants.device);
 while 1
     
     [keys_pressed, press_times] = ...
-        responseHandler(constants.device, keys.start, 1);
+        responseHandler(constants.device, keys.robo_start, 1);
     
     if ~isempty(keys_pressed)
         triggerSent = press_times(keys_pressed(1));

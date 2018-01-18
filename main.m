@@ -1,55 +1,66 @@
-function acc = main(varargin)
-acc = NaN;
+function  main(varargin)
+
+% warning from inputemu
+warning('off', 'MATLAB:nargchk:deprecated');
 
 %% collect input
 % use the inputParser class to deal with arguments
 ip = inputParser;
-%#ok<*NVREPL> dont warn about addParamValue
-addParamValue(ip, 'subject', 0, @isnumeric);
-addParamValue(ip, 'responder', 'user', @(x) sum(strcmp(x, {'user','simpleKeypressRobot'}))==1);
-addParamValue(ip, 'refreshRate', 60, @(x) x==60);
-addParamValue(ip, 'run', 1, @isnumeric);
-addParamValue(ip, 'fMRI', false, @islogical);
-addParamValue(ip, 'debugLevel', 0, @(x) isnumeric(x) && x >= 0);
-addParamValue(ip, 'experiment', 'contrast',  @(x) sum(strcmp(x, {'contrast','localizer'}))==1);
-addParamValue(ip, 'delta_luminance_guess', 0.3,  @isnumeric);
-addParamValue(ip, 'TR', 1.5,  @isnumeric);
+addParameter(ip, 'subject', 0, @isnumeric);
+addParameter(ip, 'responder', 'user', @(x) sum(strcmp(x, {'user','simpleKeypressRobot'}))==1);
+addParameter(ip, 'refreshRate', 60, @(x) x==60);
+addParameter(ip, 'run', 0, @isnumeric);
+addParameter(ip, 'fMRI', false, @islogical);
+addParameter(ip, 'debugLevel', 0, @(x) isnumeric(x) && x >= 0);
+addParameter(ip, 'experiment', 'contrast',  @(x) sum(strcmp(x, {'contrast','localizer'}))==1);
+addParameter(ip, 'delta_luminance_guess', 0.3,  @isnumeric);
+addParameter(ip, 'TR', 1.5,  @isnumeric);
 parse(ip,varargin{:});
 input = ip.Results;
 
-%% setup
+% setup folders
 [constants, input, exit_stat] = setupConstants(input, ip);
 if exit_stat==1
     windowCleanup(constants);
     return
 end
-if input.fMRI && input.runNumber == 1
+
+% gather demographics for practice run
+if ~input.fMRI && input.run == 1
     demographics(constants.subDir);
 end
 
-
-PsychDefaultSetup(2);
-ListenChar(-1);
-responseHandler = makeInputHandlerFcn(input.responder);
-
-% monitor stuff
-window = setupWindow(constants, input);
-
-
 %% run main experiment
-[data, tInfo, expParams, stairs, stim] = ...
-    runContrast(input, constants, window, responseHandler);
-acc = checkAccuracy(data);
+% try to fail gracefully (meaning automatically restore keyboard)
+try    
+    PsychDefaultSetup(2);
+    ListenChar(-1);
+    responseHandler = makeInputHandlerFcn(input.responder);
+    
+    % monitor stuff
+    window = setupWindow(constants, input);
+    
+    [data, tInfo, expParams, stairs, stim] = ...
+        runContrast(input, constants, window, responseHandler);
+    acc = checkAccuracy(data);
+    
+    % save data
+    expt = input.experiment;
+    subject = input.subject;
+    run = input.run;
+    structureCleanup(expt, subject, run, data, constants, tInfo, expParams, stairs, stim);
+    save_BIDSevents(data, input, constants);
+    
+    % NOTE: correct is for both finding and refraining from pressing
+    showPrompt(window, sprintf('You were %.0f%% correct', acc*100), 0);
+    WaitSecs(3);
+    windowCleanup(constants);
+    
+catch msg
+    windowCleanup(constants);
+    disp('botched');
+    rethrow(msg)
+end
 
-% save data
-expt = input.experiment;
-subject = input.subject;
-run = input.run;
-structureCleanup(expt, subject, run, data, constants, tInfo, expParams, stairs, stim);
-
-% NOTE: correct is for both finding and refraining from pressing
-showPrompt(window, sprintf('You were %.0f%% correct', acc*100), 0);
-WaitSecs(3);
-windowCleanup(constants);
 
 return

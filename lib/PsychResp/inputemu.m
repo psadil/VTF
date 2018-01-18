@@ -170,7 +170,7 @@ deltaT = [];
 idx_mouse = [];
 oemChars = defaultOemChars;
 
-msg = nargchk(1,2,n); %#ok
+msg = nargchk(1,2,n);   %#ok<*NCHKI>
 if ~isempty(msg), return; end
 
 if ~iscell(argin{1}) % single-command mode
@@ -527,7 +527,7 @@ if mod % press the modifier key
 	params{I} = mod_param;
 	I = I + 1;
 end
-for n = 1:Nchars; % for each character
+for n = 1:Nchars % for each character
 	if shifts(n)~=0 % shift key action needed
 		if shifts(n)>0 % 1:press shift key
 			actions{I} = 'key_down';

@@ -47,7 +47,7 @@ TODO:
     keys = setupKeys(input.fMRI);
     stim = setupStim(expParams, window, input);
     
-    data = setupDataTable(expParams, input, stim, input.experiment);
+    data = setupDataTable(expParams, input, stim, input.experiment, keys);
     
     tInfo = setupTInfo(expParams, stim, data);
     
@@ -88,7 +88,7 @@ TODO:
                 contrasts = [data.contrast_left1(index_data(1)), data.contrast_right1(index_data(1)),...
                     data.contrast_left2(index_data(1)), data.contrast_right2(index_data(1))];
                 phases = [tInfo.phase_orientation_left(index_tInfo), tInfo.phase_orientation_right(index_tInfo),...
-                    tInfo.phase_orientation_left(index_tInfo), tInfo.phase_orientation_right(index_tInfo)];
+                    Shuffle(tInfo.phase_orientation_left(index_tInfo)), Shuffle(tInfo.phase_orientation_right(index_tInfo))];
         end
         
         % get luminance differ to test on this trial
@@ -116,7 +116,9 @@ TODO:
             drawFixation(window, stim.fixRect, stim.fixLineSize, 1, input.experiment);
             [tInfo.vbl(index_tInfo(end)+1), ~, ~, tInfo.missed(index_tInfo(end)+1)] = ...
                 Screen('Flip', window.pointer, ...
-                tInfo.vbl(index_tInfo(end)) + ((1/stim.update_phase_sec) - 0.5) * window.ifi);
+                tInfo.vbl(index_tInfo(end)) + ((1/stim.update_phase_sec) - 0.9) * window.ifi);
+
+            data.tEnd_realized(index_data) = tInfo.vbl(index_tInfo(end)+1);
             % wait ITI (allowing escape response)
             exitFlag = soakTime( keys.escape, tInfo.vbl(index_tInfo(end)+1),...
                 expParams.iti_dur_sec, responseHandler, constants );
@@ -125,10 +127,8 @@ TODO:
             end
         end
         
-        % update QUEST parameters based on whether all phases were correct
-        stairs = update_stairs(stairs, trial);
-        data.tEnd_realized(index_data) = GetSecs;
-        
+        % to end, update staircase values
+        stairs = update_stairs(stairs, trial);        
     end
     constants.endStimTime = GetSecs;
     
@@ -138,10 +138,6 @@ TODO:
     if strcmp(exitFlag{1}, 'ESCAPE')
         return
     end
-    
-    tInfo.vbl = tInfo.vbl - triggerSent;
-    data.tStart_realized = data.tStart_realized - triggerSent;
-    data.phaseStart_realized = data.phaseStart_realized - triggerSent;
     
 end
 

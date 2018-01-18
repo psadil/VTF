@@ -169,7 +169,7 @@ stim.nFlipsPerSecOfTrial = ceil(1 / stim.update_phase_sec);
 stim.nFlipsPerTrial = ceil(expParams.trial_stim_dur_sec * stim.nFlipsPerSecOfTrial);
 
 % flip gabor once (initial flip has setup costs) and flip again to clear
-contrast_tmp = max(stim.contrast) ;
+contrast_tmp = max(stim.contrast)*0 ;
 angle = [0,0,90,90];
 freq = stim.grating_freq_cpp;
 Screen('DrawTextures', window.pointer, stim.tex, [], stim.dstRects, angle(1:stim.n_gratings), [], [], [], [],...

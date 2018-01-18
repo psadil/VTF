@@ -66,7 +66,7 @@ switch experiment
         switch debugLevel
             case 0
                 % total number of trials
-                expParams.reps = 15;
+                expParams.reps = 20;
                 
             otherwise
                 expParams.reps = 3;
@@ -97,7 +97,7 @@ switch fMRI
     case true
         % with fMRI, want a bit of extra time at end to allow for
         % HRF to relax on final trial
-        expParams.post_dur = 9;
+        expParams.post_dur = 10;
     case false
         expParams.post_dur = 0;
 end
