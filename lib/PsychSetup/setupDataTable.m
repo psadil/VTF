@@ -15,15 +15,25 @@ data.phaseStart_expected = NaN([expParams.nPhasesInRun,1]);
 % must start first dim after at least .5 sec into trial, and (.5 + 1 + .5) before end
 % rounding for maximum flicker rate
 % shifting so that timing is with respect to start of experiment
-data.phaseStart_expected(1:5:end) = data.tStart_expected(1:5:end);
-data.phaseStart_expected(2:5:end) = data.phaseStart_expected(1:5:end) + ...
-    round(.5 + (3-.5)*rand(expParams.nPhasesInRun / expParams.nPhasePerTrial,1),1);
-data.phaseStart_expected(3:5:end) = data.phaseStart_expected(2:5:end) + expParams.fix_dim_dur_sec;
-data.phaseStart_expected(4:5:end) = data.phaseStart_expected(3:5:end) + ...
-    round(expParams.fix_dim_interval_range_sec(1) + ...
-    (expParams.fix_dim_interval_range_sec(2) - expParams.fix_dim_interval_range_sec(1))*...
-    rand(expParams.nPhasesInRun /expParams.nPhasePerTrial ,1),1);
-data.phaseStart_expected(5:5:end) = data.phaseStart_expected(4:5:end) + expParams.fix_dim_dur_sec;
+
+% phaseTypeindicates whether dimming happens (1) or not (0) in phase
+phaseTypeBase = [repmat([0;1], [expParams.n_fix_dims,1]);0];
+data.phaseType = repmat(phaseTypeBase, [expParams.nTrials,1]);
+
+data.phaseStart_expected(1:expParams.nPhasePerTrial:end) = data.tStart_expected(1:expParams.nPhasePerTrial:end);
+for phase = 2:expParams.nPhasePerTrial
+    if phaseTypeBase(phase)
+    data.phaseStart_expected(phase:expParams.nPhasePerTrial:end) = ...
+        data.phaseStart_expected((phase-1):expParams.nPhasePerTrial:end) + ...
+        round(expParams.fix_dim_interval_range_sec(1) +...
+        (expParams.fix_dim_interval_range_sec(2) - expParams.fix_dim_interval_range_sec(1))...
+        *rand(expParams.nPhasesInRun / expParams.nPhasePerTrial,1),1);        
+    else
+        data.phaseStart_expected(phase:expParams.nPhasePerTrial:end) = ...
+            data.phaseStart_expected((pahse-1):expParams.nPhasePerTrial:end) + expParams.fix_dim_dur_sec;
+    end
+end
+
 
 data.tStart_realized = NaN([expParams.nPhasesInRun,1]);
 data.tEnd_realized = NaN([expParams.nPhasesInRun,1]);
@@ -38,10 +48,6 @@ data.correct = NaN(expParams.nPhasesInRun,1);
 
 data.rt_given = NaN([expParams.nPhasesInRun,1]);
 data.response_given = repmat({[]}, [expParams.nPhasesInRun,1]);
-
-% phaseTypeindicates whether dimming happens (1) or not (0) in phase
-data.phaseType = repmat([repmat([0;1], [expParams.n_fix_dims,1]);0],... 
-    [expParams.nTrials,1]);
 
 data.answer = repmat({[]}, [expParams.nPhasesInRun,1]);
 data.answer(data.phaseType == 0) = ...

@@ -46,10 +46,10 @@ switch experiment
     case 'localizer'
         
         % stimulus duration in seconds
-        expParams.trial_stim_dur_sec = 10;
+        expParams.trial_stim_dur_sec = 16;
         
         % time between stimulus presentations in seconds
-        expParams.iti_dur_sec = 10;
+        expParams.iti_dur_sec = 16;
         
         % just horizontal and vertical
         expParams.nOrientations = 2;
@@ -66,7 +66,7 @@ switch experiment
         switch debugLevel
             case 0
                 % total number of trials
-                expParams.reps = 20;
+                expParams.reps = 10;
                 
             otherwise
                 expParams.reps = 3;

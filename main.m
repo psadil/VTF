@@ -18,7 +18,7 @@ addParameter(ip, 'TR', 1.5,  @isnumeric);
 parse(ip,varargin{:});
 input = ip.Results;
 
-% setup folders
+% setup folders (add everything to path)
 [constants, input, exit_stat] = setupConstants(input, ip);
 if exit_stat==1
     windowCleanup(constants);
@@ -35,11 +35,11 @@ end
 try    
     PsychDefaultSetup(2);
     ListenChar(-1);
+
     responseHandler = makeInputHandlerFcn(input.responder);
-    
-    % monitor stuff
     window = setupWindow(constants, input);
     
+    % main experiment function
     [data, tInfo, expParams, stairs, stim] = ...
         runContrast(input, constants, window, responseHandler);
     acc = checkAccuracy(data);
@@ -58,7 +58,6 @@ try
     
 catch msg
     windowCleanup(constants);
-    disp('botched');
     rethrow(msg)
 end
 

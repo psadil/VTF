@@ -20,6 +20,11 @@ switch input.responder
     otherwise
         constants.savePath=fullfile(constants.root_dir,'analyses','robo');
 end
+constants.subDir = fullfile(constants.savePath, ['sub-', num2str(input.subject, '%02d')]);
+if ~exist(constants.subDir, 'dir')
+    mkdir(constants.subDir);
+end
+
 % instantiate the subject number validator function
 subjectValidator = makeSubjectDataChecker(constants.savePath, input.subject, input.debugLevel);
 
@@ -27,24 +32,16 @@ subjectValidator = makeSubjectDataChecker(constants.savePath, input.subject, inp
 
 % call gui for input
 guiInput = getSubjectInfo('run', struct('title', 'Run Number', 'type', 'textinput',...
-    'validationFcn', subjectValidator));
+    'validationFcn', subjectValidator),...
+    'experiment', struct('title', 'Run Type', 'type', 'dropdown',...
+    'values', {{'contrast','localizer'}}) );
 if isempty(guiInput)
     exit_stat = 1;
     return
 else
     input = filterStructs(guiInput, input);
 end
-
-if ~isnumeric(input.run)
-   input.run = str2double(input.run); 
-end
-
-% now that we have all the input and it has passed validation, we can have
-% a file path!
-constants.subDir = fullfile(constants.savePath, ['sub-', num2str(input.subject, '%02d')]);
-if ~exist(fullfile(constants.subDir), 'dir')
-    mkdir(fullfile(constants.subDir));
-end
+input.run = str2double(input.run);
 
 switch input.responder
     case 'user'
@@ -68,6 +65,7 @@ function overwriteCheck = makeSubjectDataChecker(directory, subnum, debugLevel)
     function [valid, msg] = subjectDataChecker(value, ~)
         % the actual validation logic
         valid = false;
+        msg = 'empty';
         
         run = str2double(value);
         if (~isnumeric(subnum) || isnan(subnum)) && ~isnumeric(value)
