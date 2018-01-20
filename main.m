@@ -26,7 +26,7 @@ if exit_stat==1
 end
 
 % gather demographics for practice run
-if ~input.fMRI && input.run == 1
+if ~input.fMRI && input.run == 1 && strcmp(input.responder,'user')
     demographics(constants.subDir);
 end
 
@@ -40,7 +40,7 @@ try
     window = setupWindow(constants, input);
     
     % main experiment function
-    [data, tInfo, expParams, stairs, stim] = ...
+    [data, tInfo, expParams, stairs, stim, dimming_data] = ...
         runContrast(input, constants, window, responseHandler);
     acc = checkAccuracy(data);
     
@@ -48,7 +48,7 @@ try
     expt = input.experiment;
     subject = input.subject;
     run = input.run;
-    structureCleanup(expt, subject, run, data, constants, tInfo, expParams, stairs, stim);
+    structureCleanup(expt, subject, run, data, constants, tInfo, expParams, stairs, stim, dimming_data);
     save_BIDSevents(data, input, constants);
     
     % NOTE: correct is for both finding and refraining from pressing

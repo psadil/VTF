@@ -19,21 +19,23 @@ function [ response, rt, vbl, missed, exitFlag, tStart, phaseStart ] = ...
     %}
     
     % default return parameters
-    response = repelem({'NO RESPONSE'},expParams.nPhasePerTrial)';
-    rt = NaN([expParams.nPhasePerTrial,1]);
-    exitFlag = repelem({'OK'}, expParams.nPhasePerTrial)';
-    tStart = NaN(expParams.nPhasePerTrial,1);
-    phaseStart = NaN(expParams.nPhasePerTrial,1);
-    vbl = NaN(stim.nFlipsPerTrial-1, 1);
-    missed = NaN(stim.nFlipsPerTrial-1, 1);
+    phaseStart = NaN(expParams.maxPhasePerTrial,1);
+    response = repelem({'NO_RESPONSE'},expParams.maxPhasePerTrial)';
+    exitFlag = {'NOT_FINISHED'};
+    rt = NaN(expParams.maxPhasePerTrial,1);
+
+    tStart = NaN;
+    vbl = NaN(stim.nFlipsPerTrial, 1);
+    missed = NaN(stim.nFlipsPerTrial, 1);
         
     %% start flipping stims
     phase = 1;
     goRobo = 0;
     KbQueueCreate(constants.device, keys.resp + keys.escape);
-    for flip = 1:(stim.nFlipsPerTrial-1)
+    for flip = 1:(stim.nFlipsPerTrial)
         
         % Batch-Draw all gratings 
+        % drawn with 0 contrast
         Screen('DrawTextures', window.pointer, stim.tex, [],...
             stim.dstRects, angles, [], [], [], [], [], ...
             [phases(flip,:); repelem(stim.grating_freq_cpp, stim.n_gratings);...
@@ -44,12 +46,11 @@ function [ response, rt, vbl, missed, exitFlag, tStart, phaseStart ] = ...
         
         Screen('DrawingFinished', window.pointer);
 
-        [vbl(flip), ~, ~, missed(flip)] = ...
-            Screen('Flip', window.pointer, ...
+        [vbl(flip), ~, ~, missed(flip)] = Screen('Flip', window.pointer, ...
             vbl_expected(flip));
         
         if flip == 1
-            tStart(1:expParams.nPhasePerTrial) = vbl(flip);
+            tStart = vbl(flip);
             phaseStart(1) = vbl(flip);
 
             % open up response cue and allow response
@@ -68,10 +69,10 @@ function [ response, rt, vbl, missed, exitFlag, tStart, phaseStart ] = ...
         [keys_pressed, press_times] = ...
             responseHandler(constants.device, roboResp{phase}, goRobo);
         if ~isempty(keys_pressed)
-            [response(phase), rt(phase), exitFlag(phase)] = ...
+            [response{phase}, rt(phase), exitFlag] = ...
                 wrapper_keyProcess(keys_pressed, press_times, phaseStart(phase));
             
-            if strcmp(exitFlag{phase}, 'ESCAPE')
+            if strcmp(exitFlag, 'ESCAPE')
                 KbQueueStop(constants.device);
                 KbQueueFlush(constants.device);
                 KbQueueRelease(constants.device);

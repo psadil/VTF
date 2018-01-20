@@ -1,4 +1,4 @@
-function [ data, tInfo, expParams, stairs, stim ] = ...
+function [ data, tInfo, expParams, stairs, stim, dimming_data ] = ...
     runContrast( input, constants, window, responseHandler )
 
 %{
@@ -41,15 +41,16 @@ TODO:
 - testing?
     %}
     
-    expParams = setupExpParams(input.debugLevel, input.fMRI, input.experiment, input.TR);
+    expParams = setupExpParams(input.debugLevel, input.experiment);
     stairs = setupStaircase(input.delta_luminance_guess, expParams.nTrials);
     fb = setupFeedback();
     keys = setupKeys(input.fMRI);
     stim = setupStim(expParams, window, input);
     
-    data = setupDataTable(expParams, input, stim, input.experiment, keys);
+    data = setupDataTable(expParams, input, stim, input.experiment);
+    tInfo = setupTInfo(expParams, stim);
     
-    tInfo = setupTInfo(expParams, stim, data);
+    dimming_data = setupDataDimming(expParams, input, keys);
     
     %%
     
@@ -64,7 +65,7 @@ TODO:
     end
     
     tInfo.vbl_fromTrigger_expected = tInfo.vbl_from0_expected + triggerSent;
-
+    
     % try to flip first frame of experiment immediately
     tInfo.vbl_fromTrigger_expected(1) = tInfo.vbl_fromTrigger_expected(1) + ...
         (.5 * window.ifi);
@@ -74,79 +75,55 @@ TODO:
     
     for trial = 1:expParams.nTrials
         
-        index_data = find_index(trial, expParams.nPhasePerTrial, 0);
-        index_tInfo = find_index(trial, stim.nFlipsPerTrial-1, 1);
+        index_tInfo = find(tInfo.trial==trial);
+        index_dimming = find(dimming_data.trial==trial);
         
         switch input.experiment
             case 'contrast'
-                angles = [data.orientation_left(index_data(1)), data.orientation_right(index_data(1))];
-                contrasts = [data.contrast_left(index_data(1)), data.contrast_right(index_data(1))];
+                angles = [data.orientation_left(trial), data.orientation_right(trial)];
+                contrasts = [data.contrast_left(trial), data.contrast_right(trial)];
                 phases = [tInfo.phase_orientation_left(index_tInfo), tInfo.phase_orientation_right(index_tInfo)];
             case 'localizer'
-                angles = [data.orientation_left1(index_data(1)), data.orientation_right1(index_data(1)),...
-                    data.orientation_left2(index_data(1)), data.orientation_right2(index_data(1))];
-                contrasts = [data.contrast_left1(index_data(1)), data.contrast_right1(index_data(1)),...
-                    data.contrast_left2(index_data(1)), data.contrast_right2(index_data(1))];
+                angles = [data.orientation_left1(trial), data.orientation_right1(trial),...
+                    data.orientation_left2(trial), data.orientation_right2(trial)];
+                contrasts = [data.contrast_left1(trial), data.contrast_right1(trial),...
+                    data.contrast_left2(trial), data.contrast_right2(trial)];
                 phases = [tInfo.phase_orientation_left(index_tInfo), tInfo.phase_orientation_right(index_tInfo),...
                     Shuffle(tInfo.phase_orientation_left(index_tInfo)), Shuffle(tInfo.phase_orientation_right(index_tInfo))];
         end
         
         % get luminance differ to test on this trial
-        data.luminance_difference(index_data) = stairs.luminance_difference(trial);
+        data.luminance_difference(trial) = stairs.luminance_difference(trial);
         
         % present stimuli and get responses (main task is here)
-        [data.response_given(index_data), data.rt_given(index_data), ...
+        [dimming_data.response_given(index_dimming),...
+            dimming_data.rt_given(index_dimming), ...
             tInfo.vbl(index_tInfo), tInfo.missed(index_tInfo), ...
-            data.exitFlag(index_data), data.tStart_realized(index_data), ...
-            data.phaseStart_realized(index_data)] = ...
-            elicitContrastResp(tInfo.vbl_fromTrigger_expected(index_tInfo),...
+            data.exitFlag(trial),...
+            data.tStart_realized(trial), ...
+            dimming_data.phaseStart_realized(index_dimming)] = ...
+            elicitContrastResp(...
+            tInfo.vbl_fromTrigger_expected(index_tInfo),...
             window, responseHandler, stim, keys, expParams, ...
-            data.roboRT_expected(index_data), data.roboResponse_expected(index_data), constants,...
-            phases, angles, tInfo.dimmed(index_tInfo), ...
+            dimming_data.roboRT_expected(index_dimming),...
+            dimming_data.roboResponse_expected(index_dimming),...
+            constants, phases, angles, tInfo.dimmed(index_tInfo), ...
             [1, 1 - stairs.luminance_difference(trial)], contrasts, input.experiment);
         
-        if any(strcmp(data.exitFlag(index_data), 'ESCAPE'))
+        if any(strcmp(data.exitFlag(trial), 'ESCAPE'))
+            data = quick_clean(data, tInfo, stim);
             return
         else
-            stairs.correct(trial) = all(data.correct(index_data));
-            data.correct(index_data) = analyzeResp(data.response_given(index_data), data.answer(index_data));
+            stairs.correct(trial) = ...
+                analyzeResp(dimming_data.response_given(index_dimming), ...
+                dimming_data.answer(index_dimming));
+            
             fbwrapper(stairs.correct(trial), fb, input.fMRI);
             
-            % draw and flip regular fixation
-            drawFixation(window, stim.fixRect, stim.fixLineSize, 1, input.experiment);
-            [tInfo.vbl(index_tInfo(end)+1), ~, ~, tInfo.missed(index_tInfo(end)+1)] = ...
-                Screen('Flip', window.pointer, ...
-                tInfo.vbl(index_tInfo(end)) + ((1/stim.update_phase_sec) - 0.9) * window.ifi);
-
-            data.tEnd_realized(index_data) = tInfo.vbl(index_tInfo(end)+1);
-            % wait ITI (allowing escape response)
-            exitFlag = soakTime( keys.escape, tInfo.vbl(index_tInfo(end)+1),...
-                expParams.iti_dur_sec, responseHandler, constants );
-            if strcmp(exitFlag{1}, 'ESCAPE')
-                return
-            end
+            % to end, update staircase values
+            stairs = update_stairs(stairs, trial);
         end
-        
-        % to end, update staircase values
-        stairs = update_stairs(stairs, trial);        
     end
-    constants.endStimTime = GetSecs;
-    
-    % wait post dur
-    exitFlag = soakTime( keys.escape, tInfo.vbl(index_tInfo(end)+1), ...
-        expParams.iti_dur_sec, responseHandler, constants );
-    if strcmp(exitFlag{1}, 'ESCAPE')
-        return
-    end
-    
-end
-
-
-function data_index = find_index(trial, nEventsPerTrial, nEventsPerITI)
-
-data_index = (1+(nEventsPerTrial*(trial-1)) + (nEventsPerITI*(trial-1)) ):...
-    ((nEventsPerTrial*(trial)) + (nEventsPerITI*(trial-1)) );
-
 end
 
 function fbwrapper(correct, fb, fMRI)
@@ -183,3 +160,23 @@ end
 
 end
 
+function correct = analyzeResp( response, answer )
+
+correct = zeros([1,length(answer)]);
+for a = 1:length(answer)
+    switch answer{a}
+        case response{a}
+            correct(a) = 1;
+        otherwise
+            correct(a) = 0;
+    end
+end
+correct = all(correct);
+end
+
+function data = quick_clean(data, tInfo, stim)
+
+data.correct(trial) = stairs.correct(trial);
+data.tEnd_realized(trial) = tInfo.vbl(tInfo.flipWithinTrial==stim.nFlipsPerTrial);
+
+end

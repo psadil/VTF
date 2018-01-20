@@ -1,20 +1,46 @@
 %looking to see what jitter does to efficiency in TR's of 4s
  
+addpath /Users/jeanettemumford/Documents/Research/matlabcode/  
+%edit the above path to point towards the directory with spm_hrf in it.
+ 
+ 
+ 
+%before we get to the code, let's draw a picture.  Our goal is to have a
+%design with a stimulus followed by a response.  The stimulus will be 2s
+%long, followed by a 4s fixation and a 2s response and a 4s fixation.  Let's draw a time line
+%of our paradigm
+ 
+ 
+ 
+ 
 %How much time passes from the beginning of one stimulus to the beginning
 %of the next stimulus?
  
-%8s
+%12s
+ 
+ 
  
 %If the first stimulus is at 1s, when are the rest of the stimuli?
  
-dC = candgen(18,'linear');
-
-tType = randperm(18);
-
+% 1, 13, ... [1:12:200]
+ 
+ 
+ 
+%when would the response cue occur?
+ 
+% 7, 19  [1:12:200]+ 2 + 4 
+ 
+ 
+ 
+% How many stimuli can we fit into one 200s long run?
+ 
+% 16
+ 
+ 
 %create each trial in high resolution, convolve and then I'll downsample to
 %a TR of TR second
 %set up the hrf info
-TR = 1.5;
+TR=2;
  
 t=0:0.25:200;
 hrf_25=spm_hrf(0.25);

@@ -1,108 +1,47 @@
-function data = setupDataTable( expParams, input, stim, expt, keys )
-%setupDataTable setup data table for this participant.
+function data = setupDataTable( expParams, input, stim, expt )
+
+load('D:\git\fMRI\VTF\lib\efficiency\model1_1-18-2018.mat');
 
 data = table;
-data.subject = repelem(input.subject, expParams.nPhasesInRun)';
-data.trial = repelem(1:expParams.nTrials, expParams.nPhasePerTrial)';
-data.phase = repmat((1:expParams.nPhasePerTrial)', [expParams.nTrials,1]);
+data.subject = repelem(input.subject, expParams.nTrials)';
+data.trial = (1:expParams.nTrials)';
 
-data.tStart_expected = repelem((0:expParams.trial_total_dur: ...
-    (expParams.trial_total_dur*(expParams.nTrials-1)))', expParams.nPhasePerTrial);
-data.tEnd_expected = repelem((expParams.trial_stim_dur_sec:expParams.trial_total_dur: ...
-    (expParams.trial_total_dur*(expParams.nTrials)))', expParams.nPhasePerTrial);
+data.tStart_expected = (0:expParams.isi:expParams.scan_length_expected - expParams.isi )';
+data.tEnd_expected = (expParams.isi:expParams.isi:expParams.scan_length_expected)';
 
-data.phaseStart_expected = NaN([expParams.nPhasesInRun,1]);
-% must start first dim after at least .5 sec into trial, and (.5 + 1 + .5) before end
-% rounding for maximum flicker rate
-% shifting so that timing is with respect to start of experiment
+data.tStart_realized = NaN([expParams.nTrials,1]);
+data.tEnd_realized = NaN([expParams.nTrials,1]);
 
-% phaseTypeindicates whether dimming happens (1) or not (0) in phase
-phaseTypeBase = [repmat([0;1], [expParams.n_fix_dims,1]);0];
-data.phaseType = repmat(phaseTypeBase, [expParams.nTrials,1]);
+data.exitFlag = repmat({[]}, [expParams.nTrials,1]);
 
-data.phaseStart_expected(1:expParams.nPhasePerTrial:end) = data.tStart_expected(1:expParams.nPhasePerTrial:end);
-for phase = 2:expParams.nPhasePerTrial
-    if phaseTypeBase(phase)
-    data.phaseStart_expected(phase:expParams.nPhasePerTrial:end) = ...
-        data.phaseStart_expected((phase-1):expParams.nPhasePerTrial:end) + ...
-        round(expParams.fix_dim_interval_range_sec(1) +...
-        (expParams.fix_dim_interval_range_sec(2) - expParams.fix_dim_interval_range_sec(1))...
-        *rand(expParams.nPhasesInRun / expParams.nPhasePerTrial,1),1);        
-    else
-        data.phaseStart_expected(phase:expParams.nPhasePerTrial:end) = ...
-            data.phaseStart_expected((pahse-1):expParams.nPhasePerTrial:end) + expParams.fix_dim_dur_sec;
-    end
-end
+data.luminance_difference = NaN([expParams.nTrials,1]);
+data.correct = NaN(expParams.nTrials,1);
 
-
-data.tStart_realized = NaN([expParams.nPhasesInRun,1]);
-data.tEnd_realized = NaN([expParams.nPhasesInRun,1]);
-data.phaseStart_realized = NaN([expParams.nPhasesInRun,1]);
-
-% RT robot tries to acheive
-data.roboRT_expected = repmat(0.2,[expParams.nPhasesInRun,1]);
-
-data.exitFlag = repmat({[]}, [expParams.nPhasesInRun,1]);
-
-data.correct = NaN(expParams.nPhasesInRun,1);
-
-data.rt_given = NaN([expParams.nPhasesInRun,1]);
-data.response_given = repmat({[]}, [expParams.nPhasesInRun,1]);
-
-data.answer = repmat({[]}, [expParams.nPhasesInRun,1]);
-data.answer(data.phaseType == 0) = ...
-    repmat({'NO RESPONSE'},[expParams.nTrials*(expParams.n_fix_dims+1),1]);
-data.answer(data.phaseType == 1) = ...
-    repmat({KbName(keys.resp)}, [expParams.nTrials*expParams.n_fix_dims,1]);
-
-data.roboResponse_expected = repmat({[]}, [expParams.nPhasesInRun,1]);
-data.roboResponse_expected(data.phaseType == 0) = ...
-    repmat({'z'},[expParams.nTrials*(expParams.n_fix_dims+1),1]);
-data.roboResponse_expected(data.phaseType == 1) = ...
-    repmat({keys.robo_resp}, [expParams.nTrials*expParams.n_fix_dims,1]);
-
-data.luminance_difference = NaN([expParams.nPhasesInRun,1]);
-
+%% main experimental parameters of interest
 switch expt
     case 'contrast'
         
-        [data.orientation_left, data.contrast_left] = setupBlocking(expParams, stim);
-        [data.orientation_right, data.contrast_right] = setupBlocking(expParams, stim);
+        data.orientation_left = stim.orientations_deg(mod(M.stimlist, expParams.nOrientations) + 1)';
+        data.orientation_right = stim.orientations_deg(mod(M.stimlist, expParams.nOrientations) + 1)';
+        data.orientation_left(M.stimlist==19) = 1;
+        data.orientation_right(M.stimlist==19) = 1;
+        data.contrast_left = stim.contrast((M.stimlist > expParams.nOrientations) + 1);
+        data.contrast_right = stim.contrast((M.stimlist > expParams.nOrientations) + 1);
+        data.contrast_left(M.stimlist==19) = 0;
+        data.contrast_right(M.stimlist==19) = 0;
         
     case 'localizer'
         
-        data.orientation_left1 = repelem(stim.orientations_deg(1),expParams.nPhasesInRun)';
-        data.orientation_left2 = repelem(stim.orientations_deg(2),expParams.nPhasesInRun)';
+        data.orientation_left1 = repelem(stim.orientations_deg(1),expParams.nTrials)';
+        data.orientation_left2 = repelem(stim.orientations_deg(2),expParams.nTrials)';
         data.orientation_right1 = data.orientation_left1;
         data.orientation_right2 = data.orientation_left2;
         
-        data.contrast_left1 = ones([expParams.nPhasesInRun,1]) * stim.contrast;
-        data.contrast_right1 = ones([expParams.nPhasesInRun,1]) * stim.contrast;
-        data.contrast_left2 = ones([expParams.nPhasesInRun,1]) * stim.contrast;
-        data.contrast_right2 = ones([expParams.nPhasesInRun,1]) * stim.contrast;
+        data.contrast_left1 = ones([expParams.nTrials,1]) * stim.contrast;
+        data.contrast_right1 = ones([expParams.nTrials,1]) * stim.contrast;
+        data.contrast_left2 = ones([expParams.nTrials,1]) * stim.contrast;
+        data.contrast_right2 = ones([expParams.nTrials,1]) * stim.contrast;
         
 end
 
 end
-
-function [orientations, contrasts] = setupBlocking(expParams, stim)
-
-%{
-Construct blocking of tType for contrast experiment
-
-tType Key:
-1:expParams.nOrientations = low contrast
-1+expParams.nOrientations : (2*expParams.nOrientations) = high contrast
-%}
-
-tType = Shuffle(repmat(( 1:(expParams.nOrientations*expParams.nContrasts))',...
-    [expParams.reps, 1]) );
-
-orientations = stim.orientations_deg(mod(tType, expParams.nOrientations)+1)';
-contrasts = stim.contrast((tType > expParams.nOrientations) + 1);
-
-orientations = repelem(orientations, expParams.nPhasePerTrial);
-contrasts = repelem(contrasts, expParams.nPhasePerTrial);
-
-end
-

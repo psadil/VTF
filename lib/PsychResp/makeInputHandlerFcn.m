@@ -35,7 +35,7 @@ end
             % sort the recorded press time to find their linear position
             [~, ind] = sort(press_times(press_times~=0));
             % Arrange the keycodes according to the order they were pressed
-            keys_pressed = keys_pressed(ind);
+            keys_pressed = keys_pressed(ind);            
         else
             keys_pressed = [];
         end
@@ -116,6 +116,7 @@ end
         %         end
         
         [keys_pressed, press_times] = checkKeys(device);
+        
     end
 
 
