@@ -3,7 +3,12 @@ function y = simple_multiobjective(stim_list, n_scan,TR, n_stim_type, n_reps)
 n_stimtime_each_max = n_scan / n_stim_type;
 epoch_length = n_stimtime_each_max / n_reps;
 
-model = DconvMTX(stim_list, n_scan, n_stim_type, epoch_length, TR);
+nStims = length(stim_list);
+scan_time = TR * n_scan;
+
+onsets = generate_onsets2(nStims, epoch_length, scan_time);
+
+model = DconvMTX(stim_list, n_scan, n_stim_type, epoch_length, TR, onsets);
 
 % exclude intercept from model
 X = model(:,1:end-1);

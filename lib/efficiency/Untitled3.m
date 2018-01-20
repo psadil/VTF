@@ -22,5 +22,5 @@ intcon = 1:numberOfVariables;
 f = @(stim_list)simple_multiobjective(stim_list, n_scan,TR, n_stim_type, n_reps);
 
 % FitnessFunction = @simple_multiobjective;
-[x,fval,exitflag,output,population,scores] = ga(f, n_events,A,b,[],[],lb,ub,[],intcon,options);
+[x,fval,exitflag,output,population,scores] = ga(f, n_events*2,A,b,[],[],lb,ub,[],intcon,options);
 

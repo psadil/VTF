@@ -169,7 +169,7 @@ function [SPM] = spm_fMRI_design2(SPM,save_SPM)
 % $Id: spm_fMRI_design.m 7210 2017-11-10 16:33:17Z guillaume $
 
 
-SVNid = '$Rev: 7210 $';
+% SVNid = '$Rev: 7210 $';
 
 %-Say Hello
 %--------------------------------------------------------------------------
