@@ -1,47 +1,33 @@
-function data = setupDataTable( expParams, input, stim, expt )
+function data = setupDataTable( expParams, subject, experiment, constants )
 
-load('D:\git\fMRI\VTF\lib\efficiency\model1_1-18-2018.mat');
-
-data = table;
-data.subject = repelem(input.subject, expParams.nTrials)';
-data.trial = (1:expParams.nTrials)';
-
-data.tStart_expected = (0:expParams.isi:expParams.scan_length_expected - expParams.isi )';
-data.tEnd_expected = (expParams.isi:expParams.isi:expParams.scan_length_expected)';
-
-data.tStart_realized = NaN([expParams.nTrials,1]);
-data.tEnd_realized = NaN([expParams.nTrials,1]);
-
-data.exitFlag = repmat({[]}, [expParams.nTrials,1]);
-
-data.luminance_difference = NaN([expParams.nTrials,1]);
-data.correct = NaN(expParams.nTrials,1);
-
-%% main experimental parameters of interest
-switch expt
+switch experiment
     case 'contrast'
-        
-        data.orientation_left = stim.orientations_deg(mod(M.stimlist, expParams.nOrientations) + 1)';
-        data.orientation_right = stim.orientations_deg(mod(M.stimlist, expParams.nOrientations) + 1)';
-        data.orientation_left(M.stimlist==19) = 1;
-        data.orientation_right(M.stimlist==19) = 1;
-        data.contrast_left = stim.contrast((M.stimlist > expParams.nOrientations) + 1);
-        data.contrast_right = stim.contrast((M.stimlist > expParams.nOrientations) + 1);
-        data.contrast_left(M.stimlist==19) = 0;
-        data.contrast_right(M.stimlist==19) = 0;
+        n_trials_w_sides = expParams.nTrials*2;
+
+        data = struct2table(tdfread(constants.ga_data, 'tab'));
+        data = data(~strcmp(data.side,{'middle'}),:);
+        data.orientation = str2num(data.orientation);
+        data.contrast = str2num(data.contrast);
         
     case 'localizer'
+        n_trials_w_sides = expParams.nTrials;
         
-        data.orientation_left1 = repelem(stim.orientations_deg(1),expParams.nTrials)';
-        data.orientation_left2 = repelem(stim.orientations_deg(2),expParams.nTrials)';
-        data.orientation_right1 = data.orientation_left1;
-        data.orientation_right2 = data.orientation_left2;
-        
-        data.contrast_left1 = ones([expParams.nTrials,1]) * stim.contrast;
-        data.contrast_right1 = ones([expParams.nTrials,1]) * stim.contrast;
-        data.contrast_left2 = ones([expParams.nTrials,1]) * stim.contrast;
-        data.contrast_right2 = ones([expParams.nTrials,1]) * stim.contrast;
-        
+        data = table();
+        data.onset = (0:expParams.iti:(expParams.scan_time-expParams.epoch_length))';
+        data.duration = repelem(expParams.epoch_length, n_trials_w_sides)';
+        data.subject = repelem(subject, n_trials_w_sides)';
+        data.trial = (1:n_trials_w_sides)';
+                
 end
+
+data.tEnd_expected_from0 = data.onset + data.duration;
+
+data.tStart_realized = NaN([n_trials_w_sides,1]);
+data.tEnd_realized = NaN([n_trials_w_sides,1]);
+
+data.exitFlag = repmat({[]}, [n_trials_w_sides,1]);
+
+data.luminance_difference = NaN([n_trials_w_sides,1]);
+data.correct = NaN(n_trials_w_sides,1);
 
 end

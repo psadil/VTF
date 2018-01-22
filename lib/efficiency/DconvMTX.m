@@ -14,7 +14,7 @@ matlabbatch{1}.spm.stats.fmri_design.sess.nscan = n_scan;
 for cond = 1:n_stimtype    
     matlabbatch{1}.spm.stats.fmri_design.sess.cond(cond).name = num2str(cond);
     matlabbatch{1}.spm.stats.fmri_design.sess.cond(cond).onset = onsets(stim_list==cond);
-    matlabbatch{1}.spm.stats.fmri_design.sess.cond(cond).duration = epoch_length;
+    matlabbatch{1}.spm.stats.fmri_design.sess.cond(cond).duration = epoch_length(stim_list==cond);
     matlabbatch{1}.spm.stats.fmri_design.sess.cond(cond).tmod = 0;
     matlabbatch{1}.spm.stats.fmri_design.sess.cond(cond).pmod = struct('name', {}, 'param', {}, 'poly', {});
     matlabbatch{1}.spm.stats.fmri_design.sess.cond(cond).orth = 1;
@@ -38,13 +38,6 @@ matlabbatch{1}.spm.stats.fmri_design.global = 'None';
 matlabbatch{1}.spm.stats.fmri_design.mthresh = 0.8;
 matlabbatch{1}.spm.stats.fmri_design.cvi = 'AR(1)';
 
-
 SPM  = spm_run_fmri_spec2(matlabbatch{1}.spm.stats.fmri_design);
-% % spm_jobman('run', matlabbatch);
-% spm = spm_fmri_spm_ui(SPM, 0);
-
-% load('SPM.mat')
-% model = SPM.xX.X;
-% delete('SPM.mat')
 
 end

@@ -1,8 +1,8 @@
-function y = simple_multiobjective_wOnsets(x, n_scan, TR, n_stim_type, dim_dur, n_dim_events, epoch_length, n_stim_events)
+function y = simple_multiobjective_wOnsets(x, n_scan, TR, n_stim_type, dim_dur, dim_onsets, n_stim_events)
 
 stim_list = x(1:n_stim_events);
 onsets = x(n_stim_events+1:n_stim_events*2);
-dim_onsets = x(1+end-n_dim_events:end);
+epoch_length = x(2*n_stim_events+1:n_stim_events*3);
 
 SPM = DconvMTX(stim_list, n_scan, n_stim_type, epoch_length, TR, onsets, dim_dur, dim_onsets);
 

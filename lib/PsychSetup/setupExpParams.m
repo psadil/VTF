@@ -1,7 +1,5 @@
-function expParams = setupExpParams( debugLevel, experiment )
+function expParams = setupExpParams( debugLevel, experiment, constants )
 
-
-load('D:\git\fMRI\VTF\lib\efficiency\model1_1-18-2018.mat');
 
 %% Defaults regardless of fMRI or debug level
 expParams.screen_scale = []; % show at full screen
@@ -9,32 +7,31 @@ expParams.screen_scale = []; % show at full screen
 % duration of fixation dimming
 expParams.fix_dim_dur_sec = 0.4;
 
-% range allowed between dimming events
-expParams.fix_dim_interval_sec = 0.8;
-
 switch experiment
     case 'contrast'
         
-        % stimulus duration in seconds
-        expParams.isi = M.ga.ISI;
-                
+        expParams.scan_time = 420;
+        
+        data = struct2table(tdfread(constants.ga_data, 'tab'));
+        data = data(~strcmp(data.side,{'middle'}),:);
+                        
         % number of orientations to test
         % 2 unique orientations on each trial in each run
-        expParams.nOrientations = 9;
+        expParams.nOrientations = length(unique(data.orientation));
         
         % number of contrast levels at which to present each orientation in
         % a run
-        expParams.nContrasts = 2;
+        expParams.nContrasts = length(unique(data.contrast));
                 
-        expParams.nTrials = M.ga.scanLength / M.ga.ISI;
-        
-        % related to expParams.fix_dim_interval_sec and M.ga.ISI
-        expParams.maxPhasePerTrial = 5+ceil(expParams.isi / (expParams.fix_dim_interval_sec + expParams.fix_dim_dur_sec ) );
-        
+        expParams.nTrials = size(data,1)/2;
+                
     case 'localizer'
         
+        expParams.scan_time = 320;
+        
         % stimulus duration in seconds
-        expParams.isi = 16;
+        expParams.epoch_length = 16;
+        expParams.iti = 32;
                 
         % just horizontal and vertical
         expParams.nOrientations = 2;
@@ -42,26 +39,14 @@ switch experiment
         % number of contrast levels at which to present each orientation in
         % a run
         expParams.nContrasts = 1;
-        
-        % related to expParams.fix_dim_interval_sec and M.ga.ISI
-        expParams.maxPhasePerTrial = 10 + ceil(expParams.isi / (expParams.fix_dim_interval_sec + expParams.fix_dim_dur_sec ) );
-        
+                
         % -----------------------------------------------------------------
         % Set general parameters that change based on debug level only
-        switch debugLevel
-            case 0
-                % total number of trials
-                expParams.reps = 10;
-                
-            otherwise
-                expParams.reps = 3;
-        end
+        % total number of trials
+        expParams.reps = 10;
 
         % multiplication by
-        expParams.nTrials = expParams.reps * expParams.nOrientations * expParams.nContrasts;
+        expParams.nTrials = expParams.reps;
 end
-expParams.scan_length_expected = M.ga.scanLength;
-
-expParams.maxPhasesPerRun = expParams.maxPhasePerTrial * expParams.nTrials;
 
 end

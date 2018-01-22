@@ -52,7 +52,6 @@ stim.n_phase_orientations = 16;
 % directions presented
 stim.targOrients = linspace(0,180-(180/expParams.nOrientations), expParams.nOrientations)*pi/180;
 
-
 % enable blending (needed so that neighboring textures show proper grey
 % background)
 Screen('BlendFunction', window.pointer, GL_ONE, GL_ONE);
@@ -98,11 +97,6 @@ stim.fixRect = ...
     [[[-stim.fixSize_pix/2, stim.fixSize_pix/2];[0,0]],...
     [[0,0];[-stim.fixSize_pix/2, stim.fixSize_pix/2]]];
 
-% flip sequence
-stim.nFlipsPerSecOfTrial = ceil(1 / stim.update_phase_sec);
-
-% note that final flip is an ITI start
-stim.nFlipsPerTrial = ceil(expParams.isi * stim.nFlipsPerSecOfTrial);
 
 % flip gabor once (initial flip has setup costs) and flip again to clear
 contrast_tmp = max(stim.contrast)*0 ;

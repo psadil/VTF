@@ -15,115 +15,120 @@ Overall Flow:
     timing (or missed flips) that was actually acheived.
     
     Data Storage:
-    Data are stored at 3 different levels.
-     1) By trial/phase
-      - What orientations and contrasts were to be presented on each trial
-      - At what time should they have started
-      - How long should the trials have lasted?
-      - How long did the trials last (hopefully close to above)?
-      - How many of the dimming events did the participant notice?
-      - What was participants RT for each dimming event?
-      - During each of the 5 trial sections, did a participant notice a
-      dimming event (note that only 2 of the five phases actually included dimming)
-      - How long into each phase did each participant indicate a flip?
-      - At what point should (and did) each phase start?
-      - How long should (and did) each phase last?
-
-     2) According to BIDS (written during run end, using trial/phase data)
-      - Trial type
-      - Actual duration of trial
-     3) By flip (generated at start)
-      - When should (and did) each flip occur?
-      - What are the parameters of the stimuli that should have been
-      presented during this flip?
+    Onsets and trial durations were precalculated with genetic algorithm.
+    This includes both the main stimulation (oriented gratings of varying
+    levels of contrast) which is stored in table data, as well as
+    incidental dimming task which is stored in dimming_data table.
     
-TODO:
-- testing?
+    the table tInfo is calculated to contain by-flip stimulus information.
+    This makes it relatively easy to figure out what each frame of the
+    experiment should be doing (amd debug which ones aren't doing that).
+    
+    Note that the column contrast from data is upsampled into tInfo.
+    Upsampling enables handling of variable trial and SOA duration.
+    Specifically, each trial can then be thought of as a joint stimulus +
+    baseline, throughout which the incidental dimming task continues
+    without interuption. The flips with no gratings are accomplished by
+    setting contrast to 0 for those flips (hence upsampling contrast to
+    flip-time)
+    
     %}
     
-    expParams = setupExpParams(input.debugLevel, input.experiment);
+    expParams = setupExpParams(input.debugLevel, input.experiment, constants);
     stairs = setupStaircase(input.delta_luminance_guess, expParams.nTrials);
     fb = setupFeedback();
     keys = setupKeys(input.fMRI);
     stim = setupStim(expParams, window, input);
     
-    data = setupDataTable(expParams, input, stim, input.experiment);
-    tInfo = setupTInfo(expParams, stim);
+    data = setupDataTable(expParams, input.subject, input.experiment, constants);
+    dimming_data = setupDataDimming(expParams, keys, data, constants, input.experiment, input.responder, input.subject);
+    tInfo = setupTInfo( expParams, stim, data, dimming_data, input, constants );
     
-    dimming_data = setupDataDimming(expParams, input, keys);
     
     %%
-    
-    % show initial prompt. Timing not super critical with this one
-    showPrompt(window, ['Attend to the + in the center \n', ...
-        'When the + dims, press your index finger.'], 1);
-    
-    [triggerSent, exitFlag] = waitForStart(constants, keys, responseHandler);
-    switch exitFlag{1}
-        case 'ESCAPE'
+    switch input.responder
+        case 'setup'
             return
+        otherwise
+            % show initial prompt. Timing not super critical with this one
+            showPrompt(window, ['Attend to the + in the center \n', ...
+                'When the + dims, press your index finger.'], 1);
+            
+            [triggerSent, exitFlag] = waitForStart(constants, keys, responseHandler);
+            switch exitFlag{1}
+                case 'ESCAPE'
+                    return
+            end
+            
+            tInfo.vbl_expected_fromTrigger = tInfo.vbl_expected_from0 + triggerSent;
+            
+            slack = .5;
+            % try to flip first frame of experiment immediately
+            tInfo.vbl_expected_fromTrigger(1) = tInfo.vbl_expected_fromTrigger(1) + ...
+                (slack * window.ifi);
+            % for every other frame, flip according to stimulus hz
+            tInfo.vbl_expected_fromTrigger(2:end) = tInfo.vbl_expected_fromTrigger(1:end-1) + ...
+                ((1/stim.update_phase_sec) - slack) * window.ifi;
+            
+            trial_dim = 0;
+            for trial = 1:expParams.nTrials
+                
+                index_tInfo = find(tInfo.trial==trial);
+                index_dimming = find(dimming_data.trial_exp==trial);
+                index_data = find(data.trial == trial);
+                
+                switch input.experiment
+                    case 'contrast'
+                        angles = [tInfo.orientation_left(index_tInfo), tInfo.orientation_right(index_tInfo)];
+                        contrasts = [tInfo.contrast_left(index_tInfo), tInfo.contrast_right(index_tInfo)];
+                        phases = [tInfo.phase_orientation_left(index_tInfo), tInfo.phase_orientation_right(index_tInfo)];
+                    case 'localizer'
+                        angles = [tInfo.orientation_1(index_tInfo), tInfo.orientation_1(index_tInfo),...
+                            tInfo.orientation_2(index_tInfo), tInfo.orientation_2(index_tInfo)];
+                        contrasts = [tInfo.contrast(index_tInfo), tInfo.contrast(index_tInfo),...
+                            tInfo.contrast(index_tInfo), tInfo.contrast(index_tInfo)];
+                        phases = [tInfo.phase_orientation_left(index_tInfo), tInfo.phase_orientation_right(index_tInfo),...
+                            Shuffle(tInfo.phase_orientation_left(index_tInfo)), Shuffle(tInfo.phase_orientation_right(index_tInfo))];
+                end
+                
+                % get luminance differ to test on this trial
+                data.luminance_difference(index_data) = ...
+                    repelem(stairs.luminance_difference(trial), length(index_data))';
+                
+                % present stimuli and get responses (main task is here)
+                [dimming_data.response_given(index_dimming), ...
+                    dimming_data.rt_given(index_dimming), ...
+                    tInfo.vbl(index_tInfo), tInfo.missed(index_tInfo), ...
+                    data.exitFlag(index_data), trial_dim] = ...
+                    elicitContrastResp(...
+                    tInfo.vbl_expected_fromTrigger(index_tInfo),...
+                    window, responseHandler, stim, keys, ...
+                    dimming_data.roboRT_expected(index_dimming),...
+                    dimming_data.roboResponse_expected(index_dimming),...
+                    constants, phases, angles, tInfo.dim(index_tInfo), ...
+                    [1, 1 - stairs.luminance_difference(trial)], contrasts,...
+                    input.experiment, trial_dim);
+                
+                stairs.correct(trial) = ...
+                    analyzeResp(dimming_data.response_given(index_dimming), ...
+                    dimming_data.answer(index_dimming));
+                data.correct(index_data) = repelem(stairs.correct(trial), length(index_data))';
+                
+                if any(strcmp(data.exitFlag(index_data), 'ESCAPE'))
+                    [data, dimming_data] = ...
+                        quick_clean(data, tInfo, dimming_data, trial, trial_dim, input.experiment);
+                    return
+                else
+                    fbwrapper(stairs.correct(trial), fb, input.fMRI);
+                    
+                    % to end, update staircase values
+                    stairs = update_stairs(stairs, trial);
+                end
+            end
+            [data, dimming_data] = quick_clean(data, tInfo, dimming_data, trial, trial_dim, input.experiment);
     end
     
-    tInfo.vbl_fromTrigger_expected = tInfo.vbl_from0_expected + triggerSent;
     
-    % try to flip first frame of experiment immediately
-    tInfo.vbl_fromTrigger_expected(1) = tInfo.vbl_fromTrigger_expected(1) + ...
-        (.5 * window.ifi);
-    % for every other frame, flip according to stimulus hz
-    tInfo.vbl_fromTrigger_expected(2:end) = tInfo.vbl_fromTrigger_expected(1:end-1) + ...
-        ((1/stim.update_phase_sec) - 0.5) * window.ifi;
-    
-    for trial = 1:expParams.nTrials
-        
-        index_tInfo = find(tInfo.trial==trial);
-        index_dimming = find(dimming_data.trial==trial);
-        
-        switch input.experiment
-            case 'contrast'
-                angles = [data.orientation_left(trial), data.orientation_right(trial)];
-                contrasts = [data.contrast_left(trial), data.contrast_right(trial)];
-                phases = [tInfo.phase_orientation_left(index_tInfo), tInfo.phase_orientation_right(index_tInfo)];
-            case 'localizer'
-                angles = [data.orientation_left1(trial), data.orientation_right1(trial),...
-                    data.orientation_left2(trial), data.orientation_right2(trial)];
-                contrasts = [data.contrast_left1(trial), data.contrast_right1(trial),...
-                    data.contrast_left2(trial), data.contrast_right2(trial)];
-                phases = [tInfo.phase_orientation_left(index_tInfo), tInfo.phase_orientation_right(index_tInfo),...
-                    Shuffle(tInfo.phase_orientation_left(index_tInfo)), Shuffle(tInfo.phase_orientation_right(index_tInfo))];
-        end
-        
-        % get luminance differ to test on this trial
-        data.luminance_difference(trial) = stairs.luminance_difference(trial);
-        
-        % present stimuli and get responses (main task is here)
-        [dimming_data.response_given(index_dimming),...
-            dimming_data.rt_given(index_dimming), ...
-            tInfo.vbl(index_tInfo), tInfo.missed(index_tInfo), ...
-            data.exitFlag(trial),...
-            data.tStart_realized(trial), ...
-            dimming_data.phaseStart_realized(index_dimming)] = ...
-            elicitContrastResp(...
-            tInfo.vbl_fromTrigger_expected(index_tInfo),...
-            window, responseHandler, stim, keys, expParams, ...
-            dimming_data.roboRT_expected(index_dimming),...
-            dimming_data.roboResponse_expected(index_dimming),...
-            constants, phases, angles, tInfo.dimmed(index_tInfo), ...
-            [1, 1 - stairs.luminance_difference(trial)], contrasts, input.experiment);
-        
-        if any(strcmp(data.exitFlag(trial), 'ESCAPE'))
-            data = quick_clean(data, tInfo, stim);
-            return
-        else
-            stairs.correct(trial) = ...
-                analyzeResp(dimming_data.response_given(index_dimming), ...
-                dimming_data.answer(index_dimming));
-            
-            fbwrapper(stairs.correct(trial), fb, input.fMRI);
-            
-            % to end, update staircase values
-            stairs = update_stairs(stairs, trial);
-        end
-    end
 end
 
 function fbwrapper(correct, fb, fMRI)
@@ -174,9 +179,38 @@ end
 correct = all(correct);
 end
 
-function data = quick_clean(data, tInfo, stim)
+function [data, dimming_data] = quick_clean(data, tInfo, dimming_data, trial, trial_dim, experiment)
 
-data.correct(trial) = stairs.correct(trial);
-data.tEnd_realized(trial) = tInfo.vbl(tInfo.flipWithinTrial==stim.nFlipsPerTrial);
+
+switch experiment
+    case 'contrast'
+        for t = 1:trial
+            index_data = find(data.trial == t);
+            
+            data.tStart_realized(index_data) = ...
+                repelem(tInfo.vbl(find(tInfo.trial==t,1,'first')), length(index_data));
+            data.tEnd_realized(index_data) = ...
+                repelem(tInfo.vbl(find(tInfo.trial==t & ...
+                (tInfo.contrast_left > 0 & tInfo.contrast_right > 0 ),1,'last') + 1), length(index_data));
+        end
+        
+    case 'localizer'
+        for t = 1:trial
+            index_data = find(data.trial == t);
+            
+            data.tStart_realized(index_data) = ...
+                repelem(tInfo.vbl(find(tInfo.trial==t,1,'first')), length(index_data));
+            data.tEnd_realized(index_data) = ...
+                repelem(tInfo.vbl(find(tInfo.trial==t & tInfo.contrast > 0,1,'last') + 1), length(index_data));
+        end
+end
+
+for t = 1:trial_dim
+    
+    dimming_data.tStart_realized(dimming_data.trial==t) = ...
+        tInfo.vbl(find(tInfo.trial_dim==t,1,'first'));
+    dimming_data.tEnd_realized(dimming_data.trial==t) = ...
+        tInfo.vbl(find(tInfo.trial_dim==t,1,'last') + 1);
+end
 
 end

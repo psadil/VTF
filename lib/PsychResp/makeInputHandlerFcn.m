@@ -1,6 +1,6 @@
 function handlerFcn = makeInputHandlerFcn(handlerName)
 
-valid_types = {'user','namingRobot_good', 'simpleKeypressRobot'};
+valid_types = {'user','namingRobot_good', 'simpleKeypressRobot', 'setup'};
 assert(ismember(handlerName, valid_types),...
     ['"handlerType" argument must be one of the following: ' strjoin(valid_types,', ')])
 
@@ -15,6 +15,8 @@ if ~strcmp(handlerName, 'user')
         case 'simpleKeypressRobot'
             handlerFcn = @SimpleKeypressRobot;
             
+        case 'setup'
+            handlerFcn = @checkKeys;
         otherwise
             error(['Unknown handlerName "' handlerName '"']);
     end
