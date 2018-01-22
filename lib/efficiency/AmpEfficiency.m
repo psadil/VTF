@@ -17,8 +17,8 @@ K = SPM.xX.K.X0;
 
 % detrended and whitened design
 IPvs = eye(size(K,1)) - ...
-    ((V1 * inv(V1' * V1) * V1') * (V2 * inv(V2' * V2) * V2') * (K * inv(K' * K) * K'));
-M = (X' * V1' * V2' * IPvs * V2' * V1' * X );
+    ((V1 / (V1' * V1) * V1') * (V2 / (V2' * V2) * V2') * (K / (K' * K) * K'));
+M = (X' * V1' * V2' * IPvs * V2 * V1 * X );
 
 n_contrasts = size(C,1);
 if dFlag

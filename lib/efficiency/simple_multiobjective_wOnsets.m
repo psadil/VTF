@@ -1,28 +1,23 @@
-function y = simple_multiobjective_wOnsets(x, n_scan, TR, n_stim_type)
+function y = simple_multiobjective_wOnsets(x, n_scan, TR, n_stim_type, dim_dur, n_dim_events, epoch_length, n_stim_events)
 
-nStims = length(x)/3;
+stim_list = x(1:n_stim_events);
+onsets = x(n_stim_events+1:n_stim_events*2);
+dim_onsets = x(1+end-n_dim_events:end);
 
-stim_list = x(1:nStims);
-onsets = x(nStims+1:nStims*2);
-epoch_length = x(1+(2*nStims):end);
-
-SPM = DconvMTX(stim_list, n_scan, n_stim_type, epoch_length, TR, onsets);
+SPM = DconvMTX(stim_list, n_scan, n_stim_type, epoch_length, TR, onsets, dim_dur, dim_onsets);
 
 % generate contrast (for only magnitude, not derivatives)
-C = eye(n_stim_type*3);
+C = eye(size(SPM.xX.X, 2)-1);
 deriv1 = 2:3:size(C,1);
 deriv2 = 3:3:size(C,1);
-C([deriv1,deriv2],:) = [];
+dims = (size(C,2)-2) : size(C,2);
+C([deriv1,deriv2, dims],:) = [];
 
 dFlag = 1;
 EAmp = AmpEfficiency(SPM, C, dFlag);
 
 
 %% output
-if EAmp > 0
-    y = 1/EAmp;
-else
-    y = inf;
-end
+y = -1*EAmp;
 
 end
