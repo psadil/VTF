@@ -33,11 +33,11 @@ PsychImaging('AddTask', 'General', 'NormalizedHighresColorRange', 1);
 PsychImaging('AddTask', 'General', 'FloatingPoint32BitIfPossible');
 switch input.debugLevel
     case 1
-        Screen('Preference', 'SkipSyncTests', 1);
+        Screen('Preference', 'SkipSyncTests', 2);
         [window.pointer, window.winRect] = ...
             PsychImaging('OpenWindow', window.screenNumber, window.gray);
     case 10
-        Screen('Preference', 'SkipSyncTests', 1);
+        Screen('Preference', 'SkipSyncTests', 2);
         [window.pointer, window.winRect] = ...
             PsychImaging('OpenWindow', window.screenNumber, window.gray, [0, 0, 1920, 600]);
     case 0

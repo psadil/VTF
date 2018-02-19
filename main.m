@@ -55,8 +55,8 @@ try
             save_BIDSevents(data, input, constants, dimming_data);
             
             % NOTE: correct is for both finding and refraining from pressing
-            showPrompt(window, sprintf('You were %.0f%% correct', acc*100), 0);
-            WaitSecs(3);
+%             showPrompt(window, sprintf('You were %.0f%% correct', acc*100), 0);
+%             WaitSecs(3);
     end
     
     windowCleanup(constants);

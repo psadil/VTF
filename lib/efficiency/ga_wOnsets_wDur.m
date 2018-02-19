@@ -42,8 +42,8 @@ constraints = @(x)design_constraints(x, min_onset_diff, n_stim_events);
 PopulationSize = 300;
 
 sides = [{'left'}, {'right'}];
-for sub = 4:8
-    for run_to_save = 1:10
+for sub = 4:5
+    for run_to_save = 0:10
         side_to_save = 1;
         while side_to_save <= 2
             

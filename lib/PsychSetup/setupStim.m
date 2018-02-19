@@ -1,7 +1,9 @@
 function stim = setupStim( expParams, window, input )
 
 %{
-
+the mean optimal spatial frequencies are 1.2 cyc/-, 0.68 cyc/-, 0.46 cyc/-,
+0.40 cyc/-, and 0.18 cyc/- corresponding to eccentricities 1.7-, 4.7-, 6.3-,9-,
+and 19-
 
 %}
 
@@ -12,18 +14,21 @@ function stim = setupStim( expParams, window, input )
 stim.fixSize_deg = 1;
 stim.fixLineSize = 2;
 
-% values from Liu, Cable, Gardner, 2017
-% distance between the two gabors (so, offset from center is half this)
-stim.grating_offset_eccen_deg = 16;
+stim.strip_eccen_deg = 3;
 
 % phases to present during trials
 stim.orientations_deg = linspace(0,180-(180 / expParams.nOrientations), expParams.nOrientations);
 
-% size of circular aperture masking the image
-stim.grating_aperture_deg = 10;
+% where to place the center of each grating
+stim.grating_center_deg = [1.7,4.7,6.3,9,19];  % eccentricities that were tested
+
+% from the center of fixation, how large should each aperture be?
+stim.grating_aperture_from_fix_deg = ...
+    flip([stim.grating_center_deg(1:end-1) + diff(stim.grating_center_deg)/2, Inf]);
 
 % cpd => cycles per degree
-stim.grating_freq_cpd = .7;
+% ordered from inntermost grating to outermost grating
+stim.grating_freq_cpd = [1.2, 0.68, 0.46, 0.40, 0.18];
 
 % convert all of the visual angles into pixels. Calibrated for the monitor
 % on which the stimulus will be drawn
@@ -34,14 +39,15 @@ stim = wrapper_deg2pix(stim, window);
 % half the wanted size. Later on, the 'DrawTextures' command will simply
 % scale this patch up and down to draw individual patches of the different
 % wanted sizes
-stim.si = 2^9;
+stim.si = 2^10;
 
-% Size of support in pixels, derived from si:
+% % Size of support in pixels, derived from si:
 stim.tw = 2*stim.si+1;
 stim.th = 2*stim.si+1;
 
 % number of gabors to draw
-stim.n_gratings = 2; % 2 -> one on left and right
+stim.n_gratings_per_side = 5;
+stim.n_gratings = stim.n_gratings_per_side * 2; % 5 on each side
 
 % how often are phases of gabors updated (i.e., once every stim.update_phase_sec)
 % note that in Liu et al., this is 0.2, but the phases update
@@ -52,61 +58,76 @@ stim.n_phase_orientations = 16;
 % directions presented
 stim.targOrients = linspace(0,180-(180/expParams.nOrientations), expParams.nOrientations)*pi/180;
 
-% enable blending (needed so that neighboring textures show proper grey
-% background)
-Screen('BlendFunction', window.pointer, GL_ONE, GL_ONE);
+% stimulus parameters
+switch input.experiment
+    case 'contrast'
+        % ensure blending disabled
+        stim.sourceFactor = 'GL_ONE';
+        stim.destinationFactor = 'GL_ZERO';
+        
+        backgroundOffset = [.5, .5, .5, 1 ];
+        preContrastMultiplier = 0.5;
+        
+    case 'localizer'
+        % allow for additive blending
+        stim.sourceFactor = 'GL_ONE';
+        stim.destinationFactor = 'GL_ONE';
+        
+        backgroundOffset = [ ];
+        preContrastMultiplier = 0.5;
+        stim.strip = [window.xCenter - stim.strip_eccen_pix/2, 0,...
+            window.xCenter + stim.strip_eccen_pix/2, window.winRect(4)];
+end
 
 % % Build a procedural gabor texture for a gabor with a support of tw x th
 % pixels and ...
-backgroundOffset = []; % no offset for proper alpha
-preContrastMultiplier = 0.5;
-stim.tex = CreateProceduralSineGrating(window.pointer, stim.tw, stim.th,...
-    backgroundOffset, stim.grating_aperture_pix, preContrastMultiplier);
+stim.tex = NaN([stim.n_gratings_per_side, 1]);
+for grating = 1:stim.n_gratings_per_side
+    stim.tex(grating) = CreateProceduralSineGrating(window.pointer, stim.tw, stim.th,...
+        backgroundOffset, stim.grating_aperture_pix(grating), preContrastMultiplier);
+end
+Screen('BlendFunction', window.pointer, stim.sourceFactor, stim.destinationFactor);
 
 % stimulus parameters
 switch input.experiment
     case 'contrast'
-                
         % Liu, Cable, Gardner, 2017
         stim.contrast = [.2; .8];
-        
+        stim.reps_per_grating = 1;
+        % Make a grey texture to cover the full window
+        stim.fullWindowTex_left = NaN([stim.reps_per_grating,1]);
+        stim.fullWindowTex_right = NaN([stim.reps_per_grating,1]);
+        for bkgrd = 1:stim.reps_per_grating
+            stim.fullWindowTex_left(bkgrd) = Screen('MakeTexture', window.pointer,...
+                ones(window.winRect(4), window.winRect(3)) .* window.gray);
+            stim.fullWindowTex_right(bkgrd) = Screen('MakeTexture', window.pointer,...
+                ones(window.winRect(4), window.winRect(3)) .* window.gray);
+            Screen('BlendFunction', stim.fullWindowTex_right(bkgrd), 'GL_ONE', 'GL_ZERO');
+            Screen('BlendFunction', stim.fullWindowTex_right(bkgrd), 'GL_ONE', 'GL_ZERO');
+
+        end
+
     case 'localizer'
-        % number of gabors to draw
-        stim.n_gratings = stim.n_gratings * 2; % two on each left and right
-                
         stim.contrast = 1;
+        stim.reps_per_grating = 1;
         
+        stim.fullWindowTex_left = NaN([stim.reps_per_grating,1]);
+        stim.fullWindowTex_right = NaN([stim.reps_per_grating,1]);
 end
 
 % Preallocate array with destination rectangles:
-stim.texrect = Screen('Rect', stim.tex);
+% all gratings drawn to center of screen.
+stim.texrect = Screen('Rect', stim.tex(1));
 
-stim.dstRects = zeros(4, stim.n_gratings);
-for rect = 1:stim.n_gratings
-    if mod(rect,2)
-        offset = - stim.grating_offset_eccen_pix;
-    else
-        offset = stim.grating_offset_eccen_pix;
-    end
-    stim.dstRects(:,rect) = CenterRectOnPoint(stim.texrect, ...
-        window.xCenter + offset , window.yCenter)';
-end
+stim.dstRects = CenterRectOnPoint(stim.texrect, ...
+        window.xCenter, window.yCenter)';
+stim.srcRect_left = [0; 0; window.xCenter - stim.strip_eccen_pix/2; window.winRect(4)];
+stim.srcRect_right = [window.xCenter + stim.strip_eccen_pix/2; 0; window.winRect(3); window.winRect(4)];
 
 % cue point coordinates
 stim.fixRect = ...
     [[[-stim.fixSize_pix/2, stim.fixSize_pix/2];[0,0]],...
     [[0,0];[-stim.fixSize_pix/2, stim.fixSize_pix/2]]];
-
-
-% flip gabor once (initial flip has setup costs) and flip again to clear
-contrast_tmp = max(stim.contrast)*0 ;
-angle = [0,0,90,90];
-freq = stim.grating_freq_cpp;
-Screen('DrawTextures', window.pointer, stim.tex, [], stim.dstRects, angle(1:stim.n_gratings), [], [], [], [],...
-    [], [180, freq, contrast_tmp, 0]');
-Screen('Flip', window.pointer);
-Screen('Flip', window.pointer);
-
 
 end
 
@@ -115,12 +136,14 @@ function stim = wrapper_deg2pix(stim, window)
 stim.fixSize_pix = deg2pix(window.screen_w_cm, window.winRect(3), ...
     window.view_distance_cm, stim.fixSize_deg);
 stim.grating_aperture_pix = deg2pix( window.screen_w_cm, window.winRect(3), ...
-    window.view_distance_cm, stim.grating_aperture_deg );
+    window.view_distance_cm, stim.grating_aperture_from_fix_deg );
 stim.grating_offset_eccen_pix = deg2pix(window.screen_w_cm, window.winRect(3), ...
-    window.view_distance_cm, stim.grating_offset_eccen_deg);
+    window.view_distance_cm, stim.grating_center_deg);
+stim.strip_eccen_pix = deg2pix(window.screen_w_cm, window.winRect(3), ...
+    window.view_distance_cm, stim.strip_eccen_deg);
 
 % cycles per degree is inverted from the others
-stim.grating_freq_cpp = 1/deg2pix( window.screen_w_cm, window.winRect(3), ...
+stim.grating_freq_cpp = 1 ./ deg2pix(window.screen_w_cm, window.winRect(3), ...
     window.view_distance_cm, stim.grating_freq_cpd );
 
 end

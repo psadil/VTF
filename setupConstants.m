@@ -29,19 +29,21 @@ end
 subjectValidator = makeSubjectDataChecker(constants.savePath, input.subject, input.debugLevel);
 
 %% -------- GUI input option ----------------------------------------------------
-
-% call gui for input
-guiInput = getSubjectInfo('run', struct('title', 'Run Number', 'type', 'textinput',...
-    'validationFcn', subjectValidator),...
-    'experiment', struct('title', 'Run Type', 'type', 'dropdown',...
-    'values', {{'contrast','localizer'}}) );
-if isempty(guiInput)
-    exit_stat = 1;
-    return
-else
-    input = filterStructs(guiInput, input);
+if ~strcmp(input.responder,'setup')
+    
+    % call gui for input
+    guiInput = getSubjectInfo('run', struct('title', 'Run Number', 'type', 'textinput',...
+        'validationFcn', subjectValidator),...
+        'experiment', struct('title', 'Run Type', 'type', 'dropdown',...
+        'values', {{'contrast','localizer'}}) );
+    if isempty(guiInput)
+        exit_stat = 1;
+        return
+    else
+        input = filterStructs(guiInput, input);
+    end
+    input.run = str2double(input.run);
 end
-input.run = str2double(input.run);
 
 switch input.responder
     case 'user'
@@ -103,7 +105,7 @@ function overwriteCheck = makeSubjectDataChecker(directory, subnum, debugLevel)
                 return
             else
                 valid = true;
-                msg = 'ok'; 
+                msg = 'ok';
             end
         end
     end
