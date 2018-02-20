@@ -15,6 +15,7 @@ addParameter(ip, 'debugLevel', 0, @(x) isnumeric(x) && x >= 0);
 addParameter(ip, 'experiment', 'contrast',  @(x) sum(strcmp(x, {'contrast','localizer'}))==1);
 addParameter(ip, 'delta_luminance_guess', 0.3,  @isnumeric);
 addParameter(ip, 'TR', 1.5,  @isnumeric);
+addParameter(ip, 'scale', 1.15,  @isnumeric);
 parse(ip,varargin{:});
 input = ip.Results;
 
@@ -26,7 +27,7 @@ if exit_stat==1
 end
 
 % gather demographics for practice run
-if ~input.fMRI && input.run == 0 && strcmp(input.responder,'user') && input.debugLevel > 0
+if ~input.fMRI && input.run == 0 && strcmp(input.responder,'user') && input.debugLevel == 0
     demographics(constants.subDir);
 end
 
