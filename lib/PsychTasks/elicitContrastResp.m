@@ -1,8 +1,6 @@
 function [ response, rt, vbl, missed, exitFlag, trial_dim ] = ...
     elicitContrastResp(texes, spatial_frequency, src_rects, vbl_expected, window, responseHandler, stim, keys,...
-    roboRT, roboResp, constants, phases, angles, dim_sequence, luminance, contrasts, experiment, trial_dim )
-
-
+    roboRT, roboResp, constants, phases, angles, dim_sequence, luminance, contrasts, experiment, trial_dim, dst_rects )
 
 
 %%
@@ -25,70 +23,35 @@ accept_resp = 0;
 dim_count_in_trial = 0 ;
 KbQueueCreate(constants.device, keys.resp + keys.escape);
 for flip = 1:nFlipsInTrial
+        
+    % need to cleiar both canvases prior to drawing, given present blend
+    % function
+    [sourceFactorOld, destinationFactorOld] = Screen('BlendFunction', stim.fullWindowTex_left, 'GL_ONE', 'GL_ZERO');
+    Screen('FillRect', stim.fullWindowTex_left, window.gray);
+    Screen('BlendFunction', stim.fullWindowTex_left, sourceFactorOld, destinationFactorOld);
     
+    [sourceFactorOld, destinationFactorOld] = Screen('BlendFunction', stim.fullWindowTex_right, 'GL_ONE', 'GL_ZERO');
+    Screen('FillRect', stim.fullWindowTex_right, window.gray);
+    Screen('BlendFunction', stim.fullWindowTex_right, sourceFactorOld, destinationFactorOld);
     
+    % after clearing, draw gratings 
+    Screen('DrawTextures', stim.fullWindowTex_left, texes, [],...
+        dst_rects, angles(flip, 1:stim.n_gratings_per_side), ...
+        [], [], [], [], kPsychUseTextureMatrixForRotation, ...
+        [phases(flip, 1:stim.n_gratings_per_side); spatial_frequency;...
+        repelem(contrasts(flip,1), stim.n_gratings_per_side); zeros(1, stim.n_gratings_per_side)]);
     
-    switch experiment
-        case 'contrast'
-            
-            for grating = 1:5
-                
-                % after drawing the first grating, clear a circular,
-                % to-be-drawn-in region
-                if grating > 1
-                    Screen('FillOval', stim.fullWindowTex_left, [0.5, 0.5, 0.5, 1], ...
-                        src_rects(:,grating));
-                    Screen('FillOval', stim.fullWindowTex_right, [0.5, 0.5, 0.5, 1], ...
-                        src_rects(:,grating));
-                end
-                
-                Screen('DrawTextures', stim.fullWindowTex_left, texes(grating), [],...
-                    stim.dstRects, angles(flip, 1),...
-                    [], [], [], [], kPsychUseTextureMatrixForRotation, ...
-                    [phases(flip, grating); spatial_frequency(grating);...
-                    repelem(contrasts(flip,1), 1); zeros(1, 1)]);
-                
-                Screen('DrawTextures', stim.fullWindowTex_right, texes(grating), [],...
-                    stim.dstRects, angles(flip, 2),...
-                    [], [], [], [], kPsychUseTextureMatrixForRotation, ...
-                    [phases(flip, grating+stim.n_gratings_per_side); spatial_frequency(grating);...
-                    repelem(contrasts(flip,2), 1); zeros(1, 1)]);
-            end
-            % Batch-Draw the required parts of the mediating textures to onscreen
-            % window
-            Screen('DrawTextures', window.pointer, [stim.fullWindowTex_left; stim.fullWindowTex_right], ...
-                [stim.srcRect_left, stim.srcRect_right], [stim.srcRect_left, stim.srcRect_right]);
-            
-        case 'localizer'
-            
-            for grating = 1:5
-                
-                % after drawing the first grating, clear a circular,
-                % to-be-drawn-in region
-                if grating > 1
-                    [sourceFactorOld, destinationFactorOld] = ...
-                        Screen('Blendfunction', window.pointer, GL_ONE, GL_ZERO);
-                    
-                    Screen('FillOval', window.pointer, [0.5, 0.5, 0.5, 1], ...
-                        src_rects(:,grating));
-                    
-                    % reset to regular blending function
-                    Screen('Blendfunction', window.pointer, sourceFactorOld, destinationFactorOld, [1 1 1 1]);
-                end
-                
-                Screen('DrawTextures', window.pointer, texes(grating), [],...
-                    repmat(stim.dstRects,[1,2]), angles(flip, :), ...
-                    [], [], [], [], kPsychUseTextureMatrixForRotation, ...
-                    [squeeze(phases(flip, grating, :))'; spatial_frequency(grating,:);...
-                    contrasts(flip, :); zeros(1, 2)]);
-                
-            end
-            [sourceFactorOld, destinationFactorOld] = ...
-                Screen('Blendfunction', window.pointer, 'GL_ONE', 'GL_ZERO');
-            Screen('FillRect', window.pointer, window.gray, stim.strip);
-            Screen('Blendfunction', window.pointer, sourceFactorOld, destinationFactorOld);
-            
-    end
+    Screen('DrawTextures', stim.fullWindowTex_right, texes, [],...
+        dst_rects, angles(flip, 1+stim.n_gratings_per_side:end),...
+        [], [], [], [], kPsychUseTextureMatrixForRotation, ...
+        [phases(flip, 1+stim.n_gratings_per_side:end); spatial_frequency;...
+        repelem(contrasts(flip,2), stim.n_gratings_per_side); zeros(1, stim.n_gratings_per_side)]);
+     
+    % Only draw required parts of gratings. Note that this happens in two
+    % stage process because of how orientation rotations interact with
+    % annulus shader
+    Screen('DrawTextures', window.pointer, [stim.fullWindowTex_left; stim.fullWindowTex_right], ...
+        src_rects, src_rects);
     
     % always draw central fixation cross
     drawFixation(window, stim.fixRect, stim.fixLineSize,...
