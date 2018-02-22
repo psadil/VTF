@@ -42,7 +42,7 @@ stim = wrapper_deg2pix(stim, window);
 % half the wanted size. Later on, the 'DrawTextures' command will simply
 % scale this patch up and down to draw individual patches of the different
 % wanted sizes
-stim.si = [2^10, 2^9, 2^9, 2^8, 2^8];
+stim.si = [2^10, 2^10, 2^10, 2^9, 2^9];
 
 % % Size of support in pixels, derived from si:
 stim.tw = 2*stim.si+1;

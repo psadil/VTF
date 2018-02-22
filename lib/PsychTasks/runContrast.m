@@ -1,5 +1,5 @@
-function [ data, tInfo, expParams, stairs, stim, dimming_data ] = ...
-    runContrast( input, constants, window, responseHandler )
+function [ data, tInfo, expParams, stairs, stim, dimming_data, el ] = ...
+    runContrast( input, constants, window, responseHandler, eyetrackerFcn, fb )
 
 %{
 Main experiment
@@ -37,7 +37,7 @@ Overall Flow:
     
     expParams = setupExpParams(input.debugLevel, input.experiment, constants);
     stairs = setupStaircase(input.delta_luminance_guess, expParams.nTrials);
-    fb = setupFeedback();
+    feedbackFcn = makeFeedbackFcn(input.give_feedback);
     keys = setupKeys(input.fMRI);
     stim = setupStim(expParams, window, input);
     
@@ -45,12 +45,33 @@ Overall Flow:
     dimming_data = setupDataDimming(expParams, keys, data, constants, input.experiment, input.responder, input.subject);
     tInfo = setupTInfo( expParams, stim, data, dimming_data, input, constants );
     
-    
+    [el, exit_flag] = setupEyeTracker( input.tracker, window, constants );
+    if strcmp(exit_flag, 'ESC')
+        return;
+    end
     %%
     switch input.responder
         case 'setup'
             return
         otherwise
+            
+            
+            % Must be offline to draw to EyeLink screen
+            eyetrackerFcn('Command', 'set_idle_mode');
+            
+            % clear tracker display and draw box at center
+            eyetrackerFcn('Command', 'clear_screen 0');
+            
+%             eyetrackerFcn('ImageTransfer', stim.fixation_img);
+            
+            %%
+            eyetrackerFcn('StartRecording');
+            
+            % record a few samples before we actually start displaying
+            % otherwise you may lose sca
+            % a few msec of data
+            WaitSecs(0.1);
+            
             % show initial prompt. Timing not super critical with this one
             showPrompt(window, ['Attend to the + in the center \n', ...
                 'When the + dims, press your index finger.'], 1);
@@ -61,6 +82,9 @@ Overall Flow:
                     return
             end
             
+            % mark zero-plot time in data file
+            eyetrackerFcn('message', 'SYNCTIME');
+          
             tInfo.vbl_expected_fromTrigger = tInfo.vbl_expected_from0 + triggerSent;
             
             slack = .5;
@@ -73,6 +97,10 @@ Overall Flow:
             
             trial_dim = 0;
             for trial = 1:expParams.nTrials
+                if trial > 1
+                    eyetrackerFcn('EyelinkDoDriftCorrection', el);
+                end
+                eyetrackerFcn('Message', 'TRIALID %d', trial);
                 
                 index_tInfo = find(tInfo.trial==trial);
                 index_dimming = find(dimming_data.trial_exp==trial);
@@ -81,7 +109,7 @@ Overall Flow:
                 switch input.experiment
                     case 'contrast'
                         angles = [repmat(tInfo.orientation_left(index_tInfo), [1, stim.n_gratings_per_side]),...
-                           repmat(tInfo.orientation_right(index_tInfo), [1, stim.n_gratings_per_side])];
+                            repmat(tInfo.orientation_right(index_tInfo), [1, stim.n_gratings_per_side])];
                         contrasts = [tInfo.contrast_left(index_tInfo),...
                             tInfo.contrast_right(index_tInfo)];
                         
@@ -91,18 +119,20 @@ Overall Flow:
                             [1, stim.n_gratings_per_side]);
                         contrasts = repmat(tInfo.contrast(index_tInfo), [1, 2]);
                 end
-
+                
                 texes = repmat(stim.tex, [stim.reps_per_grating, 1]);
                 spatial_frequency = repmat(stim.grating_freq_cpp, [1, stim.reps_per_grating]);
                 phases = repmat([tInfo{index_tInfo, contains(tInfo.Properties.VariableNames, 'phase_orientation_left_')},...
                     tInfo{index_tInfo, contains(tInfo.Properties.VariableNames, 'phase_orientation_right_')}], [1, stim.reps_per_grating]);
-
+                
                 src_rects = [stim.srcRect_left, stim.srcRect_right];
-
+                
                 % get luminance differ to test on this trial
                 data.luminance_difference(index_data) = ...
                     repelem(stairs.luminance_difference(trial), length(index_data))';
                 
+                
+                %%
                 % present stimuli and get responses (main task is here)
                 [dimming_data.response_given(index_dimming), ...
                     dimming_data.rt_given(index_dimming), ...
@@ -115,7 +145,8 @@ Overall Flow:
                     dimming_data.roboResponse_expected(index_dimming),...
                     constants, phases, angles, tInfo.dim(index_tInfo), ...
                     [1, 1 - stairs.luminance_difference(trial)], contrasts,...
-                    input.experiment, trial_dim, stim.dstRects);
+                    input.experiment, trial_dim, stim.dstRects, trial, eyetrackerFcn, ...
+                    fb, feedbackFcn);
                 
                 stairs.correct(trial) = ...
                     analyzeResp(dimming_data.response_given(index_dimming), ...
@@ -127,7 +158,6 @@ Overall Flow:
                         quick_clean(data, tInfo, dimming_data, trial, trial_dim, input.experiment);
                     return
                 else
-                    fbwrapper(stairs.correct(trial), fb, input.fMRI);
                     
                     % to end, update staircase values
                     stairs = update_stairs(stairs, trial);
@@ -136,40 +166,34 @@ Overall Flow:
             [data, dimming_data] = quick_clean(data, tInfo, dimming_data, trial, trial_dim, input.experiment);
     end
     
-    
-end
-
-function fbwrapper(correct, fb, fMRI)
-
-if ~fMRI
-    if correct
-        give_feedback_tone(fb.correct_hz);
-    else
-        give_feedback_tone(fb.incorrect_hz);
-    end
-end
-
+    eyetrackerFcn('Command', 'set_idle_mode');
 end
 
 function stairs = update_stairs(stairs, trial)
+
+step_more_difficult = 1;
+step_less_difficult = 3;
+
+n_options = length(stairs.options);
 
 if stairs.correct(trial)
     % make task more difficult
     location = find(stairs.options == stairs.luminance_difference(trial));
     if location > 2
-        location = location - 2;
-    elseif location == 2 || location == 1
+        location = location - step_more_difficult;
+    elseif location <= 2
         location = 1;
     end
-    stairs.luminance_difference(trial+1) = stairs.options(location);
 else
     % make task a bit easier (but only if there's room to do so)
     location = find(stairs.options == stairs.luminance_difference(trial));
-    if location < length(stairs.options)
-        location = location + 1;
+    if (location + step_less_difficult) < n_options
+        location = location + step_less_difficult;
+    else
+        location = n_options;
     end
-    stairs.luminance_difference(trial+1) = stairs.options(location);
 end
+stairs.luminance_difference(trial+1) = stairs.options(location);
 
 end
 

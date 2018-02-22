@@ -16,9 +16,9 @@ path(path, genpath(constants.lib_dir));
 % Define the location of some directories we might want to use
 switch input.responder
     case 'user'
-        constants.savePath=fullfile(constants.root_dir,'analyses','data','beh');
+        constants.savePath = fullfile(constants.root_dir,'analyses','data','beh');
     otherwise
-        constants.savePath=fullfile(constants.root_dir,'analyses','robo');
+        constants.savePath = fullfile(constants.root_dir,'analyses','robo', 'beh');
 end
 constants.subDir = fullfile(constants.savePath, ['sub-', num2str(input.subject, '%02d')]);
 if ~exist(constants.subDir, 'dir')
@@ -67,9 +67,13 @@ end
 constants.tInfo = fullfile(constants.datatable_dir,...
     ['sub-', num2str(input.subject, '%02d'), '_task-', input.experiment,...
     '_run-', num2str(input.run, '%02d'), '_tInfo.tsv']);
+
 constants.dimming_data = fullfile(constants.datatable_dir,...
     ['sub-', num2str(input.subject, '%02d'), '_task-', input.experiment,...
     '_run-', num2str(input.run, '%02d'), '_dimming.tsv']);
+
+constants.eye_data = ['sub-', num2str(input.subject, '%02d'), '_task-', input.experiment,...
+    '_run-', num2str(input.run, '%02d'), '_recording-eye_physio.edf'];
 
 end
 

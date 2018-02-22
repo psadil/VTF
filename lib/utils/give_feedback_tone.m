@@ -1,4 +1,4 @@
-function [  ] = give_feedback_tone( frequency, varargin )
+function give_feedback_tone( frequency, varargin )
 % play single note for feedback during experiment
 
 %{
@@ -22,9 +22,6 @@ EXAMPLE CALL
   
   - Higher beep:
     give_feedback_tone(3000);
-
-  - Longer beep:
-    give_feedback_tone('frequency', 1000, 'duration', .5);
 
   - Longer beep:
     give_feedback_tone('frequency', 1000, 'duration', .5);
