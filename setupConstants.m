@@ -75,8 +75,7 @@ constants.dimming_data = fullfile(constants.datatable_dir,...
 % constants.eyelink_data_fname = ['sub-', num2str(input.subject, '%02d'), '_task-', input.experiment,...
 %     '_run-', num2str(input.run, '%02d'), '_recording-eye_physio.edf'];
 
-constants.eyelink_data_fname = ['s', num2str(input.subject, '%02d'), ...
-    'e', input.experiment, 'r', num2str(input.run), '.edf'];
+constants.eyelink_data_fname = ['scan', num2str(input.scan, '%02d'), '.edf'];
 
 end
 

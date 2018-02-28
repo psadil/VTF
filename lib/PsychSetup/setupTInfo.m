@@ -44,7 +44,8 @@ switch input.responder
                 end
                 
             case 'localizer'
-                tInfo.contrast = zeros(nFlips_total,1);
+                tInfo.contrast_left = zeros(nFlips_total,1);
+                tInfo.contrast_right = zeros(nFlips_total,1);
                 for trial = 1:expParams.nTrials
                     flipWithinTrial = 1;
                     for flip = 1:nFlips_total
@@ -54,12 +55,23 @@ switch input.responder
                             tInfo.trial(flip) = trial;
                             tInfo.flipWithinTrial(flip) = flipWithinTrial;
                             flipWithinTrial = flipWithinTrial + 1;
-                        end
-                        if (tInfo.vbl_expected_from0(flip) >= data.onset(data.trial==trial)) && ...
-                                (tInfo.vbl_expected_from0(flip) < data.tEnd_expected_from0(data.trial==(trial)))
                             
-                            tInfo.contrast(flip) = stim.contrast;
+                            % to minimize the tunnel effect and intensity
+                            % of the stimulus (for participant), only half
+                            % of screen is active at once
+                            switch data.trial_type{trial}
+                                case 'checkerboard_left'
+                                    tInfo.contrast_left(flip) = stim.contrast;
+                                    tInfo.contrast_right(flip) = 0;
+                                case 'checkerboard_right'
+                                    tInfo.contrast_left(flip) = 0;
+                                    tInfo.contrast_right(flip) = stim.contrast;
+                            end
+                            
                         end
+%                         if (tInfo.vbl_expected_from0(flip) >= data.onset(data.trial==trial)) && ...
+%                                 (tInfo.vbl_expected_from0(flip) < data.tEnd_expected_from0(data.trial==(trial)))
+%                         end
                     end
                 end
                 tInfo.orientation_1 = repelem(stim.orientations_deg(1), nFlips_total)';
@@ -94,10 +106,12 @@ switch input.responder
         % each flip of the stimulus has a random new phase (repeats are allowed)
         tInfo.phase_orientation_left = ...
             reshape(randsample(linspace(0, 360 - (360/stim.n_phase_orientations), stim.n_phase_orientations), ...
-            nFlips_total*stim.n_gratings_per_side, true), nFlips_total, stim.n_gratings_per_side);
+            nFlips_total*stim.n_gratings_per_side/stim.reps_per_grating, true),...
+            nFlips_total, stim.n_gratings_per_side/stim.reps_per_grating);
         tInfo.phase_orientation_right = ...
             reshape(randsample(linspace(0, 360 - (360/stim.n_phase_orientations), stim.n_phase_orientations), ...
-            nFlips_total*stim.n_gratings_per_side, true), nFlips_total, stim.n_gratings_per_side);
+            nFlips_total*stim.n_gratings_per_side/stim.reps_per_grating, true),...
+            nFlips_total, stim.n_gratings_per_side/stim.reps_per_grating);
         
         % each grating should only change orientations on every other flip
         tInfo.phase_orientation_left(2:2:end) = ...

@@ -31,7 +31,7 @@ switch experiment
         
         % stimulus duration in seconds
         expParams.epoch_length = 16;
-        expParams.iti = 32;
+        expParams.iti = 16;
                 
         % just horizontal and vertical
         expParams.nOrientations = 2;
@@ -41,9 +41,8 @@ switch experiment
         expParams.nContrasts = 1;
                 
         % -----------------------------------------------------------------
-        % Set general parameters that change based on debug level only
         % total number of trials
-        expParams.reps = 10;
+        expParams.reps = 20;
 
         % multiplication by
         expParams.nTrials = expParams.reps;

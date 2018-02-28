@@ -27,7 +27,8 @@ switch input.experiment
         
     case 'localizer'
         events_main = data(:, {'onset_realized','duration_realized','trial','subject'});
-        events_main.trial_type = repelem({'checkerboard'}, size(events_main,1))';
+%         events_main.trial_type = repelem({'checkerboard'}, size(events_main,1))';
+        events_main.trial_type = data.trial_type;
         
         events_dim.trial_type = repelem({'dim'}, size(events_dim,1))';
         

@@ -131,7 +131,7 @@ Overall Flow:
                         angles = repmat([tInfo.orientation_1(index_tInfo), ...
                             tInfo.orientation_2(index_tInfo)], ...
                             [1, stim.n_gratings_per_side]);
-                        contrasts = repmat(tInfo.contrast(index_tInfo), [1, 2]);
+%                         contrasts = repmat(tInfo.contrast(index_tInfo), [1, 2]);
                         
 %                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'contrast_left', tInfo.contrast(index_tInfo(1)));
 %                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'contrast_right', tInfo.contrast(index_tInfo(2)));
@@ -143,7 +143,9 @@ Overall Flow:
                 spatial_frequency = repmat(stim.grating_freq_cpp, [1, stim.reps_per_grating]);
                 phases = repmat([tInfo{index_tInfo, contains(tInfo.Properties.VariableNames, 'phase_orientation_left_')},...
                     tInfo{index_tInfo, contains(tInfo.Properties.VariableNames, 'phase_orientation_right_')}], [1, stim.reps_per_grating]);
-                
+                contrasts = [tInfo.contrast_left(index_tInfo),...
+                    tInfo.contrast_right(index_tInfo)];
+
                 src_rects = [stim.srcRect_left, stim.srcRect_right];
                 
                 % get luminance differ to test on this trial
@@ -232,28 +234,11 @@ end
 
 function [data, dimming_data] = quick_clean(data, tInfo, dimming_data, trial, trial_dim, experiment)
 
-
-switch experiment
-    case 'contrast'
-        for t = 1:trial
-            index_data = find(data.trial == t);
-            
-            data.tStart_realized(index_data) = ...
-                repelem(tInfo.vbl(find(tInfo.trial==t,1,'first')), length(index_data));
-            data.tEnd_realized(index_data) = ...
-                repelem(tInfo.vbl(find(tInfo.trial==t & ...
-                (tInfo.contrast_left > 0 & tInfo.contrast_right > 0 ),1,'last') + 1), length(index_data));
-        end
-        
-    case 'localizer'
-        for t = 1:trial
-            index_data = find(data.trial == t);
-            
-            data.tStart_realized(index_data) = ...
-                repelem(tInfo.vbl(find(tInfo.trial==t,1,'first')), length(index_data));
-            data.tEnd_realized(index_data) = ...
-                repelem(tInfo.vbl(find(tInfo.trial==t & tInfo.contrast > 0,1,'last') + 1), length(index_data));
-        end
+for t = 1:trial
+    index_data = find(data.trial == t);
+    
+    data.tStart_realized(index_data) = ...
+        repelem(tInfo.vbl(find(tInfo.trial==t,1,'first')), length(index_data));
 end
 
 for t = 1:trial_dim
