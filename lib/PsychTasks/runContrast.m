@@ -59,13 +59,20 @@ Overall Flow:
             % Must be offline to draw to EyeLink screen
             eyetrackerFcn('Command', 'set_idle_mode');
             
-            % clear tracker display and draw box at center
+            % clear tracker display and draw background img to host pc
             eyetrackerFcn('Command', 'clear_screen 0');
             
-%             eyetrackerFcn('ImageTransfer', stim.fixation_img);
+            % image file should be 24bit or 32bit bitmap
+            % parameters of ImageTransfer:
+            % imagePath, xPosition, yPosition, width, height, trackerXPosition, trackerYPosition, xferoptions
+            % VERY SLOW. Should only be done when not recording
+            eyetrackerFcn('ImageTransfer', stim.background_img_filename);
             
             %%
             eyetrackerFcn('StartRecording');
+            
+            % get eye that's tracked
+%             expParams.eye_used = eyetrackerFcn('EyeAvailable');
             
             % record a few samples before we actually start displaying
             % otherwise you may lose sca
@@ -98,13 +105,16 @@ Overall Flow:
             trial_dim = 0;
             for trial = 1:expParams.nTrials
                 if trial > 1
-                    eyetrackerFcn('EyelinkDoDriftCorrection', el);
+%                     eyetrackerFcn('EyelinkDoDriftCorrection', el);
+%                     eyetrackerFcn('Message', '!V IMGLOAD FILL', stim.background_img_filename);
                 end
-                eyetrackerFcn('Message', 'TRIALID %d', trial);
                 
                 index_tInfo = find(tInfo.trial==trial);
                 index_dimming = find(dimming_data.trial_exp==trial);
                 index_data = find(data.trial == trial);
+                
+                eyetrackerFcn('Message', 'TRIALID %d', trial);
+                eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'trial', trial);
                 
                 switch input.experiment
                     case 'contrast'
@@ -113,11 +123,20 @@ Overall Flow:
                         contrasts = [tInfo.contrast_left(index_tInfo),...
                             tInfo.contrast_right(index_tInfo)];
                         
+%                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'contrast_left', tInfo.contrast_left(index_tInfo(1)));
+%                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'contrast_right', tInfo.contrast_right(index_tInfo(2)));
+%                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'orientation_left', tInfo.orientation_right(index_tInfo(1)));
+%                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'orientation_right', tInfo.orientation_right(index_tInfo(2)));
                     case 'localizer'
                         angles = repmat([tInfo.orientation_1(index_tInfo), ...
                             tInfo.orientation_2(index_tInfo)], ...
                             [1, stim.n_gratings_per_side]);
                         contrasts = repmat(tInfo.contrast(index_tInfo), [1, 2]);
+                        
+%                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'contrast_left', tInfo.contrast(index_tInfo(1)));
+%                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'contrast_right', tInfo.contrast(index_tInfo(2)));
+%                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'orientation_left', tInfo.orientation_1(index_tInfo(1)));
+%                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'orientation_right', tInfo.orientation_1(index_tInfo(2)));
                 end
                 
                 texes = repmat(stim.tex, [stim.reps_per_grating, 1]);

@@ -21,8 +21,8 @@ switch tracker
         end
         
         %Reduce FOV
-        Eyelink('command','calibration_area_proportion = 0.75 0.75');
-        Eyelink('command','validation_area_proportion = 0.73 0.73');
+        Eyelink('command','calibration_area_proportion = 0.5 0.5');
+        Eyelink('command','validation_area_proportion = 0.48 0.48');
         
         % open file to record data to
         i = Eyelink('Openfile', constants.eyelink_data_fname);
@@ -36,10 +36,10 @@ switch tracker
         
         % Setting the proper recording resolution, proper calibration type,
         % as well as the data file content;
-        Eyelink('command','screen_pixel_coords = %ld %ld %ld %ld', 0, 0, window.winRect(3) - 1, window.winRect(4) - 1);
-        Eyelink('message', 'DISPLAY_COORDS %ld %ld %ld %ld', 0, 0, window.winRect(3) - 1, window.winRect(4) - 1);
+        Eyelink('command','screen_pixel_coords = %ld %ld %ld %ld', 0, 0, window.winRect(3)-1, window.winRect(4)-1);
+        Eyelink('message', 'DISPLAY_COORDS %ld %ld %ld %ld', 0, 0, window.winRect(3)-1, window.winRect(4)-1);
         % set calibration type.
-        Eyelink('command', 'calibration_type = HV9');
+        Eyelink('command', 'calibration_type = HV5');
         
         % set EDF file contents using the file_sample_data and
         % file-event_filter commands
@@ -58,8 +58,15 @@ switch tracker
             return;
         end
         
+        %% possible changes from EyelinkPictureCustomCalibration
+        
+        % set sample rate in camera setup screen
+        Eyelink('command', 'sample_rate = %d', 1000);
+        
+        
         %%
         EyelinkDoTrackerSetup(el);
+        
         
     case 'none'
         el = [];

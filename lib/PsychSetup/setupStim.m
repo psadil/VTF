@@ -72,7 +72,7 @@ stim.backgroundOffset = [];
 stim.preContrastMultiplier = 0.5;
 
 % smoothing method: cosine (0) or smoothstep (1)
-stim.smooth_method = 0;
+stim.smooth_method = 1;
 
 stim.sigma_pix_inner = input.sigma_scale * deg2pix(window.screen_w_cm, window.winRect(3), ...
     window.view_distance_cm, stim.grating_freq_cpd);
@@ -131,20 +131,22 @@ stim.n_gratings_per_side = stim.n_gratings_per_side * stim.reps_per_grating;
 stim.n_gratings = stim.n_gratings_per_side * 2;
 stim.dstRects = repmat(stim.dstRects, [1, stim.reps_per_grating]);
 
+stim.background_img_filename = 'background.bmp';
+
 %% initial flip to load + compile before it matters
-contrast = 0;
+contrast = 1;
 
 n_stims = length(stim.tex);
 Screen('DrawTextures', stim.fullWindowTex_left, stim.tex, [],...
     stim.dstRects(:,1:n_stims), 0, ...
     [], [], [], [], kPsychUseTextureMatrixForRotation, ...
-    [repelem(0, n_stims); stim.grating_freq_cpp;...
+    [ones(1,n_stims)*contrast; stim.grating_freq_cpp;...
     ones(1, n_stims)*contrast; zeros(1, n_stims)]);
 
 Screen('DrawTextures', stim.fullWindowTex_right, stim.tex, [],...
     stim.dstRects(:,1:n_stims), 90, ...
     [], [], [], [], kPsychUseTextureMatrixForRotation, ...
-    [repelem(0, n_stims); stim.grating_freq_cpp;...
+    [ones(1,n_stims)*contrast; stim.grating_freq_cpp;...
     ones(1, n_stims)*contrast; zeros(1, n_stims)]);
 
 % Batch-Draw the required parts of the mediating textures to onscreen
@@ -152,10 +154,15 @@ Screen('DrawTextures', stim.fullWindowTex_right, stim.tex, [],...
 Screen('DrawTextures', window.pointer, [stim.fullWindowTex_left, stim.fullWindowTex_right], ...
     [stim.srcRect_left, stim.srcRect_right], [stim.srcRect_left, stim.srcRect_right]);
 
+% always draw central fixation cross
+drawFixation(window, stim.fixRect, stim.fixLineSize,...
+    1*contrast, input.experiment);
+
 Screen('DrawingFinished', window.pointer);
 Screen('Flip', window.pointer);
 
 % imageArray = Screen('GetImage', window.pointer);
+% imwrite(imageArray, stim.background_img_filename);
 
 end
 

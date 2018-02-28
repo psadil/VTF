@@ -26,11 +26,14 @@ end
             case 'ImageTransfer'
                 %transfer image to host
                 transferimginfo = imfinfo(varargin{2});
+                [width, height] = Screen('WindowSize', 0);
                 
                 % image file should be 24bit or 32bit b5itmap
                 % parameters of ImageTransfer:
                 % imagePath, xPosition, yPosition, width, height, trackerXPosition, trackerYPosition, xferoptions
-                transferStatus =  Eyelink('ImageTransfer', transferimginfo.Filename,[],[],[],[],[],[],16);
+                transferStatus =  Eyelink('ImageTransfer',transferimginfo.Filename,...
+                    0, 0, transferimginfo.Width, transferimginfo.Height, ...
+                    width/2-transferimginfo.Width/2 ,height/2-transferimginfo.Height/2, 1);
                 if transferStatus ~= 0
                     fprintf('*****Image transfer Failed*****-------\n');
                 end
@@ -52,6 +55,8 @@ end
                 Eyelink('CloseFile');
             case 'ReceiveFile'
                 Eyelink('ReceiveFile');
+            case 'EyeAvailable'
+                status = Eyelink('EyeAvailable');
         end
         
     end

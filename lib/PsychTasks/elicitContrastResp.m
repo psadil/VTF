@@ -66,8 +66,8 @@ for flip = 1:nFlipsInTrial
         vbl_expected(flip));
     
     if flip == 1
-        eyetrackerFcn('Message','Trial_Onset', 'trial', trial);
-        eyetrackerFcn('Message', '!V IMGLOAD FILL %s', [int2str(trial),'.jpg']);
+        eyetrackerFcn('Message','Trial_onset');
+%         eyetrackerFcn('Message', '!V IMGLOAD FILL %s', [int2str(trial),'.jpg']);
         % handle special case where trial starts in sync with new dimming
         % event
         if all(dim_sequence(1:4))
@@ -132,8 +132,6 @@ KbQueueRelease(constants.device);
 
 trial_dim = dim_count_in_trial + trial_dim;
 
-
-eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'trial', trial);
 
 % Sending a 'TRIAL_RESULT' message to mark the end of a trial in
 % Data Viewer. This is different than the end of recording message

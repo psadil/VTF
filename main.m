@@ -1,7 +1,6 @@
 function  main(varargin)
 
 % warning from inputemu
-warning('off', 'MATLAB:nargchk:deprecated');
 
 %% collect input
 % use the inputParser class to deal with arguments
@@ -15,10 +14,10 @@ addParameter(ip, 'debugLevel', 0, @(x) isnumeric(x) && x >= 0);
 addParameter(ip, 'experiment', 'contrast',  @(x) sum(strcmp(x, {'contrast','localizer'}))==1);
 addParameter(ip, 'delta_luminance_guess', 0.3,  @isnumeric);
 addParameter(ip, 'TR', 1.5,  @isnumeric);
-addParameter(ip, 'sigma_scale', 1, @isnumeric); % by how much to scale sigma value
+addParameter(ip, 'sigma_scale', 1.5, @isnumeric); % by how much to scale sigma value
 addParameter(ip, 'tracker', 'none', @(x) sum(strcmp(x, {'T60', 'none'}))==1);
 addParameter(ip, 'dummymode', false, @(x) @islogical);
-addParameter(ip, 'give_feedback', true, @islogical);
+addParameter(ip, 'give_feedback', false, @islogical);
 parse(ip,varargin{:});
 input = ip.Results;
 
@@ -29,15 +28,16 @@ input = ip.Results;
 eyetrackerFcn = makeEyelinkFcn(input.tracker);
 fb = setupFeedback();
 
+
 if exit_stat==1
     windowCleanup(constants, eyetrackerFcn, fb);
     return
 end
 
 % gather demographics for practice run
-if ~input.fMRI && input.run == 0 && strcmp(input.responder,'user') && input.debugLevel == 0
-    demographics(constants.subDir);
-end
+% if ~input.fMRI && input.run == 0 && strcmp(input.responder,'user') && input.debugLevel == 0
+%     demographics(constants.subDir);
+% end
 
 %% run main experiment
 % try to fail gracefully (meaning automatically restore keyboard)
@@ -56,7 +56,7 @@ try
     % save data
     switch input.responder
         case {'user', 'simpleKeypressRobot'}
-            acc = checkAccuracy(data);
+%             acc = checkAccuracy(data);
             expt = input.experiment;
             subject = input.subject;
             run = input.run;
@@ -68,8 +68,22 @@ try
 %             WaitSecs(3);
     end
     
-    fprintf('Receiving data file ''%s''\n', constants.eye_data );
-    eyetrackerFcn('ReceiveFile',[],[],constants.savePath);
+    
+    %  the Eyelink('ReceiveFile') function does not wait for the file 
+    % transfer to complete so you must have the entire try loop 
+    % surrounding the function to ensure complete transfer of the EDF.
+    try
+        fprintf('Receiving data file ''%s''\n',  constants.eyelink_data_fname );
+        status = eyetrackerFcn('ReceiveFile',[],[], constants.savePath);
+        if status > 0
+            fprintf('ReceiveFile status %d\n', status);
+        end
+        if 2==exist(edfFile, 'file')
+            fprintf('Data file ''%s'' can be found in ''%s''\n',  constants.eyelink_data_fname, pwd );
+        end
+    catch
+        fprintf('Problem receiving data file ''%s''\n',  constants.eyelink_data_fname );
+    end
     
     windowCleanup(constants, eyetrackerFcn, fb);
     
