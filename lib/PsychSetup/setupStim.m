@@ -134,7 +134,7 @@ stim.dstRects = repmat(stim.dstRects, [1, stim.reps_per_grating]);
 stim.background_img_filename = 'background.bmp';
 
 %% initial flip to load + compile before it matters
-contrast = 1;
+contrast = 0;
 
 n_stims = length(stim.tex);
 Screen('DrawTextures', stim.fullWindowTex_left, stim.tex, [],...

@@ -120,8 +120,8 @@ Overall Flow:
                     case 'contrast'
                         angles = [repmat(tInfo.orientation_left(index_tInfo), [1, stim.n_gratings_per_side]),...
                             repmat(tInfo.orientation_right(index_tInfo), [1, stim.n_gratings_per_side])];
-                        contrasts = [tInfo.contrast_left(index_tInfo),...
-                            tInfo.contrast_right(index_tInfo)];
+%                         contrasts = [tInfo.contrast_left(index_tInfo),...
+%                             tInfo.contrast_right(index_tInfo)];
                         
 %                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'contrast_left', tInfo.contrast_left(index_tInfo(1)));
 %                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'contrast_right', tInfo.contrast_right(index_tInfo(2)));
@@ -239,6 +239,8 @@ for t = 1:trial
     
     data.tStart_realized(index_data) = ...
         repelem(tInfo.vbl(find(tInfo.trial==t,1,'first')), length(index_data));
+    data.tEnd_realized(index_data) = ...
+        repelem(tInfo.vbl(find(tInfo.trial==t,1,'last')), length(index_data));
 end
 
 for t = 1:trial_dim
@@ -246,7 +248,7 @@ for t = 1:trial_dim
     dimming_data.tStart_realized(dimming_data.trial==t) = ...
         tInfo.vbl(find(tInfo.trial_dim==t,1,'first'));
     dimming_data.tEnd_realized(dimming_data.trial==t) = ...
-        tInfo.vbl(find(tInfo.trial_dim==t,1,'last') + 1);
+        tInfo.vbl(find(tInfo.trial_dim==t,1,'last'));
 end
 
 end

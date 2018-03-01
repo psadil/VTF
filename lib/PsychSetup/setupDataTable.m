@@ -6,8 +6,8 @@ switch experiment
 
         data = struct2table(tdfread(constants.ga_data, 'tab'));
         data = data(~strcmp(data.side,{'middle'}),:);
-        data.orientation = str2double(data.orientation);
-        data.contrast = str2double(data.contrast);
+        data.orientation = str2num(data.orientation); %#ok<ST2NM>
+        data.contrast = str2num(data.contrast); %#ok<ST2NM>
         
     case 'localizer'
         n_trials_w_sides = expParams.nTrials;

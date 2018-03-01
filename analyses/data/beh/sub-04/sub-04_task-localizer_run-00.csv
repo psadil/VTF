@@ -1,10 +1,10 @@
 onset,duration,subject,trial,trial_type,tEnd_expected_from0,tStart_realized,tEnd_realized,exitFlag,luminance_difference,correct
-0,16,4,1,checkerboard_right,16,402281.876521401,NaN,EMPTY,0.3,0
-16,16,4,2,checkerboard_left,32,402297.817048666,NaN,EMPTY,0.45,0
-32,16,4,3,checkerboard_right,48,402313.827126845,NaN,EMPTY,0.6,0
-48,16,4,4,checkerboard_left,64,402329.829316431,NaN,EMPTY,0.6,0
-64,16,4,5,checkerboard_right,80,402345.823801791,NaN,EMPTY,0.6,0
-80,16,4,6,checkerboard_left,96,402361.829377633,NaN,ESCAPE,0.6,0
+0,16,4,1,checkerboard_right,16,522923.630597415,NaN,OK,0.3,0
+16,16,4,2,checkerboard_left,32,522939.606697473,NaN,OK,0.45,1
+32,16,4,3,checkerboard_right,48,522955.562290687,NaN,ESCAPE,0.4,0
+48,16,4,4,checkerboard_left,64,NaN,NaN,,NaN,NaN
+64,16,4,5,checkerboard_right,80,NaN,NaN,,NaN,NaN
+80,16,4,6,checkerboard_left,96,NaN,NaN,,NaN,NaN
 96,16,4,7,checkerboard_right,112,NaN,NaN,,NaN,NaN
 112,16,4,8,checkerboard_left,128,NaN,NaN,,NaN,NaN
 128,16,4,9,checkerboard_right,144,NaN,NaN,,NaN,NaN
