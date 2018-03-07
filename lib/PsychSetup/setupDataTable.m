@@ -24,6 +24,8 @@ switch experiment
         end
 end
 
+data.trial_start_fromTrigger = NaN([n_trials_w_sides,1]);
+
 data.tEnd_expected_from0 = data.onset + data.duration;
 
 data.tStart_realized = NaN([n_trials_w_sides,1]);

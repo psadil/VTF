@@ -1,7 +1,7 @@
 onset,duration,subject,trial,trial_type,tEnd_expected_from0,tStart_realized,tEnd_realized,exitFlag,luminance_difference,correct
-0,16,4,1,checkerboard_right,16,522923.630597415,NaN,OK,0.3,0
-16,16,4,2,checkerboard_left,32,522939.606697473,NaN,OK,0.45,1
-32,16,4,3,checkerboard_right,48,522955.562290687,NaN,ESCAPE,0.4,0
+0,16,4,1,checkerboard_right,16,525546.552470621,NaN,ESCAPE,0.3,0
+16,16,4,2,checkerboard_left,32,NaN,NaN,,NaN,NaN
+32,16,4,3,checkerboard_right,48,NaN,NaN,,NaN,NaN
 48,16,4,4,checkerboard_left,64,NaN,NaN,,NaN,NaN
 64,16,4,5,checkerboard_right,80,NaN,NaN,,NaN,NaN
 80,16,4,6,checkerboard_left,96,NaN,NaN,,NaN,NaN

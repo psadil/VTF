@@ -84,6 +84,7 @@ Overall Flow:
                 'When the + dims, press your index finger.'], 1);
             
             [triggerSent, exitFlag] = waitForStart(constants, keys, responseHandler);
+            Screen('Flip', window.pointer);
             switch exitFlag{1}
                 case 'ESCAPE'
                     return
@@ -92,6 +93,10 @@ Overall Flow:
             % mark zero-plot time in data file
             eyetrackerFcn('message', 'SYNCTIME');
           
+            % figure out when the first flip in each trial should happen
+            data.trial_start_fromTrigger = data.onset + triggerSent;
+
+            % when are the flips expected to finish?
             tInfo.vbl_expected_fromTrigger = tInfo.vbl_expected_from0 + triggerSent;
             
             slack = .5;
@@ -160,7 +165,7 @@ Overall Flow:
                     tInfo.vbl(index_tInfo), tInfo.missed(index_tInfo), ...
                     data.exitFlag(index_data), trial_dim] = ...
                     elicitContrastResp(...
-                    texes, spatial_frequency, src_rects, tInfo.vbl_expected_fromTrigger(index_tInfo),...
+                    texes, spatial_frequency, src_rects, data.trial_start_fromTrigger(index_data(1)),...
                     window, responseHandler, stim, keys, ...
                     dimming_data.roboRT_expected(index_dimming),...
                     dimming_data.roboResponse_expected(index_dimming),...

@@ -1,13 +1,12 @@
 function  main(varargin)
 
-% warning from inputemu
 
 %% collect input
 % use the inputParser class to deal with arguments
 ip = inputParser;
 addParameter(ip, 'subject', 1, @isnumeric);
 addParameter(ip, 'responder', 'user', @(x) sum(strcmp(x, {'user','simpleKeypressRobot','setup'}))==1);
-addParameter(ip, 'refreshRate', 100, @(x) x == 100 | x == 60);
+addParameter(ip, 'refreshRate', 60, @(x) x == 120 | x == 60);
 addParameter(ip, 'run', 0, @isnumeric);
 addParameter(ip, 'fMRI', true, @islogical);
 addParameter(ip, 'debugLevel', 0, @(x) isnumeric(x) && x >= 0);
@@ -17,7 +16,7 @@ addParameter(ip, 'TR', 1,  @isnumeric);
 addParameter(ip, 'sigma_scale', 1.5, @isnumeric); % by how much to scale sigma value
 addParameter(ip, 'tracker', 'none', @(x) sum(strcmp(x, {'T60', 'none'}))==1);
 addParameter(ip, 'dummymode', false, @(x) @islogical);
-addParameter(ip, 'give_feedback', true, @islogical);
+addParameter(ip, 'give_feedback', false, @islogical);
 addParameter(ip, 'scan', false, @isnumeric); % used to id eyetracking data
 parse(ip,varargin{:});
 input = ip.Results;

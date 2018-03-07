@@ -158,6 +158,9 @@ Screen('DrawTextures', window.pointer, [stim.fullWindowTex_left, stim.fullWindow
 drawFixation(window, stim.fixRect, stim.fixLineSize,...
     1*contrast, input.experiment);
 
+% show initial prompt. Timing not super critical with this one
+% showPrompt(window, 'Initializing...', false);
+
 Screen('DrawingFinished', window.pointer);
 Screen('Flip', window.pointer);
 

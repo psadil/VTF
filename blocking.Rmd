@@ -1,0 +1,216 @@
+---
+title: "Untitled"
+author: "pss"
+date: "February 19, 2018"
+output: html_document
+params:
+  save: 1
+  n_lists: 8 # first one used for practice
+  n_objects_per_list: 17
+  n_unit: 15 
+  max_study_dur_sec: 20.0
+  max_noise_dur_sec: 10.0
+  max_name_dur_sec: 30.0
+  cue_dur_sec: 4.0
+  hz: 10
+  max_alpha: 0.6
+  max_jitter_sec: 1
+  ramp_dur_sec: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(magrittr)
+
+n_object <- params$n_lists * params$n_objects_per_list
+n_participant_per_unit <- 17
+n_participant <-params$n_unit * n_participant_per_unit
+
+ramp_dur_flips <- params$ramp_dur_sec * params$hz + 1
+max_jitter_flips <- params$max_jitter_sec*params$hz + 1
+
+# extra flip at start and end of trial
+max_study_flips <- params$max_study_dur_sec * params$hz + 2
+max_noise_flips <- params$max_noise_dur_sec * params$hz + 2
+
+objects_to_exclude <-c(5,9,10,12,17,21,22,24,27,35,38,36,41,42,46,48,49,51,54,55,
+                       63,65,67,70,75,77,82,83,84,87,91,92,93,94,101,106,105,108,109,114, 
+                       116,120,127,130,132,134,136,138,142,148,149,152,158,160,164,168,169,
+                       171,173,175,178,180,182,190,
+                       1,104);
+
+
+object_names <-  readr::read_csv('objectNames_2AFC.csv')
+
+stim_pairings <- readr::read_csv('stimPairings.csv') %>%
+  filter(!(pair1 %in% objects_to_exclude)) %>%
+  mutate(trial = 1:n()) %>%
+  filter(trial <= n_object) %>%
+  rename(object = pair1, pair = pair2) %>%
+  mutate(name = object_names[object, ] %>% use_series("name1")) 
+
+
+```
+
+
+
+```{r occular_dominance}
+
+d_occular <- crossing(answer = c('\\LEFT', '\\RIGHT')
+                      , arrow_to = c('left', 'right')
+                      , rep = 1:10
+                      , participant = 1:n_participant) %>%
+  group_by(participant) %>%
+  nest() %>%
+  mutate(data = map(data, ~.x[sample(nrow(.x)),]),
+         data = map(data, ~.x %>% mutate(trial = 1:nrow(.x)))) %>%
+  unnest() %>%
+  mutate(max_alpha = params$max_alpha,
+         jitter = base::sample(1:max_jitter_flips, n(), replace = TRUE)
+         , trial_start = NaN
+         , trial_end = NaN
+         , exitflag = NaN
+         , response = NaN
+         , rt = NaN
+)
+
+if(params$save){
+  readr::write_csv(d_occular, "occularDominance_blocking.csv")
+}
+```
+
+
+```{r}
+
+tInfo_occular <- d_occular %>%
+  select(participant, trial, max_alpha, jitter, arrow_to, answer) %>%
+  crossing(flip = 1:max_study_flips) %>%
+  group_by(participant, jitter, max_alpha, arrow_to, answer, trial) %>%
+  nest() %>%
+  mutate(data = pmap(list(data=data, max_alpha=max_alpha, jitter = jitter),
+                     function(data, max_alpha, jitter) {
+                       data  %>% mutate(alpha = c(rep(0, each = jitter - 1),
+                                                  seq(0, to = max_alpha, length.out = ramp_dur_flips),
+                                                  rep(max_alpha, each = nrow(data) - jitter - ramp_dur_flips + 1)))
+                     }
+  )) %>%
+  unnest() %>%
+  mutate(vbl_expected = NaN
+         , vbl_realized = NaN
+         , missed = NaN
+  )
+
+
+if(params$save){
+    for(s in unique(d_occular$participant)){
+    tInfo <- tInfo_occular %>% filter(participant == s)
+    dir.create(glue::glue("sub-{stringr::str_pad(s, 3, pad=0)}"))
+      readr::write_csv(tInfo, glue::glue("sub-{stringr::str_pad(s, 3, pad=0)}/occularDominance_tInfo_blocking.csv"))
+  }
+}
+```
+
+
+```{r}
+
+# shuffle object orders, just to remove alphabetical component
+d <- stim_pairings[sample(nrow(stim_pairings)), ] %>%
+  mutate(list = rep(1:params$n_lists, each = params$n_objects_per_list)
+         # , trial = rep(1:params$n_objects_per_list, times = params$n_lists)
+         , trial_type = rep(1:params$n_objects_per_list, times = params$n_lists)) %>%
+  mutate(expt = case_when(list == 1 ~ "practice"
+                          , list > 1 ~ "visualRecollection")) %>%
+  crossing(., unit = 1:params$n_objects_per_list) %>%
+  group_by(unit) %>%
+  nest() %>%
+  crossing(rep_of_unit = 1:params$n_unit) %>%
+  unnest() %>%
+  group_by(unit, rep_of_unit) %>%
+  nest() %>%
+  mutate(participant = 1:n()) %>%
+  unnest() %>%
+  mutate(trial_type = 1 + ((trial_type + (participant %% params$n_objects_per_list)) %% params$n_objects_per_list ) ) %>% # increment trial_type for each participant
+  group_by(participant, list) %>%
+  nest() %>%
+  mutate(data = map(data, ~.x[sample(nrow(.x)),]),
+         data = map(data, ~.x %>% mutate(trial = 1:nrow(.x)))) %>% # extra shuffle for order of trial types
+  unnest() %>%
+  crossing(., phase = c("study", "noise", "name")) %>%
+  # filter( !(phase == "noise" & rep == 2) ) %>%
+  mutate(condition = case_when(trial_type %in% 1:9 ~ "CFS"
+                               , trial_type %in% 10:17 ~ "Not Studied")
+         , gonogo = case_when(trial_type %in% c(2:4, 6:8, 11:13, 15:17) ~ "go"
+                              , trial_type %in% c(5, 9, 14) ~ "nogo"
+                              , trial_type %in% c(1,10) ~ "name")
+         , cue = case_when(trial_type %in% c(1:5, 10:14) ~ "present"
+                           , trial_type %in% c(6:9, 15:17) ~ "absent")
+         , answer = case_when(condition == "CFS" & phase == "study" ~ "j"
+                              , condition == "Not Studied" & phase == "study" ~ "f"
+                              , phase == "study" ~ name
+                              , phase == "noise" & gonogo == "go" ~ "\\ENTER"
+                              , phase == "noise" & gonogo == "nogo" ~ 'z')
+         , name_dur_max = case_when(phase == "noise"  ~ params$cue_dur_sec
+                                    , phase == "name" ~ params$max_name_dur_sec)
+         , trial_start = NaN
+         , trial_end = NaN
+         , exitflag = NaN
+         , response = NaN
+         , rt = NaN
+         , pas = NaN
+         , jitter = base::sample(1:max_jitter_flips, n(), replace = TRUE)
+         , max_alpha = case_when(phase == "study" & condition == "CFS" ~ params$max_alpha
+                                 , phase == "study" & condition == "Not Studied" ~ 0
+                                 , phase == "noise" & gonogo == "go" ~ 1
+                                 , phase == "noise" & gonogo == "nogo" ~ 0
+                                 , phase == "noise" & gonogo == "name" ~ 1
+                                 , phase == "name" & cue == "present" ~ 1
+                                 , phase == "name" & cue == "absent" ~ 0)
+  ) %>%
+  crossing(rep = 1:2) %>% # study and name repeated, not noise
+  filter(not(phase == "name" & rep == 2 & (gonogo == "go" | gonogo == "nogo")) & 
+           not(phase == "noise" & rep == 2 & gonogo == "name"))
+
+if(params$save){
+  readr::write_csv(d, "data_blocking.csv")
+}
+```
+
+
+
+```{r}
+
+tInfo_data <- d %>%
+  select(phase, participant, list, trial, rep, condition, max_alpha, jitter) %>%
+  filter(phase %in% c("study", "noise")) %>%
+  group_by(phase) %>%
+  nest() %>% #
+  mutate(data = case_when(phase == "study" ~ map(data, ~crossing(.x, flip = 1:max_study_flips))
+                          , phase == "noise" ~ map(data, ~crossing(.x, flip = 1:max_noise_flips))
+  )) %>%
+  unnest() %>%
+  group_by(participant, list, rep, trial, phase, jitter, max_alpha) %>%
+  nest() %>%
+  mutate(data = pmap(list(data=data, max_alpha=max_alpha, jitter = jitter),
+                     function(data, max_alpha, jitter) {
+                       data  %>% mutate(alpha = c(rep(0, each = jitter - 1),
+                                                  seq(0, to = max_alpha, length.out = ramp_dur_flips),
+                                                  rep(max_alpha, each = nrow(data) - jitter - ramp_dur_flips + 1)))
+                     }
+  )) %>%
+  unnest() %>%
+  mutate(vbl_expected = NaN
+         , vbl_realized = NaN
+         , missed = NaN
+  )
+
+
+if(params$save){
+  for(s in unique(d$participant)){
+    tInfo <- tInfo_data %>% filter(participant == s)
+    readr::write_csv(tInfo, glue::glue("sub-{stringr::str_pad(s, 3, pad=0)}/data_tInfo_blocking.csv"))
+  }
+}
+```
+

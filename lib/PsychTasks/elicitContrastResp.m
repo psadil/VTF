@@ -1,5 +1,5 @@
 function [ response, rt, vbl, missed, exitFlag, trial_dim ] = ...
-    elicitContrastResp(texes, spatial_frequency, src_rects, vbl_expected, window, responseHandler, stim, keys,...
+    elicitContrastResp(texes, spatial_frequency, src_rects, trial_start, window, responseHandler, stim, keys,...
     roboRT, roboResp, constants, phases, angles, dim_sequence, luminance, ...
     contrasts, experiment, trial_dim, dst_rects, trial, eyetrackerFcn, fb, feedbackFcn )
 
@@ -62,10 +62,7 @@ for flip = 1:nFlipsInTrial
     
     Screen('DrawingFinished', window.pointer);
     
-    [vbl(flip), ~, ~, missed(flip)] = Screen('Flip', window.pointer, ...
-        vbl_expected(flip));
-    
-    if flip == 1
+    if flip == 1        
         eyetrackerFcn('Message','Trial_onset');
 %         eyetrackerFcn('Message', '!V IMGLOAD FILL %s', [int2str(trial),'.jpg']);
         % handle special case where trial starts in sync with new dimming
@@ -78,6 +75,9 @@ for flip = 1:nFlipsInTrial
         
         % open up response cue and allow response
         KbQueueStart(constants.device);
+        
+        [vbl(flip), ~, ~, missed(flip)] = Screen('Flip', window.pointer, ...
+            trial_start);
     else
         if dim_sequence(flip)
             if dim_sequence(flip-1)==0
@@ -94,12 +94,11 @@ for flip = 1:nFlipsInTrial
                 goRobo = 1;
             end
         end
+        
+        [vbl(flip), ~, ~, missed(flip)] = Screen('Flip', window.pointer, ...
+            vbl(flip-1) + ((1/stim.update_phase_sec) - 0.5) * window.ifi);
     end
-    
-    %     if any(stim_down(flip,1))
-    %         Eyelink('Message', '!V IMGLOAD FILL %s', [int2str(trial),'both.jpg']);
-    %     end
-    
+        
     if accept_resp
         [keys_pressed, press_times] = ...
             responseHandler(constants.device, roboResp{dim_count_in_trial}, goRobo);
@@ -123,7 +122,6 @@ for flip = 1:nFlipsInTrial
             
         end
     end
-    
 end
 
 KbQueueStop(constants.device);

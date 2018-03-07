@@ -31,6 +31,7 @@ PsychImaging('AddTask', 'General', 'NormalizedHighresColorRange', 1);
 % maybe not at all). Though, this asks for the higher precision nicely, and
 % defaults to 16 if not possible
 PsychImaging('AddTask', 'General', 'FloatingPoint32BitIfPossible');
+PsychImaging('AddTask', 'General', 'UseFastOffscreenWindows');
 switch input.debugLevel
     case 1
         Screen('Preference', 'SkipSyncTests', 2);
