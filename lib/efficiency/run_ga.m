@@ -1,2 +1,6 @@
 
-ga_contrast('participants',4, 'runs', 0:10, 'EliteCount',50);
+ga_contrast4('participants', 5, 'runs', 0:10, 'task', 'contrast',...
+    'n_orientation',12, 'n_contrast', 2, 'n_reps',2, 'scan_time', 420, ...
+    'max_iti_flip', 37, 'epoch_length_max_flip', 50);
+
+% ga_contrast4('participants', 5, 'runs', 0:4, 'task', 'localizer');

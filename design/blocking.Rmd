@@ -4,18 +4,12 @@ author: "pss"
 date: "February 19, 2018"
 output: html_document
 params:
-  save: 1
-  n_lists: 8 # first one used for practice
-  n_objects_per_list: 17
-  n_unit: 15 
-  max_study_dur_sec: 20.0
-  max_noise_dur_sec: 10.0
-  max_name_dur_sec: 30.0
-  cue_dur_sec: 4.0
+  save: 0
+  sub: !r c(5)
+  task: "localizer"
+  run: !r c(1, 2)
   hz: 10
-  max_alpha: 0.6
-  max_jitter_sec: 1
-  ramp_dur_sec: 4
+  extra_flip: 0 # number of extra flips within a trial (e.g., at start of trial, end of trial)
 ---
 
 ```{r setup, include=FALSE}
@@ -24,32 +18,6 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(magrittr)
 
-n_object <- params$n_lists * params$n_objects_per_list
-n_participant_per_unit <- 17
-n_participant <-params$n_unit * n_participant_per_unit
-
-ramp_dur_flips <- params$ramp_dur_sec * params$hz + 1
-max_jitter_flips <- params$max_jitter_sec*params$hz + 1
-
-# extra flip at start and end of trial
-max_study_flips <- params$max_study_dur_sec * params$hz + 2
-max_noise_flips <- params$max_noise_dur_sec * params$hz + 2
-
-objects_to_exclude <-c(5,9,10,12,17,21,22,24,27,35,38,36,41,42,46,48,49,51,54,55,
-                       63,65,67,70,75,77,82,83,84,87,91,92,93,94,101,106,105,108,109,114, 
-                       116,120,127,130,132,134,136,138,142,148,149,152,158,160,164,168,169,
-                       171,173,175,178,180,182,190,
-                       1,104);
-
-
-object_names <-  readr::read_csv('objectNames_2AFC.csv')
-
-stim_pairings <- readr::read_csv('stimPairings.csv') %>%
-  filter(!(pair1 %in% objects_to_exclude)) %>%
-  mutate(trial = 1:n()) %>%
-  filter(trial <= n_object) %>%
-  rename(object = pair1, pair = pair2) %>%
-  mutate(name = object_names[object, ] %>% use_series("name1")) 
 
 
 ```
@@ -61,7 +29,7 @@ stim_pairings <- readr::read_csv('stimPairings.csv') %>%
 d_occular <- crossing(answer = c('\\LEFT', '\\RIGHT')
                       , arrow_to = c('left', 'right')
                       , rep = 1:10
-                      , participant = 1:n_participant) %>%
+                      , sub = params$sub) %>%
   group_by(participant) %>%
   nest() %>%
   mutate(data = map(data, ~.x[sample(nrow(.x)),]),
