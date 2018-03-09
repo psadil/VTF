@@ -19,7 +19,7 @@ for cond = 1:n_stimtype
     matlabbatch{1}.spm.stats.fmri_design.sess.cond(cond).orth = 1;
 end
 matlabbatch{1}.spm.stats.fmri_design.sess.cond(n_stimtype+1).name = 'dimming';
-matlabbatch{1}.spm.stats.fmri_design.sess.cond(n_stimtype+1).onset = onsets(stim_list==99);
+matlabbatch{1}.spm.stats.fmri_design.sess.cond(n_stimtype+1).onset = onsets(stim_list == 99);
 matlabbatch{1}.spm.stats.fmri_design.sess.cond(n_stimtype+1).duration = dim_dur;
 matlabbatch{1}.spm.stats.fmri_design.sess.cond(n_stimtype+1).tmod = 0;
 matlabbatch{1}.spm.stats.fmri_design.sess.cond(n_stimtype+1).pmod = struct('name', {}, 'param', {}, 'poly', {});

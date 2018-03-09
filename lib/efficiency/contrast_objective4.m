@@ -1,9 +1,9 @@
 function y = contrast_objective4(x, n_scan, TR, n_stim_type,...
-     n_stim_events, population_parser, epoch_length_max, optimality, resolution, n_dim_events, trial_types)
+     n_stim_events, population_parser, epoch_length_max, optimality, resolution, n_dim_events, trial_types, dim_onsets)
 
 
 [stim_list, onsets, epoch_length] = ...
-    population_parser(x, n_stim_events, epoch_length_max, resolution, n_dim_events, trial_types);
+    population_parser(x, n_stim_events, epoch_length_max, resolution, n_dim_events, trial_types, dim_onsets);
 
 SPM = DconvMTX3(stim_list, n_scan, n_stim_type, epoch_length, TR, onsets, 0.4);
 
