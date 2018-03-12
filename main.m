@@ -1,15 +1,15 @@
 function  main(varargin)
-Screen('Preference', 'ConserveVRAM', 4096);
+
 
 %% collect input
 % use the inputParser class to deal with arguments
 ip = inputParser;
-addParameter(ip, 'subject', 1, @isnumeric);
+addParameter(ip, 'subject', 5, @isnumeric);
 addParameter(ip, 'responder', 'user', @(x) sum(strcmp(x, {'user','simpleKeypressRobot'}))==1);
 addParameter(ip, 'refreshRate', 60, @(x) x == 120 | x == 60);
 addParameter(ip, 'run', 0, @isnumeric);
 addParameter(ip, 'fMRI', true, @islogical);
-addParameter(ip, 'debugLevel', 0, @(x) x == 1 | x == 10 | x == 0);
+addParameter(ip, 'debugLevel', 1, @(x) x == 1 | x == 10 | x == 0);
 addParameter(ip, 'experiment', 'contrast',  @(x) sum(strcmp(x, {'contrast','localizer'}))==1);
 addParameter(ip, 'delta_luminance_guess', 0.3,  @isnumeric);
 addParameter(ip, 'TR', 1,  @isnumeric);

@@ -1,84 +1,84 @@
-side	run	subject	filename	onset_expected	duration_expected	orientation	contrast	trial	trial_type	iti_expected	n_flip_in_trial	trial_start	trial_end	exitflag	response	rt	correct	onset	duration
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	3.7	0.4	n/a	n/a	1	dim	7	74	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	7.4	0.4	n/a	n/a	2	dim	3	34	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	10.8	0.4	n/a	n/a	3	dim	2.0999999999999996	24.999999999999996	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	13.3	0.4	n/a	n/a	4	dim	3.3000000000000007	37.00000000000001	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	17	0.4	n/a	n/a	5	dim	2.6000000000000014	30.000000000000014	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	20	0.4	n/a	n/a	6	dim	4.200000000000003	46.00000000000003	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	24.6	0.4	n/a	n/a	7	dim	4.300000000000001	47.000000000000014	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	29.3	0.4	n/a	n/a	8	dim	2.8000000000000007	32.00000000000001	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	32.5	0.4	n/a	n/a	9	dim	2	24	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	34.9	0.4	n/a	n/a	10	dim	4.400000000000006	48.00000000000006	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	39.7	0.4	n/a	n/a	11	dim	5	54	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	45.1	0.4	n/a	n/a	12	dim	3.799999999999997	41.99999999999997	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	49.3	0.4	n/a	n/a	13	dim	3.1000000000000014	35.000000000000014	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	52.8	0.4	n/a	n/a	14	dim	4.900000000000006	53.00000000000006	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	58.1	0.4	n/a	n/a	15	dim	4.700000000000003	51.00000000000003	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	63.2	0.4	n/a	n/a	16	dim	3.299999999999997	36.99999999999997	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	66.9	0.4	n/a	n/a	17	dim	2.3999999999999915	27.999999999999915	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	69.7	0.4	n/a	n/a	18	dim	3.999999999999986	43.99999999999986	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	74.1	0.4	n/a	n/a	19	dim	2.4000000000000057	28.000000000000057	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	76.9	0.4	n/a	n/a	20	dim	2.8999999999999915	32.999999999999915	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	80.2	0.4	n/a	n/a	21	dim	2.3999999999999915	27.999999999999915	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	83	0.4	n/a	n/a	22	dim	2.3999999999999915	27.999999999999915	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	85.8	0.4	n/a	n/a	23	dim	2.700000000000003	31.00000000000003	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	88.9	0.4	n/a	n/a	24	dim	3.3999999999999915	37.999999999999915	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	92.7	0.4	n/a	n/a	25	dim	3.299999999999997	36.99999999999997	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	96.4	0.4	n/a	n/a	26	dim	4.699999999999989	50.999999999999886	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	101.5	0.4	n/a	n/a	27	dim	2.799999999999997	31.99999999999997	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	104.7	0.4	n/a	n/a	28	dim	2.8999999999999915	32.999999999999915	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	108	0.4	n/a	n/a	29	dim	3.6999999999999886	40.999999999999886	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	112.1	0.4	n/a	n/a	30	dim	4.299999999999997	46.99999999999997	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	116.8	0.4	n/a	n/a	31	dim	4.799999999999997	51.99999999999997	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	122	0.4	n/a	n/a	32	dim	3.0999999999999943	34.99999999999994	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	125.5	0.4	n/a	n/a	33	dim	2.9000000000000057	33.00000000000006	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	128.8	0.4	n/a	n/a	34	dim	3.799999999999983	41.99999999999983	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	133	0.4	n/a	n/a	35	dim	3.5	39	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	136.9	0.4	n/a	n/a	36	dim	2.6999999999999886	30.999999999999886	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	140	0.4	n/a	n/a	37	dim	4.699999999999989	50.999999999999886	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	145.1	0.4	n/a	n/a	38	dim	3.5999999999999943	39.99999999999994	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	149.1	0.4	n/a	n/a	39	dim	4.199999999999989	45.999999999999886	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	153.7	0.4	n/a	n/a	40	dim	3.200000000000017	36.00000000000017	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	157.3	0.4	n/a	n/a	41	dim	4.199999999999989	45.999999999999886	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	161.9	0.4	n/a	n/a	42	dim	4.099999999999994	44.99999999999994	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	166.4	0.4	n/a	n/a	43	dim	2.8999999999999773	32.99999999999977	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	169.7	0.4	n/a	n/a	44	dim	2.200000000000017	26.00000000000017	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	172.3	0.4	n/a	n/a	45	dim	3.8999999999999773	42.99999999999977	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	176.6	0.4	n/a	n/a	46	dim	3.4000000000000057	38.00000000000006	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	180.4	0.4	n/a	n/a	47	dim	4.899999999999977	52.99999999999977	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	185.7	0.4	n/a	n/a	48	dim	3	34	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	189.1	0.4	n/a	n/a	49	dim	4.099999999999994	44.99999999999994	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	193.6	0.4	n/a	n/a	50	dim	3.4000000000000057	38.00000000000006	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	197.4	0.4	n/a	n/a	51	dim	2.6999999999999886	30.999999999999886	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	200.5	0.4	n/a	n/a	52	dim	3.4000000000000057	38.00000000000006	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	204.3	0.4	n/a	n/a	53	dim	3.799999999999983	41.99999999999983	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	208.5	0.4	n/a	n/a	54	dim	3.299999999999983	36.99999999999983	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	212.2	0.4	n/a	n/a	55	dim	2.200000000000017	26.00000000000017	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	214.8	0.4	n/a	n/a	56	dim	4.999999999999972	53.999999999999716	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	220.2	0.4	n/a	n/a	57	dim	2.5999999999999943	29.999999999999943	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	223.2	0.4	n/a	n/a	58	dim	2.200000000000017	26.00000000000017	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	225.8	0.4	n/a	n/a	59	dim	3.5999999999999943	39.99999999999994	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	229.8	0.4	n/a	n/a	60	dim	2.4999999999999716	28.999999999999716	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	232.7	0.4	n/a	n/a	61	dim	2	24	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	235.1	0.4	n/a	n/a	62	dim	3.5999999999999943	39.99999999999994	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	239.1	0.4	n/a	n/a	63	dim	3.9000000000000057	43.00000000000006	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	243.4	0.4	n/a	n/a	64	dim	3.1999999999999886	35.999999999999886	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	247	0.4	n/a	n/a	65	dim	3.6999999999999886	40.999999999999886	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	251.1	0.4	n/a	n/a	66	dim	2.1999999999999886	25.999999999999886	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	253.7	0.4	n/a	n/a	67	dim	3.500000000000057	39.00000000000057	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	257.6	0.4	n/a	n/a	68	dim	2.1999999999999886	25.999999999999886	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	260.2	0.4	n/a	n/a	69	dim	2.7000000000000455	31.000000000000455	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	263.3	0.4	n/a	n/a	70	dim	2.5	29	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	266.2	0.4	n/a	n/a	71	dim	2.1000000000000227	25.000000000000227	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	268.7	0.4	n/a	n/a	72	dim	4.7000000000000455	51.000000000000455	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	273.8	0.4	n/a	n/a	73	dim	2.1000000000000227	25.000000000000227	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	276.3	0.4	n/a	n/a	74	dim	3.400000000000034	38.00000000000034	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	280.1	0.4	n/a	n/a	75	dim	3.8000000000000114	42.000000000000114	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	284.3	0.4	n/a	n/a	76	dim	3.1000000000000227	35.00000000000023	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	287.8	0.4	n/a	n/a	77	dim	3.3000000000000114	37.000000000000114	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	291.5	0.4	n/a	n/a	78	dim	4.400000000000034	48.00000000000034	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	296.3	0.4	n/a	n/a	79	dim	4.5	49	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	301.2	0.4	n/a	n/a	80	dim	2.900000000000034	33.00000000000034	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	304.5	0.4	n/a	n/a	81	dim	2.7000000000000455	31.000000000000455	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	307.6	0.4	n/a	n/a	82	dim	3.1999999999999886	35.999999999999886	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	311.2	0.4	n/a	n/a	83	dim	108.40000000000003	1088.0000000000005	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
+side	run	subject	filename	onset_expected	duration_expected	orientation	contrast	trial	trial_type	iti_expected	n_flip_in_trial	exitflag	response	correct
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	5	0.4	n/a	n/a	1	dim	9	94	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	9.4	0.4	n/a	n/a	2	dim	2.1999999999999993	25.999999999999993	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	12	0.4	n/a	n/a	3	dim	3.9000000000000004	43.00000000000001	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	16.3	0.4	n/a	n/a	4	dim	2.6999999999999993	30.999999999999993	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	19.4	0.4	n/a	n/a	5	dim	3.6000000000000014	40.000000000000014	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	23.4	0.4	n/a	n/a	6	dim	4.900000000000002	53.00000000000003	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	28.7	0.4	n/a	n/a	7	dim	2.200000000000003	26.00000000000003	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	31.3	0.4	n/a	n/a	8	dim	2.8000000000000007	32.00000000000001	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	34.5	0.4	n/a	n/a	9	dim	5	54	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	39.9	0.4	n/a	n/a	10	dim	2.6000000000000014	30.000000000000014	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	42.9	0.4	n/a	n/a	11	dim	4.800000000000004	52.00000000000004	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	48.1	0.4	n/a	n/a	12	dim	3.3999999999999986	37.999999999999986	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	51.9	0.4	n/a	n/a	13	dim	4.900000000000006	53.00000000000006	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	57.2	0.4	n/a	n/a	14	dim	2.299999999999997	26.99999999999997	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	59.9	0.4	n/a	n/a	15	dim	3.700000000000003	41.00000000000003	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	64	0.4	n/a	n/a	16	dim	3.0999999999999943	34.99999999999994	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	67.5	0.4	n/a	n/a	17	dim	4.699999999999989	50.999999999999886	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	72.6	0.4	n/a	n/a	18	dim	3.799999999999997	41.99999999999997	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	76.8	0.4	n/a	n/a	19	dim	4.3999999999999915	47.999999999999915	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	81.6	0.4	n/a	n/a	20	dim	3.5999999999999943	39.99999999999994	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	85.6	0.4	n/a	n/a	21	dim	2.4000000000000057	28.000000000000057	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	88.4	0.4	n/a	n/a	22	dim	3.1999999999999886	35.999999999999886	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	92	0.4	n/a	n/a	23	dim	2	24	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	94.4	0.4	n/a	n/a	24	dim	2.0999999999999943	24.999999999999943	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	96.9	0.4	n/a	n/a	25	dim	2.999999999999986	33.99999999999986	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	100.3	0.4	n/a	n/a	26	dim	3.700000000000003	41.00000000000003	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	104.4	0.4	n/a	n/a	27	dim	3.0999999999999943	34.99999999999994	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	107.9	0.4	n/a	n/a	28	dim	4.999999999999986	53.99999999999986	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	113.3	0.4	n/a	n/a	29	dim	4.700000000000003	51.00000000000003	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	118.4	0.4	n/a	n/a	30	dim	3.1999999999999886	35.999999999999886	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	122	0.4	n/a	n/a	31	dim	4.099999999999994	44.99999999999994	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	126.5	0.4	n/a	n/a	32	dim	4.400000000000006	48.00000000000006	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	131.3	0.4	n/a	n/a	33	dim	2.5999999999999943	29.999999999999943	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	134.3	0.4	n/a	n/a	34	dim	3.799999999999983	41.99999999999983	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	138.5	0.4	n/a	n/a	35	dim	4.299999999999983	46.99999999999983	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	143.2	0.4	n/a	n/a	36	dim	2.200000000000017	26.00000000000017	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	145.8	0.4	n/a	n/a	37	dim	3.9999999999999716	43.999999999999716	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	150.2	0.4	n/a	n/a	38	dim	4.5	49	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	155.1	0.4	n/a	n/a	39	dim	3.9000000000000057	43.00000000000006	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	159.4	0.4	n/a	n/a	40	dim	4.299999999999983	46.99999999999983	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	164.1	0.4	n/a	n/a	41	dim	3.1999999999999886	35.999999999999886	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	167.7	0.4	n/a	n/a	42	dim	5	54	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	173.1	0.4	n/a	n/a	43	dim	4.099999999999994	44.99999999999994	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	177.6	0.4	n/a	n/a	44	dim	3.6999999999999886	40.999999999999886	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	181.7	0.4	n/a	n/a	45	dim	4.900000000000006	53.00000000000006	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	187	0.4	n/a	n/a	46	dim	3.1999999999999886	35.999999999999886	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	190.6	0.4	n/a	n/a	47	dim	4.099999999999994	44.99999999999994	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	195.1	0.4	n/a	n/a	48	dim	2.3000000000000114	27.000000000000114	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	197.8	0.4	n/a	n/a	49	dim	3.0999999999999943	34.99999999999994	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	201.3	0.4	n/a	n/a	50	dim	3.6999999999999886	40.999999999999886	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	205.4	0.4	n/a	n/a	51	dim	3.3999999999999773	37.99999999999977	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	209.2	0.4	n/a	n/a	52	dim	3.9000000000000057	43.00000000000006	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	213.5	0.4	n/a	n/a	53	dim	2.5999999999999943	29.999999999999943	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	216.5	0.4	n/a	n/a	54	dim	2.5999999999999943	29.999999999999943	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	219.5	0.4	n/a	n/a	55	dim	3.5999999999999943	39.99999999999994	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	223.5	0.4	n/a	n/a	56	dim	3.9000000000000057	43.00000000000006	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	227.8	0.4	n/a	n/a	57	dim	4.399999999999977	47.99999999999977	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	232.6	0.4	n/a	n/a	58	dim	2.6999999999999886	30.999999999999886	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	235.7	0.4	n/a	n/a	59	dim	2.0999999999999943	24.999999999999943	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	238.2	0.4	n/a	n/a	60	dim	2.0999999999999943	24.999999999999943	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	240.7	0.4	n/a	n/a	61	dim	4.800000000000011	52.000000000000114	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	245.9	0.4	n/a	n/a	62	dim	4.199999999999989	45.999999999999886	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	250.5	0.4	n/a	n/a	63	dim	4.900000000000006	53.00000000000006	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	255.8	0.4	n/a	n/a	64	dim	5	54	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	261.2	0.4	n/a	n/a	65	dim	2.2000000000000455	26.000000000000455	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	263.8	0.4	n/a	n/a	66	dim	3.900000000000034	43.00000000000034	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	268.1	0.4	n/a	n/a	67	dim	3.6999999999999886	40.999999999999886	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	272.2	0.4	n/a	n/a	68	dim	4.300000000000011	47.000000000000114	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	276.9	0.4	n/a	n/a	69	dim	4.300000000000068	47.00000000000068	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	281.6	0.4	n/a	n/a	70	dim	3.8999999999999773	42.99999999999977	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	285.9	0.4	n/a	n/a	71	dim	4.600000000000023	50.00000000000023	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	290.9	0.4	n/a	n/a	72	dim	4.000000000000057	44.00000000000057	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	295.3	0.4	n/a	n/a	73	dim	4.900000000000034	53.00000000000034	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	300.6	0.4	n/a	n/a	74	dim	4.399999999999977	47.99999999999977	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	305.4	0.4	n/a	n/a	75	dim	3.7000000000000455	41.000000000000455	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	309.5	0.4	n/a	n/a	76	dim	4.600000000000023	50.00000000000023	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	314.5	0.4	n/a	n/a	77	dim	2.2000000000000455	26.000000000000455	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	317.1	0.4	n/a	n/a	78	dim	3	34	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	320.5	0.4	n/a	n/a	79	dim	3.5	39	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	324.4	0.4	n/a	n/a	80	dim	3.1000000000000227	35.00000000000023	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	327.9	0.4	n/a	n/a	81	dim	2.6000000000000227	30.000000000000227	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	330.9	0.4	n/a	n/a	82	dim	2.2000000000000455	26.000000000000455	NA	NO RESPONSE	NA
+middle	8	5	ga_dump/sub-05_task-contrast_run-08_ga_events.tsv	333.5	0.4	n/a	n/a	83	dim	86.10000000000002	865.0000000000002	NA	NO RESPONSE	NA

@@ -6,12 +6,9 @@ output: html_document
 params:
   save: 1
   sub: !r c(5)
-  task: "contrast"
-  run: !r c(1, 2)
+  task: "localizer"
   flip_hz: 10
-  extra_flip: 0 # number of extra flips within a trial (e.g., at start of trial, end of trial)
   n_phase: 16
-  scan_dur_sec: 420
 ---
 
 ```{r setup, include=FALSE}
@@ -23,8 +20,10 @@ library(magrittr)
 
 if(params$task == "contrast"){
   n_grating_per_side = 5
+  scan_dur_sec = 420
 }else if(params$task == "localizer"){
   n_grating_per_side = 10
+    scan_dur_sec = 336
 }
 n_grating = n_grating_per_side * 2
 
@@ -81,18 +80,14 @@ d_main <- finfo %>%
   nest() %>%
   mutate(data = map(data, ~.x %>% 
                       arrange(trial) %>% 
-                      mutate(iti_expected = case_when(trial_type == "grating" | trial > 1 ~ dplyr::lead(onset_expected, default = params$scan_dur_sec) - duration_expected - onset_expected,
-                                                      trial_type == "dim" & trial == 1 ~ dplyr::lead(onset_expected, default = params$scan_dur_sec) - duration_expected )))) %>%
+                      mutate(iti_expected = 
+                               case_when( trial == 1 ~ lead(onset_expected, default = scan_dur_sec) - duration_expected ,
+                                          trial > 1 ~ lead(onset_expected, default = scan_dur_sec) - duration_expected - onset_expected)))) %>%
   unnest() %>%
   mutate(n_flip_in_trial = (duration_expected + iti_expected) * params$flip_hz
-         , trial_start = NaN # in system time
-         , trial_end = NaN # in system time
          , exitflag = NA_character_ 
          , response = "NO RESPONSE"
-         , rt = NaN
          , correct = NA
-         , onset = NaN
-         , duration = NaN
   )
 
 if(params$save){
@@ -124,7 +119,6 @@ is_close <- function(a,b, tolerance = params$flip_hz/1000){
 
 
 d_tInfo <- d_main %>%
-  select(-onset, -duration, -trial_start, -trial_end, -rt ) %>%
   group_by(trial_type, trial, side, run, subject) %>%
   nest() %>% 
   mutate(data = map(data, ~crossing(.x, flip_in_trial = 1:.x$n_flip_in_trial))) %>%
@@ -135,7 +129,7 @@ d_tInfo <- d_main %>%
   unnest() %>%
   mutate(vbl_expected = (flip-1) * (1/params$flip_hz)) %>%
   mutate(event = case_when( is_close(vbl_expected, onset_expected) ~ "trial_start",
-                            vbl_expected < onset_expected + duration_expected ~ "trial_going",
+                            (vbl_expected > onset_expected) & (vbl_expected < onset_expected + duration_expected) ~ "trial_going",
                             is_close(vbl_expected, onset_expected + duration_expected) ~ "return_to_base_contrast",
                             TRUE ~ "at_base_contrast" ),
          contrast = case_when(trial_type == "grating" ~ if_else(event %in% c("at_base_contrast", "return_to_base_contrast"), "0", contrast),

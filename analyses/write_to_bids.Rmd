@@ -4,9 +4,9 @@ author: "pss"
 date: "February 19, 2018"
 output: html_document
 params:
-  save: 0
+  save: 1
   sub: !r c(5)
-  task: "contrast"
+  task: "localizer"
   type: "robo" # either data or robo (only robo for testing)
 ---
 
@@ -16,6 +16,41 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(magrittr)
 
+
+if (params$task == "contrast"){
+  col_types <- cols(trial_type = col_character(),
+                   side = col_character(),
+                   run = col_integer(),
+                   subject = col_integer(),
+                   trial = col_integer(),
+                   duration_expected = col_double(),
+                   onset_expected = col_double(),
+                   orientation = col_double(),
+                   exitflag = col_character(),
+                   response = col_character(),
+                   flip_in_trial = col_integer(),
+                   flip = col_integer(),
+                   event = col_character(),
+                   answer = col_character(),
+                   contrast = col_double())
+}else if (params$task == "localizer"){
+    col_types <- cols(trial_type = col_character(),
+                   side = col_character(),
+                   run = col_integer(),
+                   subject = col_integer(),
+                   trial = col_integer(),
+                   duration_expected = col_character(),
+                   onset_expected = col_character(),
+                   exitflag = col_character(),
+                   response = col_character(),
+                   flip_in_trial = col_integer(),
+                   flip = col_integer(),
+                   event = col_character(),
+                   answer = col_character(),
+                   contrast = col_double(),
+                   iti_expected = col_character()
+                   )
+}
 
 ```
 
@@ -28,21 +63,7 @@ tInfo <- file.info(files, extra_cols = FALSE) %>%
   as_tibble() %>%
   tibble::rownames_to_column(var = "filename") %>%
   select(filename) %>%
-  mutate(events = map(filename, read_tsv, col_types = cols(trial_type = col_character(),
-                                                          side = col_character(),
-                                                          run = col_integer(),
-                                                          subject = col_integer(),
-                                                          trial = col_integer(),
-                                                          duration_expected = col_double(),
-                                                          onset_expected = col_double(),
-                                                          orientation = col_double(),
-                                                          exitflag = col_character(),
-                                                          response = col_character(),
-                                                          flip_in_trial = col_integer(),
-                                                          flip = col_integer(),
-                                                          event = col_character(),
-                                                          answer = col_character(),
-                                                          contrast = col_double()))
+  mutate(events = map(filename, read_tsv, col_types = col_types, guess_max = 10000)
   ) %>%
   unnest(events) %>%
   filter(subject %in% params$sub) %>%
@@ -55,35 +76,45 @@ tInfo <- file.info(files, extra_cols = FALSE) %>%
 
 firstfliptime <- min(tInfo$vbl, na.rm = TRUE)
 
+
+
 d <- tInfo %>%
   group_by(subject, run, trial_type, side, trial) %>%
-  nest() %>%
+  nest() 
+
+if (params$task == "contrast"){
+  d <- d %>%
   mutate(orientation = map_dbl(data, ~ unique(.x$orientation)),
          contrast = map_dbl(data, ~max(.x$contrast)),
          onset = map_dbl(data, ~ .x %>% filter(event == 'trial_start') %>%
                               use_series(vbl) - firstfliptime),
          duration = map_dbl(data, ~.x %>% filter(event == 'return_to_base_contrast') %>%
-                              use_series(vbl) - firstfliptime) - onset,
-         onset_expected = map_dbl(data, ~unique(.x$onset_expected)),
-         vbl_expected = map_dbl(data, ~.x %>% filter(event == 'trial_start') %>%
-                              use_series(vbl_expected)))
+                              use_series(vbl) - firstfliptime) - onset) %>%
+  select(onset, duration, trial, trial_type, side, orientation, contrast, subject, run, trial)  
+}else if (params$task == "localizer"){
+  d <- d %>%
+    mutate(orientation = "checkerboard",
+           contrast = map_dbl(data, ~max(.x$contrast)),
+           onset = map_dbl(data, ~ .x %>% filter(event == 'trial_start') %>%
+                             use_series(vbl) - firstfliptime),
+           duration = map_dbl(data, ~.x %>% filter(event == 'return_to_base_contrast') %>%
+                                use_series(vbl) - firstfliptime) - onset) %>%
+    select(onset, duration, trial, trial_type, side, orientation, contrast, subject, run, trial)  
+}
+
+  
   
 
 if(params$save){
   for(sub in params$sub){
-    for(r in unique(d_main$run)){
-      d_main %>%
+    for(r in unique(d$run)){
+      d %>%
         filter(run == r, subject == sub) %>%
-        filter(trial_type == "grating") %>%
-        readr::write_tsv(., file.path(glue::glue("sub-{sprintf('%02d', sub)}"), glue::glue("sub-{sprintf('%02d', sub)}_task-{params$task}_run-{sprintf('%02d', r)}_grating.tsv")))
-      
-      d_main %>%
-        filter(run == r, subject == sub) %>%
-        filter(trial_type == "dim") %>%
-        readr::write_tsv(., file.path(glue::glue("sub-{sprintf('%02d', sub)}"), glue::glue("sub-{sprintf('%02d', sub)}_task-{params$task}_run-{sprintf('%02d', r)}_dim.tsv")))
+        readr::write_tsv(., file.path(params$type, glue::glue("sub-{sprintf('%02d', sub)}"), 'func', glue::glue("sub-{sprintf('%02d', sub)}_task-{params$task}_run-{sprintf('%02d', r)}_events.tsv")))
       
     }
   }
 }
+
 ```
 

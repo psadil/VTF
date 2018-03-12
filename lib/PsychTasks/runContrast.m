@@ -24,7 +24,7 @@ Overall Flow:
     keys = setupKeys(input.fMRI);
     stim = setupStim( window, input);
     
-    tInfo = setupTInfo( constants );
+    tInfo = setupTInfo( constants, stim );
         
     index_dim = tInfo.trial_type == 'dim';
     tInfo_dim = tInfo(index_dim,:);
@@ -36,7 +36,8 @@ Overall Flow:
     
     stairs = setupStaircase(input.delta_luminance_guess);
     
-    flip_schedule_offset = ((1/stim.update_phase_sec) - 0.5) * window.ifi;
+    slack = 0.1;
+    flip_schedule_offset = (stim.flips_per_update - slack) * window.ifi;
     
     [el, exitflag] = setupEyeTracker( input.tracker, window, constants );
     if strcmp(exitflag, 'ESC')
@@ -88,7 +89,7 @@ Overall Flow:
             case 'trial_start'
                 index_dim_trial = flip:(flip+3);
                 tInfo_dim.contrast( index_dim_trial ) = ...
-                    repmat(1-stairs.luminance_difference, [4,1]);
+                    repmat(1 - stairs.luminance_difference, [4,1]);
             case 'return_to_base_contrast'
                 result = any( tInfo_dim.correct(index_dim_trial) );
                 
@@ -109,7 +110,7 @@ Overall Flow:
             
             % after clearing, draw gratings
             Screen('DrawTextures', stim.fullWindowTex(s), stim.texes, [],...
-                stim.dst_rects, tInfo_grating.orientation(index_grating_flip_side), ...
+                stim.dst_rects, tInfo_grating.orientation(index_grating_flip_side,:), ...
                 [], [], [], [], kPsychUseTextureMatrixForRotation, ...
                 [tInfo_grating.phase(index_grating_flip_side,:); stim.spatial_frequency;...
                 oo * tInfo_grating.contrast(index_grating_flip_side,:); zz]);

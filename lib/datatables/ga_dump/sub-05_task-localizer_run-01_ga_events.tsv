@@ -1,104 +1,87 @@
-onset	duration	orientation	contrast	side	trial	subject
-0	16	0	0.2	left	1	5
-0	16	0	0.2	right	1	5
-16	16	90	0.8	left	2	5
-16	16	90	0.8	right	2	5
-20	0.4	n/a	n/a	middle	22	5
-20	0.4	n/a	n/a	middle	38	5
-20	0.4	n/a	n/a	middle	40	5
-20	0.4	n/a	n/a	middle	46	5
-21	0.4	n/a	n/a	middle	26	5
-22	0.4	n/a	n/a	middle	5	5
-22	0.4	n/a	n/a	middle	10	5
-22	0.4	n/a	n/a	middle	30	5
-23	0.4	n/a	n/a	middle	1	5
-23	0.4	n/a	n/a	middle	19	5
-23	0.4	n/a	n/a	middle	53	5
-23	0.4	n/a	n/a	middle	63	5
-24	0.4	n/a	n/a	middle	13	5
-24	0.4	n/a	n/a	middle	18	5
-24	0.4	n/a	n/a	middle	33	5
-24	0.4	n/a	n/a	middle	49	5
-27	0.4	n/a	n/a	middle	34	5
-27	0.4	n/a	n/a	middle	51	5
-28	0.4	n/a	n/a	middle	11	5
-28	0.4	n/a	n/a	middle	12	5
-29	0.4	n/a	n/a	middle	14	5
-29	0.4	n/a	n/a	middle	21	5
-29	0.4	n/a	n/a	middle	37	5
-29	0.4	n/a	n/a	middle	43	5
-29	0.4	n/a	n/a	middle	50	5
-30	0.4	n/a	n/a	middle	25	5
-30	0.4	n/a	n/a	middle	48	5
-30	0.4	n/a	n/a	middle	62	5
-32	16	0	0.2	left	3	5
-32	16	0	0.2	right	3	5
-32	0.4	n/a	n/a	middle	20	5
-33	0.4	n/a	n/a	middle	16	5
-34	0.4	n/a	n/a	middle	52	5
-35	0.4	n/a	n/a	middle	47	5
-35	0.4	n/a	n/a	middle	55	5
-36	0.4	n/a	n/a	middle	7	5
-36	0.4	n/a	n/a	middle	27	5
-36	0.4	n/a	n/a	middle	29	5
-36	0.4	n/a	n/a	middle	57	5
-37	0.4	n/a	n/a	middle	32	5
-37	0.4	n/a	n/a	middle	35	5
-37	0.4	n/a	n/a	middle	44	5
-37	0.4	n/a	n/a	middle	60	5
-39	0.4	n/a	n/a	middle	31	5
-40	0.4	n/a	n/a	middle	23	5
-40	0.4	n/a	n/a	middle	39	5
-41	0.4	n/a	n/a	middle	61	5
-42	0.4	n/a	n/a	middle	6	5
-43	0.4	n/a	n/a	middle	4	5
-43	0.4	n/a	n/a	middle	17	5
-44	0.4	n/a	n/a	middle	3	5
-44	0.4	n/a	n/a	middle	15	5
-44	0.4	n/a	n/a	middle	56	5
-45	0.4	n/a	n/a	middle	28	5
-45	0.4	n/a	n/a	middle	36	5
-45	0.4	n/a	n/a	middle	41	5
-45	0.4	n/a	n/a	middle	42	5
-45	0.4	n/a	n/a	middle	45	5
-45	0.4	n/a	n/a	middle	59	5
-46	0.4	n/a	n/a	middle	24	5
-46	0.4	n/a	n/a	middle	54	5
-47	0.4	n/a	n/a	middle	8	5
-47	0.4	n/a	n/a	middle	9	5
-48	16	90	0.8	left	4	5
-48	16	90	0.8	right	4	5
-49	0.4	n/a	n/a	middle	2	5
-50	0.4	n/a	n/a	middle	58	5
-64	16	0	0.2	left	5	5
-64	16	0	0.2	right	5	5
-80	16	90	0.8	left	6	5
-80	16	90	0.8	right	6	5
-96	16	0	0.2	left	7	5
-96	16	0	0.2	right	7	5
-112	16	90	0.8	left	8	5
-112	16	90	0.8	right	8	5
-128	16	0	0.2	left	9	5
-128	16	0	0.2	right	9	5
-144	16	90	0.8	left	10	5
-144	16	90	0.8	right	10	5
-160	16	0	0.2	left	11	5
-160	16	0	0.2	right	11	5
-176	16	90	0.8	left	12	5
-176	16	90	0.8	right	12	5
-192	16	0	0.2	left	13	5
-192	16	0	0.2	right	13	5
-208	16	90	0.8	left	14	5
-208	16	90	0.8	right	14	5
-224	16	0	0.2	left	15	5
-224	16	0	0.2	right	15	5
-240	16	90	0.8	left	16	5
-240	16	90	0.8	right	16	5
-256	16	0	0.2	left	17	5
-256	16	0	0.2	right	17	5
-272	16	90	0.8	left	18	5
-272	16	90	0.8	right	18	5
-288	16	0	0.2	left	19	5
-288	16	0	0.2	right	19	5
-304	16	90	0.8	left	20	5
-304	16	90	0.8	right	20	5
+onset_expected	duration_expected	orientation	contrast	side	trial	subject	trial_type	run
+0	16	0	1	left	1	5	grating	1
+3.1	0.4	n/a	n/a	middle	1	5	dim	1
+7.3	0.4	n/a	n/a	middle	2	5	dim	1
+11.7	0.4	n/a	n/a	middle	3	5	dim	1
+16	16	0	1	right	1	5	grating	1
+16.9	0.4	n/a	n/a	middle	4	5	dim	1
+19.6	0.4	n/a	n/a	middle	5	5	dim	1
+23.2	0.4	n/a	n/a	middle	6	5	dim	1
+27.1	0.4	n/a	n/a	middle	7	5	dim	1
+31.3	0.4	n/a	n/a	middle	8	5	dim	1
+32	16	0	1	left	2	5	grating	1
+35.5	0.4	n/a	n/a	middle	9	5	dim	1
+40.6	0.4	n/a	n/a	middle	10	5	dim	1
+46	0.4	n/a	n/a	middle	11	5	dim	1
+48	16	0	1	right	2	5	grating	1
+50.5	0.4	n/a	n/a	middle	12	5	dim	1
+54.5	0.4	n/a	n/a	middle	13	5	dim	1
+58.8	0.4	n/a	n/a	middle	14	5	dim	1
+61.4	0.4	n/a	n/a	middle	15	5	dim	1
+64	16	0	1	left	3	5	grating	1
+66.7	0.4	n/a	n/a	middle	16	5	dim	1
+70.2	0.4	n/a	n/a	middle	17	5	dim	1
+73.1	0.4	n/a	n/a	middle	18	5	dim	1
+75.9	0.4	n/a	n/a	middle	19	5	dim	1
+79	0.4	n/a	n/a	middle	20	5	dim	1
+80	16	0	1	right	3	5	grating	1
+81.7	0.4	n/a	n/a	middle	21	5	dim	1
+85.3	0.4	n/a	n/a	middle	22	5	dim	1
+88.4	0.4	n/a	n/a	middle	23	5	dim	1
+93.8	0.4	n/a	n/a	middle	24	5	dim	1
+96	16	0	1	left	4	5	grating	1
+98.7	0.4	n/a	n/a	middle	25	5	dim	1
+102.7	0.4	n/a	n/a	middle	26	5	dim	1
+106.2	0.4	n/a	n/a	middle	27	5	dim	1
+110.2	0.4	n/a	n/a	middle	28	5	dim	1
+112	16	0	1	right	4	5	grating	1
+113.3	0.4	n/a	n/a	middle	29	5	dim	1
+118.6	0.4	n/a	n/a	middle	30	5	dim	1
+121.5	0.4	n/a	n/a	middle	31	5	dim	1
+124.4	0.4	n/a	n/a	middle	32	5	dim	1
+127	0.4	n/a	n/a	middle	33	5	dim	1
+128	16	0	1	left	5	5	grating	1
+130.6	0.4	n/a	n/a	middle	34	5	dim	1
+134.2	0.4	n/a	n/a	middle	35	5	dim	1
+138.7	0.4	n/a	n/a	middle	36	5	dim	1
+144	16	0	1	right	5	5	grating	1
+144	0.4	n/a	n/a	middle	37	5	dim	1
+147.4	0.4	n/a	n/a	middle	38	5	dim	1
+150.8	0.4	n/a	n/a	middle	39	5	dim	1
+154.9	0.4	n/a	n/a	middle	40	5	dim	1
+160	16	0	1	left	6	5	grating	1
+160.3	0.4	n/a	n/a	middle	41	5	dim	1
+162.9	0.4	n/a	n/a	middle	42	5	dim	1
+165.9	0.4	n/a	n/a	middle	43	5	dim	1
+170.9	0.4	n/a	n/a	middle	44	5	dim	1
+174.1	0.4	n/a	n/a	middle	45	5	dim	1
+176	16	0	1	right	6	5	grating	1
+179.4	0.4	n/a	n/a	middle	46	5	dim	1
+183.5	0.4	n/a	n/a	middle	47	5	dim	1
+186.3	0.4	n/a	n/a	middle	48	5	dim	1
+191.1	0.4	n/a	n/a	middle	49	5	dim	1
+192	16	0	1	left	7	5	grating	1
+196.2	0.4	n/a	n/a	middle	50	5	dim	1
+198.8	0.4	n/a	n/a	middle	51	5	dim	1
+203.4	0.4	n/a	n/a	middle	52	5	dim	1
+206.4	0.4	n/a	n/a	middle	53	5	dim	1
+208	16	0	1	right	7	5	grating	1
+209.9	0.4	n/a	n/a	middle	54	5	dim	1
+214.9	0.4	n/a	n/a	middle	55	5	dim	1
+219	0.4	n/a	n/a	middle	56	5	dim	1
+221.7	0.4	n/a	n/a	middle	57	5	dim	1
+224	16	0	1	left	8	5	grating	1
+224.1	0.4	n/a	n/a	middle	58	5	dim	1
+227.1	0.4	n/a	n/a	middle	59	5	dim	1
+230.7	0.4	n/a	n/a	middle	60	5	dim	1
+234.9	0.4	n/a	n/a	middle	61	5	dim	1
+238.9	0.4	n/a	n/a	middle	62	5	dim	1
+240	16	0	1	right	8	5	grating	1
+244.2	0.4	n/a	n/a	middle	63	5	dim	1
+247.7	0.4	n/a	n/a	middle	64	5	dim	1
+252.8	0.4	n/a	n/a	middle	65	5	dim	1
+256	16	0	1	left	9	5	grating	1
+257.8	0.4	n/a	n/a	middle	66	5	dim	1
+272	16	0	1	right	9	5	grating	1
+288	16	0	1	left	10	5	grating	1
+304	16	0	1	right	10	5	grating	1

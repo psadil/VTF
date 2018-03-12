@@ -17,7 +17,9 @@ stim.fixSize_deg = 1;
 stim.fixLineSize = 2;
 
 stim.strip_eccen_deg = 3;
+stim.unique_phases = 16;
 stim.update_phase_sec = 0.1;
+stim.flips_per_update = stim.update_phase_sec/window.ifi;
 
 % where to place the center of each grating
 % Henriksson 2008

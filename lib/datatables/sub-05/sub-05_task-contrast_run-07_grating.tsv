@@ -1,97 +1,97 @@
-side	run	subject	filename	onset_expected	duration_expected	orientation	contrast	trial	trial_type	iti_expected	n_flip_in_trial	trial_start	trial_end	exitflag	response	rt	correct	onset	duration
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	0	5	90	0.2	1	grating	3.6999999999999993	87	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	8.7	5	75	0.8	2	grating	2.6000000000000014	76.00000000000001	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	16.3	5	150	0.2	3	grating	3.5	85	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	24.8	5	105	0.2	4	grating	2.6999999999999993	77	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	32.5	5	15	0.8	5	grating	2.5	75	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	40	5	90	0.8	6	grating	3	80	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	48	5	150	0.2	7	grating	2.6000000000000014	76.00000000000001	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	55.6	5	0	0.2	8	grating	3.1000000000000014	81.00000000000001	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	63.7	5	90	0.2	9	grating	3.200000000000003	82.00000000000003	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	71.9	5	75	0.8	10	grating	3.3999999999999915	83.99999999999991	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	80.3	5	165	0.8	11	grating	3.6000000000000085	86.00000000000009	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	88.9	5	30	0.2	12	grating	2.5	75	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	96.4	5	165	0.2	13	grating	3.299999999999997	82.99999999999997	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	104.7	5	120	0.8	14	grating	3.700000000000003	87.00000000000003	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	113.4	5	0	0.2	15	grating	3.6999999999999886	86.99999999999989	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	122.1	5	30	0.2	16	grating	3	80	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	130.1	5	75	0.2	17	grating	2.9000000000000057	79.00000000000006	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	138	5	150	0.8	18	grating	3.6999999999999886	86.99999999999989	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	146.7	5	135	0.2	19	grating	3.1000000000000227	81.00000000000023	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	154.8	5	15	0.8	20	grating	2.8999999999999773	78.99999999999977	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	162.7	5	165	0.2	21	grating	2.9000000000000057	79.00000000000006	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	170.6	5	60	0.8	22	grating	2.5	75	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	178.1	5	60	0.2	23	grating	3.0999999999999943	80.99999999999994	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	186.2	5	120	0.2	24	grating	2.6000000000000227	76.00000000000023	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	193.8	5	90	0.8	25	grating	2.799999999999983	77.99999999999983	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	201.6	5	30	0.8	26	grating	2.8000000000000114	78.00000000000011	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	209.4	5	15	0.2	27	grating	2.5	75	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	216.9	5	135	0.8	28	grating	3.5	85	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	225.4	5	45	0.8	29	grating	3.299999999999983	82.99999999999983	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	233.7	5	120	0.8	30	grating	3	80	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	241.7	5	45	0.8	31	grating	3.1000000000000227	81.00000000000023	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	249.8	5	135	0.2	32	grating	3.1999999999999886	81.99999999999989	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	258	5	60	0.8	33	grating	2.6000000000000227	76.00000000000023	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	265.6	5	45	0.2	34	grating	2.7999999999999545	77.99999999999955	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	273.4	5	165	0.8	35	grating	3.5	85	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	281.9	5	150	0.8	36	grating	3.6000000000000227	86.00000000000023	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	290.5	5	0	0.2	37	grating	2.5	75	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	298	5	105	0.8	38	grating	3.1000000000000227	81.00000000000023	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	306.1	5	60	0.2	39	grating	3.5	85	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	314.6	5	15	0.2	40	grating	3.599999999999966	85.99999999999966	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	323.2	5	30	0.8	41	grating	3.5	85	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	331.7	5	0	0.2	42	grating	3.6999999999999886	86.99999999999989	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	340.4	5	105	0.2	43	grating	3.2000000000000455	82.00000000000045	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	348.6	5	75	0.2	44	grating	2.5	75	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	356.1	5	45	0.2	45	grating	2.599999999999966	75.99999999999966	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	363.7	5	135	0.8	46	grating	3.6999999999999886	86.99999999999989	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	372.4	5	105	0.8	47	grating	3	80	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	380.4	5	120	0.2	48	grating	34.60000000000002	396.0000000000002	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	0	5	150	0.8	1	grating	3.5	85	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	8.5	5	90	0.2	2	grating	3.5	85	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	17	5	120	0.2	3	grating	2.8000000000000007	78	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	24.8	5	0	0.2	4	grating	3.400000000000002	84.00000000000003	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	33.2	5	30	0.8	5	grating	3.5999999999999943	85.99999999999994	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	41.8	5	45	0.8	6	grating	3.700000000000003	87.00000000000003	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	50.5	5	135	0.8	7	grating	2.799999999999997	77.99999999999997	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	58.3	5	15	0.2	8	grating	2.700000000000003	77.00000000000003	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	66	5	135	0.2	9	grating	2.9000000000000057	79.00000000000006	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	73.9	5	135	0.2	10	grating	2.6999999999999886	76.99999999999989	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	81.6	5	60	0.2	11	grating	2.5	75	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	89.1	5	120	0.2	12	grating	2.700000000000003	77.00000000000003	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	96.8	5	90	0.8	13	grating	2.799999999999997	77.99999999999997	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	104.6	5	75	0.2	14	grating	3.700000000000003	87.00000000000003	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	113.3	5	75	0.8	15	grating	3.299999999999997	82.99999999999997	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	121.6	5	15	0.8	16	grating	2.5999999999999943	75.99999999999994	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	129.2	5	105	0.8	17	grating	3.5	85	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	137.7	5	90	0.2	18	grating	3.4000000000000057	84.00000000000006	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	146.1	5	0	0.2	19	grating	3.4000000000000057	84.00000000000006	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	154.5	5	60	0.8	20	grating	3.1999999999999886	81.99999999999989	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	162.7	5	60	0.2	21	grating	2.9000000000000057	79.00000000000006	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	170.6	5	0	0.2	22	grating	2.9000000000000057	79.00000000000006	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	178.5	5	60	0.8	23	grating	2.5999999999999943	75.99999999999994	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	186.1	5	120	0.8	24	grating	2.700000000000017	77.00000000000017	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	193.8	5	90	0.8	25	grating	2.5999999999999943	75.99999999999994	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	201.4	5	75	0.2	26	grating	3.4000000000000057	84.00000000000006	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	209.8	5	165	0.2	27	grating	2.5	75	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	217.3	5	150	0.2	28	grating	3.1999999999999886	81.99999999999989	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	225.5	5	150	0.8	29	grating	2.8000000000000114	78.00000000000011	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	233.3	5	45	0.2	30	grating	3.0999999999999943	80.99999999999994	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	241.4	5	150	0.2	31	grating	3.6999999999999886	86.99999999999989	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	250.1	5	165	0.8	32	grating	3.299999999999983	82.99999999999983	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	258.4	5	165	0.2	33	grating	3	80	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	266.4	5	15	0.2	34	grating	2.6000000000000227	76.00000000000023	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	274	5	165	0.8	35	grating	3	80	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	282	5	30	0.2	36	grating	3.1999999999999886	81.99999999999989	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	290.2	5	45	0.8	37	grating	2.8000000000000114	78.00000000000011	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	298	5	105	0.2	38	grating	2.5	75	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	305.5	5	105	0.2	39	grating	3.1999999999999886	81.99999999999989	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	313.7	5	15	0.8	40	grating	3.6000000000000227	86.00000000000023	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	322.3	5	30	0.8	41	grating	2.8999999999999773	78.99999999999977	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	330.2	5	0	0.2	42	grating	3.5	85	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	338.7	5	105	0.8	43	grating	2.6000000000000227	76.00000000000023	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	346.3	5	30	0.2	44	grating	3.1999999999999886	81.99999999999989	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	354.5	5	135	0.8	45	grating	3.5	85	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	363	5	75	0.8	46	grating	2.8999999999999773	78.99999999999977	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	370.9	5	45	0.2	47	grating	3	80	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
-right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	378.9	5	120	0.8	48	grating	36.10000000000002	411.0000000000002	NaN	NaN	NA	NO RESPONSE	NaN	NA	NaN	NaN
+side	run	subject	filename	onset_expected	duration_expected	orientation	contrast	trial	trial_type	iti_expected	n_flip_in_trial	exitflag	response	correct
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	0	5	15	0.8	1	grating	3.0999999999999996	81	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	8.1	5	60	0.8	2	grating	2.5	75	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	15.6	5	150	0.8	3	grating	3.0000000000000018	80.00000000000001	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	23.6	5	30	0.8	4	grating	2.599999999999998	75.99999999999997	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	31.2	5	135	0.2	5	grating	3.0000000000000036	80.00000000000003	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	39.2	5	105	0.2	6	grating	3	80	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	47.2	5	45	0.2	7	grating	3.299999999999997	82.99999999999997	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	55.5	5	165	0.2	8	grating	3.700000000000003	87.00000000000003	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	64.2	5	60	0.2	9	grating	2.700000000000003	77.00000000000003	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	71.9	5	75	0.2	10	grating	3.0999999999999943	80.99999999999994	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	80	5	120	0.2	11	grating	3.5	85	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	88.5	5	165	0.8	12	grating	3.5999999999999943	85.99999999999994	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	97.1	5	90	0.8	13	grating	3.1000000000000085	81.00000000000009	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	105.2	5	0	0.2	14	grating	2.700000000000003	77.00000000000003	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	112.9	5	135	0.8	15	grating	3.6999999999999886	86.99999999999989	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	121.6	5	105	0.8	16	grating	3	80	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	129.6	5	45	0.2	17	grating	3.700000000000017	87.00000000000017	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	138.3	5	75	0.2	18	grating	2.5999999999999943	75.99999999999994	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	145.9	5	30	0.2	19	grating	3.1999999999999886	81.99999999999989	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	154.1	5	60	0.2	20	grating	3	80	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	162.1	5	90	0.8	21	grating	3.700000000000017	87.00000000000017	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	170.8	5	105	0.2	22	grating	2.6999999999999886	76.99999999999989	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	178.5	5	0	0.2	23	grating	3.4000000000000057	84.00000000000006	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	186.9	5	105	0.8	24	grating	3.299999999999983	82.99999999999983	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	195.2	5	75	0.8	25	grating	3.200000000000017	82.00000000000017	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	203.4	5	150	0.2	26	grating	3	80	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	211.4	5	120	0.8	27	grating	3	80	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	219.4	5	45	0.8	28	grating	3.299999999999983	82.99999999999983	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	227.7	5	90	0.2	29	grating	3.700000000000017	87.00000000000017	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	236.4	5	150	0.8	30	grating	2.799999999999983	77.99999999999983	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	244.2	5	90	0.2	31	grating	3.700000000000017	87.00000000000017	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	252.9	5	0	0.2	32	grating	3.5999999999999943	85.99999999999994	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	261.5	5	165	0.8	33	grating	2.6999999999999886	76.99999999999989	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	269.2	5	30	0.8	34	grating	3	80	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	277.2	5	120	0.2	35	grating	3.5	85	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	285.7	5	135	0.2	36	grating	3.5	85	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	294.2	5	150	0.2	37	grating	2.8000000000000114	78.00000000000011	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	302	5	15	0.8	38	grating	2.5	75	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	309.5	5	120	0.8	39	grating	3.6999999999999886	86.99999999999989	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	318.2	5	15	0.2	40	grating	2.5	75	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	325.7	5	60	0.8	41	grating	3	80	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	333.7	5	135	0.8	42	grating	3.1999999999999886	81.99999999999989	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	341.9	5	15	0.2	43	grating	3.7000000000000455	87.00000000000045	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	350.6	5	0	0.2	44	grating	2.7999999999999545	77.99999999999955	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	358.4	5	45	0.8	45	grating	2.8000000000000114	78.00000000000011	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	366.2	5	165	0.2	46	grating	3.400000000000034	84.00000000000034	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	374.6	5	30	0.2	47	grating	3.1999999999999886	81.99999999999989	NA	NO RESPONSE	NA
+left	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	382.8	5	75	0.8	48	grating	32.19999999999999	371.9999999999999	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	0	5	105	0.2	1	grating	3.0999999999999996	81	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	8.1	5	90	0.8	2	grating	3.5000000000000018	85.00000000000001	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	16.6	5	0	0.2	3	grating	2.8999999999999986	78.99999999999999	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	24.5	5	105	0.8	4	grating	2.6000000000000014	76.00000000000001	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	32.1	5	90	0.2	5	grating	3.1999999999999957	81.99999999999996	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	40.3	5	60	0.8	6	grating	2.5	75	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	47.8	5	75	0.8	7	grating	2.5	75	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	55.3	5	15	0.8	8	grating	3.3000000000000043	83.00000000000004	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	63.6	5	150	0.2	9	grating	2.8000000000000043	78.00000000000004	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	71.4	5	75	0.8	10	grating	3.6999999999999886	86.99999999999989	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	80.1	5	15	0.8	11	grating	2.5	75	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	87.6	5	120	0.2	12	grating	2.6000000000000085	76.00000000000009	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	95.2	5	105	0.2	13	grating	2.799999999999997	77.99999999999997	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	103	5	120	0.8	14	grating	3.200000000000003	82.00000000000003	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	111.2	5	30	0.2	15	grating	2.5999999999999943	75.99999999999994	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	118.8	5	45	0.2	16	grating	3	80	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	126.8	5	0	0.2	17	grating	3.000000000000014	80.00000000000014	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	134.8	5	135	0.8	18	grating	3.0999999999999943	80.99999999999994	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	142.9	5	135	0.2	19	grating	3.0999999999999943	80.99999999999994	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	151	5	165	0.2	20	grating	3.4000000000000057	84.00000000000006	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	159.4	5	60	0.8	21	grating	3.1999999999999886	81.99999999999989	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	167.6	5	15	0.2	22	grating	3.700000000000017	87.00000000000017	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	176.3	5	90	0.8	23	grating	2.6999999999999886	76.99999999999989	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	184	5	75	0.2	24	grating	3.1999999999999886	81.99999999999989	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	192.2	5	60	0.2	25	grating	3.700000000000017	87.00000000000017	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	200.9	5	120	0.2	26	grating	3.5999999999999943	85.99999999999994	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	209.5	5	60	0.2	27	grating	3.0999999999999943	80.99999999999994	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	217.6	5	105	0.8	28	grating	3.5	85	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	226.1	5	135	0.2	29	grating	3.0999999999999943	80.99999999999994	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	234.2	5	120	0.8	30	grating	2.8000000000000114	78.00000000000011	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	242	5	15	0.2	31	grating	2.5999999999999943	75.99999999999994	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	249.6	5	165	0.8	32	grating	2.799999999999983	77.99999999999983	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	257.4	5	45	0.8	33	grating	3.400000000000034	84.00000000000034	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	265.8	5	150	0.8	34	grating	3	80	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	273.8	5	165	0.2	35	grating	3.599999999999966	85.99999999999966	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	282.4	5	150	0.2	36	grating	2.8000000000000114	78.00000000000011	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	290.2	5	30	0.2	37	grating	2.5	75	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	297.7	5	45	0.8	38	grating	3.5	85	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	306.2	5	30	0.8	39	grating	3.1000000000000227	81.00000000000023	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	314.3	5	90	0.2	40	grating	2.8999999999999773	78.99999999999977	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	322.2	5	30	0.8	41	grating	3.1000000000000227	81.00000000000023	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	330.3	5	0	0.2	42	grating	3.6999999999999886	86.99999999999989	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	339	5	150	0.8	43	grating	3.5	85	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	347.5	5	0	0.2	44	grating	2.8000000000000114	78.00000000000011	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	355.3	5	165	0.8	45	grating	3	80	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	363.3	5	135	0.8	46	grating	3.6999999999999886	86.99999999999989	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	372	5	75	0.2	47	grating	3.6000000000000227	86.00000000000023	NA	NO RESPONSE	NA
+right	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	380.6	5	45	0.2	48	grating	34.39999999999998	393.9999999999998	NA	NO RESPONSE	NA

@@ -32,8 +32,15 @@ addParameter(ip, 'algorithm', 'ga', @(x) any(strcmp(x, {'shuffle','ga','block'})
 parse(ip,varargin{:});
 input = ip.Results;
 
-orientations = linspace(0, 180 - (180/input.n_orientation), input.n_orientation);
-contrasts = [.2, .8];
+
+switch input.algorithm
+    case {'ga', 'shuffle'}
+        orientations = linspace(0, 180 - (180/input.n_orientation), input.n_orientation)';
+        contrasts = [.2, .8];
+    case 'block'
+        orientations = 0;
+        contrasts = [1, 0];        
+end
 n_stim_type = input.n_orientation * input.n_contrast;
 
 n_TR = ceil(input.scan_time / input.TR);
@@ -135,15 +142,23 @@ for sub = input.participants
                         input.flip_hz, n_dim_events, trial_types, dim_iti');
                     
                 case 'block'
-                    if mod(run_to_save,2) == 0
-                        trial_types = repmat(1:n_stim_type, [1,input.n_reps]);
+                    if mod(run_to_save, 2) == 0
+                        if side_to_save == 1
+                            trial_types = repmat(1:n_stim_type, [1,input.n_reps]);
+                        else
+                            trial_types = repmat(n_stim_type:-1:1, [1,input.n_reps]);
+                        end
                     else
-                        trial_types = repmat(n_stim_type:-1:1, [1,input.n_reps]);
+                        if side_to_save == 1
+                            trial_types = repmat(n_stim_type:-1:1, [1,input.n_reps]);
+                        else
+                            trial_types = repmat(1:n_stim_type, [1,input.n_reps]);
+                        end
                     end
                     
                     population_parser = make_population_parser4('nodim');
                     
-                    stim_iti = zeros([1,n_stim_events - 1]);
+                    stim_iti = input.epoch_length_max_flip * ones([1,n_stim_events - 1]);
                     if side_to_save == 1
                         dim_iti = randsample(input.dim_sep_min_flip:input.dim_sep_max_flip, n_dim_events, true);
                     end
@@ -161,8 +176,11 @@ for sub = input.participants
             
             events = table();
             events.onset_expected = onsets(1:n_stim_events);
+            if strcmp(input.algorithm, 'block') && side_to_save == 2
+                events.onset_expected = events.onset_expected + (input.epoch_length_max_flip * input.flip_hz);
+            end
             events.duration_expected = epoch_length;
-            events.orientation = orientations(mod(stim_list(1:n_stim_events), input.n_orientation)+1)';
+            events.orientation = orientations(mod(stim_list(1:n_stim_events), input.n_orientation)+1);
             events.contrast = contrasts((stim_list(1:n_stim_events) < input.n_orientation) + 1)';
             events.side = repelem(sides(side_to_save), n_stim_events)';
             events.trial = (1:n_stim_events)';
