@@ -6,9 +6,10 @@ output: html_document
 params:
   save: 1
   sub: !r c(5)
-  task: "localizer"
-  flip_hz: 10
+  task: "contrast"
+  flip_hz: 10 # how many flips should happen per second
   n_phase: 16
+  dim_resp_sec: 1 # how long do participants have to respond
 ---
 
 ```{r setup, include=FALSE}
@@ -19,13 +20,13 @@ library(magrittr)
 
 
 if(params$task == "contrast"){
-  n_grating_per_side = 5
-  scan_dur_sec = 420
+  n_grating_per_side <- 5
+  scan_dur_sec <- 420
 }else if(params$task == "localizer"){
-  n_grating_per_side = 10
-    scan_dur_sec = 336
+  n_grating_per_side <- 10
+    scan_dur_sec <- 336
 }
-n_grating = n_grating_per_side * 2
+n_grating <- n_grating_per_side * 2
 
 
 shifter <- function(x, n = 1) {
@@ -80,11 +81,10 @@ d_main <- finfo %>%
   nest() %>%
   mutate(data = map(data, ~.x %>% 
                       arrange(trial) %>% 
-                      mutate(iti_expected = 
-                               case_when( trial == 1 ~ lead(onset_expected, default = scan_dur_sec) - duration_expected ,
-                                          trial > 1 ~ lead(onset_expected, default = scan_dur_sec) - duration_expected - onset_expected)))) %>%
+                      mutate(iti_expected = dplyr::lead(onset_expected, default = scan_dur_sec) - duration_expected - onset_expected))) %>%
   unnest() %>%
-  mutate(n_flip_in_trial = (duration_expected + iti_expected) * params$flip_hz
+  mutate(n_flip_in_trial = case_when(trial > 1 ~ (duration_expected + iti_expected) * params$flip_hz, 
+                                     trial == 1 ~ (duration_expected + iti_expected) * params$flip_hz + (onset_expected * params$flip_hz) )
          , exitflag = NA_character_ 
          , response = "NO RESPONSE"
          , correct = NA
@@ -129,13 +129,19 @@ d_tInfo <- d_main %>%
   unnest() %>%
   mutate(vbl_expected = (flip-1) * (1/params$flip_hz)) %>%
   mutate(event = case_when( is_close(vbl_expected, onset_expected) ~ "trial_start",
-                            (vbl_expected > onset_expected) & (vbl_expected < onset_expected + duration_expected) ~ "trial_going",
+                            (vbl_expected > onset_expected) &
+                              (vbl_expected < onset_expected + duration_expected) ~ "trial_going",
                             is_close(vbl_expected, onset_expected + duration_expected) ~ "return_to_base_contrast",
+                            (vbl_expected > onset_expected + duration_expected) &
+                              trial_type == "dim" &
+                              (vbl_expected < onset_expected + duration_expected + params$dim_resp_sec) ~ "trial_resp_open",
+                            trial_type == "dim" &
+                              is_close(vbl_expected, onset_expected + duration_expected + params$dim_resp_sec) ~ "base_resp_close",          
                             TRUE ~ "at_base_contrast" ),
          contrast = case_when(trial_type == "grating" ~ if_else(event %in% c("at_base_contrast", "return_to_base_contrast"), "0", contrast),
-                              trial_type == "dim" ~ if_else(event %in% c("at_base_contrast", "return_to_base_contrast"), "1", contrast)),
+                              trial_type == "dim" ~ if_else(event %in% c("at_base_contrast", "return_to_base_contrast", "trial_resp_open", "base_resp_close"), "1", contrast)),
          answer = case_when(trial_type == "grating" ~ "n/a",
-                            trial_type == "dim" ~ if_else(contrast == "1", "NO RESPONSE", "1!"))
+                            trial_type == "dim" ~ if_else(event %in% c("at_base_contrast", "base_resp_close"), "NO RESPONSE", "1!"))
   ) %>%
   mutate(vbl = NaN
          , stimulus_onset_time = NaN

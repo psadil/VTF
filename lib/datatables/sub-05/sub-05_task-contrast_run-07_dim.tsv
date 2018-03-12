@@ -1,5 +1,5 @@
 side	run	subject	filename	onset_expected	duration_expected	orientation	contrast	trial	trial_type	iti_expected	n_flip_in_trial	exitflag	response	correct
-middle	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	4.1	0.4	n/a	n/a	1	dim	8.299999999999999	87	NA	NO RESPONSE	NA
+middle	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	4.1	0.4	n/a	n/a	1	dim	4.199999999999999	87	NA	NO RESPONSE	NA
 middle	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	8.7	0.4	n/a	n/a	2	dim	4.9	53.00000000000001	NA	NO RESPONSE	NA
 middle	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	14	0.4	n/a	n/a	3	dim	2.5	29	NA	NO RESPONSE	NA
 middle	7	5	ga_dump/sub-05_task-contrast_run-07_ga_events.tsv	16.9	0.4	n/a	n/a	4	dim	2.6000000000000014	30.000000000000014	NA	NO RESPONSE	NA

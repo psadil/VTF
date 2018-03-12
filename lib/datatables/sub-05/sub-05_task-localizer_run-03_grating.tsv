@@ -9,7 +9,7 @@ left	3	5	ga_dump/sub-05_task-localizer_run-03_ga_events.tsv	192	16	0	1	7	grating
 left	3	5	ga_dump/sub-05_task-localizer_run-03_ga_events.tsv	224	16	0	1	8	grating	16	320	NA	NO RESPONSE	NA
 left	3	5	ga_dump/sub-05_task-localizer_run-03_ga_events.tsv	256	16	0	1	9	grating	16	320	NA	NO RESPONSE	NA
 left	3	5	ga_dump/sub-05_task-localizer_run-03_ga_events.tsv	288	16	0	1	10	grating	32	480	NA	NO RESPONSE	NA
-right	3	5	ga_dump/sub-05_task-localizer_run-03_ga_events.tsv	16	16	0	1	1	grating	32	480	NA	NO RESPONSE	NA
+right	3	5	ga_dump/sub-05_task-localizer_run-03_ga_events.tsv	16	16	0	1	1	grating	16	480	NA	NO RESPONSE	NA
 right	3	5	ga_dump/sub-05_task-localizer_run-03_ga_events.tsv	48	16	0	1	2	grating	16	320	NA	NO RESPONSE	NA
 right	3	5	ga_dump/sub-05_task-localizer_run-03_ga_events.tsv	80	16	0	1	3	grating	16	320	NA	NO RESPONSE	NA
 right	3	5	ga_dump/sub-05_task-localizer_run-03_ga_events.tsv	112	16	0	1	4	grating	16	320	NA	NO RESPONSE	NA

@@ -19,13 +19,13 @@ Overall Flow:
     
     % show initial prompt. Timing not super critical with this one
     showPrompt(window, 'Initializing...', false);
-
+    
     [feedbackFcn, fb] = makeFeedbackFcn(input.give_feedback);
     keys = setupKeys(input.fMRI);
     stim = setupStim( window, input);
     
     tInfo = setupTInfo( constants, stim );
-        
+    
     index_dim = tInfo.trial_type == 'dim';
     tInfo_dim = tInfo(index_dim,:);
     index_grating = tInfo.trial_type == 'grating';
@@ -36,7 +36,7 @@ Overall Flow:
     
     stairs = setupStaircase(input.delta_luminance_guess);
     
-    slack = 0.1;
+    slack = 0.5;
     flip_schedule_offset = (stim.flips_per_update - slack) * window.ifi;
     
     [el, exitflag] = setupEyeTracker( input.tracker, window, constants );
@@ -65,7 +65,7 @@ Overall Flow:
     
     % little helper vectors for auxillary parameters in the procedural
     % grating step. sacraficed clarity for what I hope will be a speed
-    % boost    
+    % boost
     zz = zeros(1, stim.n_gratings_per_side);
     oo = ones(1, stim.n_gratings_per_side);
     
@@ -75,7 +75,6 @@ Overall Flow:
     % function
     KbQueueCreate(constants.device, keys.resp + keys.escape);
     KbQueueStart(constants.device);
-
     for flip = 1:n_flip
         
         
@@ -87,17 +86,18 @@ Overall Flow:
         
         switch tInfo_dim.event{flip}
             case 'trial_start'
-                index_dim_trial = flip:(flip+3);
-                tInfo_dim.contrast( index_dim_trial ) = ...
-                    repmat(1 - stairs.luminance_difference, [4,1]);
-            case 'return_to_base_contrast'
-                result = any( tInfo_dim.correct(index_dim_trial) );
-                
-                fbwrapper(result, feedbackFcn, 'trial');
+                index_dim_trial = flip:(flip+9);
+                tInfo_dim.contrast( flip:(flip+3) ) = ...
+                    repmat(1 - stairs.luminance_difference, [4, 1]);
+            case 'base_resp_close'
+                result = any(strcmp(tInfo_dim.response(index_dim_trial),...
+                    tInfo_dim.answer{index_dim_trial(1)}));
+                        
+                fbwrapper(result, feedbackFcn, 'fb');
                 % update staircase values for next trial
-                stairs = update_stairs(stairs, result); 
+                stairs = update_stairs(stairs, result);
         end
-
+        
         for s = 1:2
             side = sides(s);
             index_grating_flip_side = (tInfo_grating.side == side) & index_grating_flip;
@@ -128,6 +128,18 @@ Overall Flow:
         % get to work. meanwhile, handle other business before flipping
         Screen('DrawingFinished', window.pointer);
         
+        
+        if flip == 1
+            % after trigger is sent, try to flip on next refresh cycle. All
+            % subsequent flips will be based on this event
+            flip_when = triggerSent + (1 - slack) * window.ifi;
+        else
+            flip_when = tInfo_dim.vbl(flip - 1) + flip_schedule_offset;
+        end
+        [tInfo_dim.vbl(flip), tInfo_dim.stimulus_onset_time(flip),...
+            tInfo_dim.flip_timestamp(flip), tInfo_dim.missed(flip)] = ...
+            Screen('Flip', window.pointer, flip_when);
+        
         [keys_pressed, press_times] = ...
             responseHandler(constants.device, tInfo_dim.answer{flip}, 1);
         
@@ -144,31 +156,20 @@ Overall Flow:
             end
         end
         
-        % check for response on every flip (enables esc whenever). 
+        % was the response correct?
         tInfo_dim.correct(flip) = ...
             strcmp(tInfo_dim.response{flip}, tInfo_dim.answer{flip});
-      
-        % give feedback at this same rate. That is, play tone whenever
+        
+        % give feedback at flip rate when no dim. That is, play tone whenever
         % participant does not have NO RESPONSE when there is a dim, or
         % has a response when a dim has not happened
         fbwrapper(tInfo_dim.correct(flip), feedbackFcn, tInfo_dim.event{flip});
         
-        if flip == 1
-            % after trigger is sent, try to flip on next refresh cycle. All
-            % subsequent flips will be based on this event
-            flip_when = triggerSent + (1 - slack) * window.ifi;
-        else
-            flip_when = tInfo_dim.vbl(flip - 1) + flip_schedule_offset;
-        end
-        [tInfo_dim.vbl(flip), tInfo_dim.stimulus_onset_time(flip),...
-            tInfo_dim.flip_timestamp(flip), tInfo_dim.missed(flip)] = ...
-            Screen('Flip', window.pointer, flip_when);
-        
         switch tInfo_grating.event{index_grating_flip_side}
-            case 'trial_start'                       
+            case 'trial_start'
                 eyetrackerFcn('Message','Trial_onset');
                 eyetrackerFcn('Message', 'TRIALID %d', tInfo_grating.trial(index_grating_flip_side));
-                eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'trial', tInfo_grating.trial(index_grating_flip_side));                
+                eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'trial', tInfo_grating.trial(index_grating_flip_side));
             case 'return_to_base_contrast'
                 % Sending a 'TRIAL_RESULT' message to mark the end of a trial in
                 % Data Viewer. This is different than the end of recording message
@@ -177,7 +178,7 @@ Overall Flow:
                 % file after this message.
                 eyetrackerFcn('Message', 'TRIAL_RESULT 0');
         end
-                
+        
     end
     
     tInfo = rebuild_tInfo(tInfo_grating, tInfo_dim);
@@ -259,9 +260,9 @@ function fbwrapper(correct, feedbackFcn, event)
 
 % the event flag is to help make sure that a miss is only indicated once
 % per opportunity, at the end of the dimming trial
-if ~correct && contains(event, 'base')
-    feedbackFcn();    
+if ~correct && ~(any(strfind(event, 'trial')) || any(strfind(event, 'return_to_base_contrast')))
+    feedbackFcn();
 end
-    
+
 end
 

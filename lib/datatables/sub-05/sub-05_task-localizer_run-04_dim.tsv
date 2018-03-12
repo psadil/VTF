@@ -1,5 +1,5 @@
 side	run	subject	filename	onset_expected	duration_expected	orientation	contrast	trial	trial_type	iti_expected	n_flip_in_trial	exitflag	response	correct
-middle	4	5	ga_dump/sub-05_task-localizer_run-04_ga_events.tsv	4.9	0.4	n/a	n/a	1	dim	9.2	96	NA	NO RESPONSE	NA
+middle	4	5	ga_dump/sub-05_task-localizer_run-04_ga_events.tsv	4.9	0.4	n/a	n/a	1	dim	4.299999999999999	96	NA	NO RESPONSE	NA
 middle	4	5	ga_dump/sub-05_task-localizer_run-04_ga_events.tsv	9.6	0.4	n/a	n/a	2	dim	4.300000000000001	47.000000000000014	NA	NO RESPONSE	NA
 middle	4	5	ga_dump/sub-05_task-localizer_run-04_ga_events.tsv	14.3	0.4	n/a	n/a	3	dim	3	34	NA	NO RESPONSE	NA
 middle	4	5	ga_dump/sub-05_task-localizer_run-04_ga_events.tsv	17.7	0.4	n/a	n/a	4	dim	2.6000000000000014	30.000000000000014	NA	NO RESPONSE	NA
