@@ -1,4 +1,4 @@
-function stim = setupStim( expParams, window, input )
+function stim = setupStim( window, input )
 
 %{
 
@@ -17,9 +17,7 @@ stim.fixSize_deg = 1;
 stim.fixLineSize = 2;
 
 stim.strip_eccen_deg = 3;
-
-% phases to present during trials
-stim.orientations_deg = linspace(0,180-(180 / expParams.nOrientations), expParams.nOrientations);
+stim.update_phase_sec = 0.1;
 
 % where to place the center of each grating
 % Henriksson 2008
@@ -52,14 +50,6 @@ stim.th = 2*stim.si+1;
 stim.n_gratings_per_side = 5;
 stim.n_gratings = stim.n_gratings_per_side * 2; % 5 on each side
 
-% how often are phases of gabors updated (i.e., once every stim.update_phase_sec)
-% note that in Liu et al., this is 0.2, but the phases update
-% asyncronously. So, there is a new random phase ever 0.2/2 = 0.1 sec
-stim.update_phase_sec = 0.1;
-stim.n_phase_orientations = 16;
-
-% directions presented
-stim.targOrients = linspace(0,180-(180/expParams.nOrientations), expParams.nOrientations)*pi/180;
 
 % ensure blending disabled in main window
 stim.sourceFactor = 'GL_ONE';
@@ -89,12 +79,14 @@ for grating = 1:stim.n_gratings_per_side
 end
 
 % Make a grey texture to cover the full window
-stim.fullWindowTex_left = Screen('MakeTexture', window.pointer,...
+fullWindowTex_left = Screen('MakeTexture', window.pointer,...
     ones(window.winRect(4), window.winRect(3)) .* window.gray, [], [], 2);
-stim.fullWindowTex_right = Screen('MakeTexture', window.pointer,...
+fullWindowTex_right = Screen('MakeTexture', window.pointer,...
     ones(window.winRect(4), window.winRect(3)) .* window.gray, [], [], 2);
-Screen('BlendFunction', stim.fullWindowTex_left, 'GL_ONE', 'GL_ONE');
-Screen('BlendFunction', stim.fullWindowTex_right, 'GL_ONE', 'GL_ONE');
+Screen('BlendFunction', fullWindowTex_left, 'GL_ONE', 'GL_ONE');
+Screen('BlendFunction', fullWindowTex_right, 'GL_ONE', 'GL_ONE');
+
+stim.fullWindowTex = [fullWindowTex_left, fullWindowTex_right];
 
 % Preallocate array with destination rectangles:
 % all gratings drawn to center of screen.
@@ -105,8 +97,10 @@ for grating = 1:stim.n_gratings_per_side
     stim.dstRects(:,grating) = CenterRectOnPoint(texrect, ...
         window.xCenter, window.yCenter)';
 end
-stim.srcRect_left = [0; 0; window.xCenter - stim.strip_eccen_pix/2; window.winRect(4)];
-stim.srcRect_right = [window.xCenter + stim.strip_eccen_pix/2; 0; window.winRect(3); window.winRect(4)];
+src_rect_left = [0; 0; window.xCenter - stim.strip_eccen_pix/2; window.winRect(4)];
+src_rect_right = [window.xCenter + stim.strip_eccen_pix/2; 0; window.winRect(3); window.winRect(4)];
+
+stim.src_rects = [src_rect_left, src_rect_right];
 
 % cue point coordinates
 stim.fixRect = ...
@@ -117,55 +111,21 @@ stim.fixRect = ...
 % stimulus parameters
 switch input.experiment
     case 'contrast'
-        % Liu, Cable, Gardner, 2017
-        stim.contrast = [.2; .8];
         stim.reps_per_grating = 1;
         
     case 'localizer'
-        stim.contrast = 1;
-        stim.reps_per_grating = 2;
-        
+        stim.reps_per_grating = 2;        
 end
+stim.spatial_frequency = repmat(stim.grating_freq_cpp, [1, stim.reps_per_grating]);
+stim.texes = repmat(stim.tex, [stim.reps_per_grating, 1]);
 
 stim.n_gratings_per_side = stim.n_gratings_per_side * stim.reps_per_grating;
 stim.n_gratings = stim.n_gratings_per_side * 2;
-stim.dstRects = repmat(stim.dstRects, [1, stim.reps_per_grating]);
+stim.dst_rects = repmat(stim.dstRects, [1, stim.reps_per_grating]);
 
 stim.background_img_filename = 'background.bmp';
 
-%% initial flip to load + compile before it matters
-contrast = 0;
 
-n_stims = length(stim.tex);
-Screen('DrawTextures', stim.fullWindowTex_left, stim.tex, [],...
-    stim.dstRects(:,1:n_stims), 0, ...
-    [], [], [], [], kPsychUseTextureMatrixForRotation, ...
-    [ones(1,n_stims)*contrast; stim.grating_freq_cpp;...
-    ones(1, n_stims)*contrast; zeros(1, n_stims)]);
-
-Screen('DrawTextures', stim.fullWindowTex_right, stim.tex, [],...
-    stim.dstRects(:,1:n_stims), 90, ...
-    [], [], [], [], kPsychUseTextureMatrixForRotation, ...
-    [ones(1,n_stims)*contrast; stim.grating_freq_cpp;...
-    ones(1, n_stims)*contrast; zeros(1, n_stims)]);
-
-% Batch-Draw the required parts of the mediating textures to onscreen
-% window
-Screen('DrawTextures', window.pointer, [stim.fullWindowTex_left, stim.fullWindowTex_right], ...
-    [stim.srcRect_left, stim.srcRect_right], [stim.srcRect_left, stim.srcRect_right]);
-
-% always draw central fixation cross
-drawFixation(window, stim.fixRect, stim.fixLineSize,...
-    1*contrast, input.experiment);
-
-% show initial prompt. Timing not super critical with this one
-% showPrompt(window, 'Initializing...', false);
-
-Screen('DrawingFinished', window.pointer);
-Screen('Flip', window.pointer);
-
-% imageArray = Screen('GetImage', window.pointer);
-% imwrite(imageArray, stim.background_img_filename);
 
 end
 

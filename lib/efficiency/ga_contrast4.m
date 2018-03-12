@@ -121,7 +121,9 @@ for sub = input.participants
                     
                     population_parser = make_population_parser4('nodim');
                     
-                    stim_iti = randsample(input.min_iti_flip:input.max_iti_flip, n_stim_events, true);
+                    % stim starts at first instance, but dim can start
+                    % later
+                    stim_iti = randsample(input.min_iti_flip:input.max_iti_flip, n_stim_events - 1, true);
                     if side_to_save == 1
                         dim_iti = randsample(input.dim_sep_min_flip:input.dim_sep_max_flip, n_dim_events, true);
                     end
@@ -158,8 +160,8 @@ for sub = input.participants
                 '_side-', sides{side_to_save}, '_events_SPM.mat'],'SPM');
             
             events = table();
-            events.onset = onsets(1:n_stim_events);
-            events.duration = epoch_length;
+            events.onset_expected = onsets(1:n_stim_events);
+            events.duration_expected = epoch_length;
             events.orientation = orientations(mod(stim_list(1:n_stim_events), input.n_orientation)+1)';
             events.contrast = contrasts((stim_list(1:n_stim_events) < input.n_orientation) + 1)';
             events.side = repelem(sides(side_to_save), n_stim_events)';
@@ -191,19 +193,21 @@ for sub = input.participants
         data_leftright = [data_left; data_right];
         data_leftright.orientation = strtrim(cellstr(num2str(data_leftright.orientation)));
         data_leftright.contrast = strtrim(cellstr(num2str(data_leftright.contrast)));
-        
+        data_leftright.trial_type = repmat({'grating'}, [size(data_leftright,1),1]);
         
         data_dim = table();
-        data_dim.onset = dim_iti';
-        data_dim.duration = repelem(input.dim_dur, n_dim_events)';
+        data_dim.onset_expected = (0.4 * (0:(n_dim_events-1)))' + cumsum(dim_iti * input.flip_hz)';
+        data_dim.duration_expected = repelem(input.dim_dur, n_dim_events)';
         data_dim.orientation = repelem({'n/a'}, n_dim_events)';
         data_dim.contrast = repelem({'n/a'}, n_dim_events)';
         data_dim.side = repelem({'middle'},n_dim_events)';
         data_dim.trial = (1:n_dim_events)';
         data_dim.subject = repelem(sub, n_dim_events)';
+        data_dim.trial_type = repmat({'dim'}, [size(data_dim,1),1]);
         
         data = [data_leftright; data_dim];
-        data = sortrows(data, 'onset');
+        data.run = repmat(run_to_save, [size(data,1),1]);
+        data = sortrows(data, 'onset_expected');
         
         filename = [strjoin({['sub-',num2str(sub, '%02d')],...
             ['task-', input.task], ['run-', num2str(run_to_save, '%02d')],...

@@ -1,135 +1,87 @@
-function [ response, rt, vbl, missed, exitFlag, trial_dim ] = ...
-    elicitContrastResp(texes, spatial_frequency, src_rects, trial_start, window, responseHandler, stim, keys,...
-    roboRT, roboResp, constants, phases, angles, dim_sequence, luminance, ...
-    contrasts, experiment, trial_dim, dst_rects, trial, eyetrackerFcn, fb, feedbackFcn )
+function [ tInfo, dimming_data ] = ...
+    elicitContrastResp(data, tInfo, dimming_data, texes, spatial_frequency, ...
+    src_rects, window, responseHandler, stim, keys,...
+    constants, dst_rects, eyetrackerFcn, fb, feedbackFcn )
 
 
-%%
 % default return parameters
-nFlipsInTrial = size(contrasts,1);
-nDimsInTrial = length(roboResp);
+n_flip = max(tInfo.flip);
+n_dim_in_trial = length(unique(dimming_data.trial));
 
-response = repelem({'NO_RESPONSE'},nDimsInTrial)';
-exitFlag = {'EMPTY'};
-rt = NaN(nDimsInTrial,1);
-dim_onset_in_trial = NaN(nDimsInTrial,1);
-
-vbl = NaN(nFlipsInTrial, 1);
-missed = NaN(nFlipsInTrial, 1);
+response = repelem({'NO_RESPONSE'}, n_dim_in_trial)';
+rt = NaN(n_dim_in_trial,1);
 
 
 %% start flipping stims
-goRobo = 0;
-accept_resp = 0;
-dim_count_in_trial = 0 ;
-% record whether stimulus is down
-% stim_down = [find(contrasts(:,1),1, 'first'), find(contrasts(:,2),1, 'first')];
-KbQueueCreate(constants.device, keys.resp + keys.escape);
-for flip = 1:nFlipsInTrial
+sides = [{'left'}, {'right'}];
+accept_resp = true;
+for flip = 1:n_flip
+    tInfo_flip_grating = tInfo(tInfo.flip == flip, trial_type == 'grating');
+    tInfo_flip_dim = tInfo(tInfo.flip == flip, trial_type == 'dim');
     
-    % need to cleiar both canvases prior to drawing, given present blend
-    % function
-    [sourceFactorOld, destinationFactorOld] = Screen('BlendFunction', stim.fullWindowTex_left, 'GL_ONE', 'GL_ZERO');
-    Screen('FillRect', stim.fullWindowTex_left, window.gray);
-    Screen('BlendFunction', stim.fullWindowTex_left, sourceFactorOld, destinationFactorOld);
-    
-    [sourceFactorOld, destinationFactorOld] = Screen('BlendFunction', stim.fullWindowTex_right, 'GL_ONE', 'GL_ZERO');
-    Screen('FillRect', stim.fullWindowTex_right, window.gray);
-    Screen('BlendFunction', stim.fullWindowTex_right, sourceFactorOld, destinationFactorOld);
-    
-    % after clearing, draw gratings
-    Screen('DrawTextures', stim.fullWindowTex_left, texes, [],...
-        dst_rects, angles(flip, 1:stim.n_gratings_per_side), ...
-        [], [], [], [], kPsychUseTextureMatrixForRotation, ...
-        [phases(flip, 1:stim.n_gratings_per_side); spatial_frequency;...
-        repelem(contrasts(flip,1), stim.n_gratings_per_side); zeros(1, stim.n_gratings_per_side)]);
-    
-    Screen('DrawTextures', stim.fullWindowTex_right, texes, [],...
-        dst_rects, angles(flip, 1+stim.n_gratings_per_side:end),...
-        [], [], [], [], kPsychUseTextureMatrixForRotation, ...
-        [phases(flip, 1+stim.n_gratings_per_side:end); spatial_frequency;...
-        repelem(contrasts(flip,2), stim.n_gratings_per_side); zeros(1, stim.n_gratings_per_side)]);
+    for s = 1:2
+        side = sides(s);
+        tInfo_flip_side = tInfo_flip_grating(tInfo_flip_grating.side == side, :);
+        d_side = data(data.side == side);
+        
+        % need to cleiar both canvases prior to drawing, given present blend
+        % function
+        [sourceFactorOld, destinationFactorOld] = Screen('BlendFunction', stim.fullWindowTex(s), 'GL_ONE', 'GL_ZERO');
+        Screen('FillRect', stim.fullWindowTex(s), window.gray);
+        Screen('BlendFunction', stim.fullWindowTex(s), sourceFactorOld, destinationFactorOld);
+        
+        % after clearing, draw gratings
+        Screen('DrawTextures', stim.fullWindowTex(s), texes, [],...
+            dst_rects, d_side.orientation, ...
+            [], [], [], [], kPsychUseTextureMatrixForRotation, ...
+            [tInfo_flip_side.phase; spatial_frequency; tInfo_flip_side.contrast; zeros(1, stim.n_gratings_per_side)]);
+    end
     
     % Only draw required parts of gratings. Note that this happens in two
     % stage process because of how orientation rotations interact with
     % annulus shader
-    Screen('DrawTextures', window.pointer, [stim.fullWindowTex_left; stim.fullWindowTex_right], ...
-        src_rects, src_rects);
+    Screen('DrawTextures', window.pointer, stim.fullWindowTex, src_rects, src_rects);
     
     % always draw central fixation cross
-    drawFixation(window, stim.fixRect, stim.fixLineSize,...
-        luminance(dim_sequence(flip)+1), experiment);
+    drawFixation(window, stim.fixRect, stim.fixLineSize, tInfo_flip_dim.contrast);
     
     Screen('DrawingFinished', window.pointer);
     
-    if flip == 1        
-        eyetrackerFcn('Message','Trial_onset');
-%         eyetrackerFcn('Message', '!V IMGLOAD FILL %s', [int2str(trial),'.jpg']);
-        % handle special case where trial starts in sync with new dimming
-        % event
-        if all(dim_sequence(1:4))
-            accept_resp = 1;
-            dim_count_in_trial = dim_count_in_trial + 1;
-            dim_onset_in_trial(dim_count_in_trial) = vbl(flip);
-        end
-        
-        % open up response cue and allow response
-        KbQueueStart(constants.device);
-        
-        [vbl(flip), ~, ~, missed(flip)] = Screen('Flip', window.pointer, ...
-            trial_start);
-    else
-        if dim_sequence(flip)
-            if dim_sequence(flip-1)==0
-                accept_resp = 1;
-                dim_count_in_trial = dim_count_in_trial + 1;
-                dim_onset_in_trial(dim_count_in_trial) = vbl(flip);
-            end
-            
-            % note: dim_onset needs to be indexed by trial_dim because
-            % a dimming event may have started before the present
-            % experimental trial
-            if (dim_count_in_trial > 0) && ... % should short-circuit when initial flips are dimms
-                    ((vbl(flip) - dim_onset_in_trial(dim_count_in_trial)) > roboRT(dim_count_in_trial))
-                goRobo = 1;
-            end
-        end
-        
-        [vbl(flip), ~, ~, missed(flip)] = Screen('Flip', window.pointer, ...
-            vbl(flip-1) + ((1/stim.update_phase_sec) - 0.5) * window.ifi);
-    end
-        
     if accept_resp
         [keys_pressed, press_times] = ...
-            responseHandler(constants.device, roboResp{dim_count_in_trial}, goRobo);
-        
-        fbwrapper(dim_sequence, flip, ...
+            responseHandler(constants.device, tInfo.roboResp{dim_count_in_trial}, tInfo.goRobo(flip));
+        dimming_data.correct(dim_in_trial) = fbwrapper(dim_sequence, flip, ...
             keys_pressed, fb, feedbackFcn, keys.escape);
         
         if ~isempty(keys_pressed)
             [response{dim_count_in_trial}, rt(dim_count_in_trial), exitFlag] = ...
                 wrapper_keyProcess(keys_pressed, press_times, dim_onset_in_trial(dim_count_in_trial));
             
-            accept_resp = 0;
             if strcmp(exitFlag, 'ESCAPE')
-                KbQueueStop(constants.device);
-                KbQueueFlush(constants.device);
-                KbQueueRelease(constants.device);
-                
-                trial_dim = dim_count_in_trial + trial_dim;
-                return;
+                break;
             end
-            
         end
+        accept_resp = false;
+        
+    elseif tInfo_flip_dim.contrast(flip) ~= tInfo_flip_dim.contrast(flip-1)
+        accept_resp = true;
     end
+    
+    if flip == 1
+        eyetrackerFcn('Message','Trial_onset');
+        
+        [tInfo.vbl(flip), tInfo.stimulus_onset_time(flip),...
+            tInfo.flip_timestamp(flip), tInfo.missed(flip)] =...
+            Screen('Flip', window.pointer, trial_start);
+    else
+        
+        [tInfo.vbl(flip), tInfo.stimulus_onset_time(flip),...
+            tInfo.flip_timestamp(flip), tInfo.missed(flip)] = ...
+            Screen('Flip', window.pointer, ...
+            vbl(flip-1) + ((1/stim.update_phase_sec) - 0.5) * window.ifi);
+    end
+    
 end
-
-KbQueueStop(constants.device);
-KbQueueFlush(constants.device);
-KbQueueRelease(constants.device);
-
-trial_dim = dim_count_in_trial + trial_dim;
-
 
 % Sending a 'TRIAL_RESULT' message to mark the end of a trial in
 % Data Viewer. This is different than the end of recording message
@@ -138,12 +90,12 @@ trial_dim = dim_count_in_trial + trial_dim;
 % file after this message.
 eyetrackerFcn('Message', 'TRIAL_RESULT 0');
 
-
 end
 
 
-function fbwrapper(dim_sequence, flip, keys_pressed, fb, feedbackFcn, ignore_keys)
+function correct = fbwrapper(dim_sequence, flip, keys_pressed, fb, feedbackFcn, ignore_keys)
 % provide feedback after misses and false alarms only (errors)
+correct = 1;
 
 ignore_resp = ignore_keys(keys_pressed);
 
@@ -158,10 +110,11 @@ if all(ignore_resp == 0)
     % when there is no dim & prior flip had no dim & participant responds
     if ~dim_sequence(flip) && ~dim_sequence(prior_flip) && ~isempty(keys_pressed) % false alarm
         feedbackFcn(fb.handle);
-        
+        correct = 0;
         % when there is no dim & prior flip had dim & participant responds
     elseif ~dim_sequence(flip) && dim_sequence(prior_flip) && isempty(keys_pressed) % miss
         feedbackFcn(fb.handle);
+        correct = 1;
     end
 end
 

@@ -10,17 +10,18 @@ constants.root_dir = fileparts(mfilename('fullpath'));
 constants.lib_dir = fullfile(constants.root_dir, 'lib');
 
 % add libraries to path
-path(path,constants.root_dir);
+path(path, constants.root_dir);
 path(path, genpath(constants.lib_dir));
 
 % Define the location of some directories we might want to use
 switch input.responder
     case 'user'
-        constants.savePath = fullfile(constants.root_dir,'analyses','data','beh');
+        constants.savePath = fullfile(constants.root_dir, 'analyses', 'data');
     otherwise
-        constants.savePath = fullfile(constants.root_dir,'analyses','robo', 'beh');
+        constants.savePath = fullfile(constants.root_dir,'analyses','robo');
 end
-constants.subDir = fullfile(constants.savePath, ['sub-', num2str(input.subject, '%02d')]);
+
+constants.subDir = fullfile(constants.savePath, ['sub-', num2str(input.subject, '%02d')], 'beh');
 if ~exist(constants.subDir, 'dir')
     mkdir(constants.subDir);
 end
@@ -29,21 +30,18 @@ end
 subjectValidator = makeSubjectDataChecker(constants.savePath, input.subject, input.debugLevel);
 
 %% -------- GUI input option ----------------------------------------------------
-if ~strcmp(input.responder,'setup')
-    
-    % call gui for input
-    guiInput = getSubjectInfo('run', struct('title', 'Run Number', 'type', 'textinput',...
-        'validationFcn', subjectValidator),...
-        'experiment', struct('title', 'Run Type', 'type', 'dropdown',...
-        'values', {{'contrast','localizer'}}) );
-    if isempty(guiInput)
-        exit_stat = 1;
-        return
-    else
-        input = filterStructs(guiInput, input);
-    end
-    input.run = str2double(input.run);
+% call gui for input
+guiInput = getSubjectInfo('run', struct('title', 'Run Number', 'type', 'textinput',...
+    'validationFcn', subjectValidator),...
+    'experiment', struct('title', 'Run Type', 'type', 'dropdown',...
+    'values', {{'contrast','localizer'}}) );
+if isempty(guiInput)
+    exit_stat = 1;
+    return
+else
+    input = filterStructs(guiInput, input);
 end
+input.run = str2double(input.run);
 
 switch input.responder
     case 'user'
@@ -59,23 +57,19 @@ end
 constants.datatable_dir = fullfile(constants.root_dir, 'lib', 'datatables', ...
     ['sub-', num2str(input.subject, '%02d')]);
 
-if strcmp(input.experiment, {'contrast'})
-    constants.ga_data = fullfile(constants.datatable_dir,...
-        ['sub-', num2str(input.subject, '%02d'), '_task-', input.experiment,...
-        '_run-', num2str(input.run, '%02d'), '_ga_events.tsv']);
-end
-constants.tInfo = fullfile(constants.datatable_dir,...
+constants.data_grating_filename = fullfile(constants.datatable_dir,...
+    ['sub-', num2str(input.subject, '%02d'), '_task-', input.experiment,...
+    '_run-', num2str(input.run, '%02d'), '_grating.tsv']);
+
+constants.tInfo_filename = fullfile(constants.datatable_dir,...
     ['sub-', num2str(input.subject, '%02d'), '_task-', input.experiment,...
     '_run-', num2str(input.run, '%02d'), '_tInfo.tsv']);
 
-constants.dimming_data = fullfile(constants.datatable_dir,...
+constants.data_dim_filename = fullfile(constants.datatable_dir,...
     ['sub-', num2str(input.subject, '%02d'), '_task-', input.experiment,...
-    '_run-', num2str(input.run, '%02d'), '_dimming.tsv']);
+    '_run-', num2str(input.run, '%02d'), '_dim.tsv']);
 
-% constants.eyelink_data_fname = ['sub-', num2str(input.subject, '%02d'), '_task-', input.experiment,...
-%     '_run-', num2str(input.run, '%02d'), '_recording-eye_physio.edf'];
-
-constants.eyelink_data_fname = ['scan', num2str(input.scan, '%02d'), '.edf'];
+constants.data_eyelink_filename = ['scan', num2str(input.scan, '%02d'), '.edf'];
 
 end
 

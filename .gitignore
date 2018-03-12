@@ -38,3 +38,4 @@ vignettes/*.pdf
 *.mat
 *.ps
 **/robo
+.Rproj.user

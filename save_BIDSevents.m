@@ -1,4 +1,4 @@
-function save_BIDSevents(data, input, constants, dimming_data)
+function save_BIDSevents(tInfo, input, constants, dimming_data)
 
 % need to grab actual phase end
 % write save directory

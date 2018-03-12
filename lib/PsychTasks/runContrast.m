@@ -1,5 +1,5 @@
-function [ data, tInfo, expParams, stairs, stim, dimming_data, el ] = ...
-    runContrast( input, constants, window, responseHandler, eyetrackerFcn, fb )
+function [ tInfo, stairs, stim, el ] = ...
+    runContrast( input, constants, window, responseHandler, eyetrackerFcn )
 
 %{
 Main experiment
@@ -13,198 +13,195 @@ Overall Flow:
     All timing is set prior to each trial. Parameters that change depending
     on the flip are stored in the tInfo structure, which also stores the
     timing (or missed flips) that was actually acheived.
-    
-    Data Storage:
-    Onsets and trial durations were precalculated with genetic algorithm.
-    This includes both the main stimulation (oriented gratings of varying
-    levels of contrast) which is stored in table data, as well as
-    incidental dimming task which is stored in dimming_data table.
-    
-    the table tInfo is calculated to contain by-flip stimulus information.
-    This makes it relatively easy to figure out what each frame of the
-    experiment should be doing (amd debug which ones aren't doing that).
-    
-    Note that the column contrast from data is upsampled into tInfo.
-    Upsampling enables handling of variable trial and SOA duration.
-    Specifically, each trial can then be thought of as a joint stimulus +
-    baseline, throughout which the incidental dimming task continues
-    without interuption. The flips with no gratings are accomplished by
-    setting contrast to 0 for those flips (hence upsampling contrast to
-    flip-time)
-    
+ 
     %}
     
     
-    expParams = setupExpParams(input.debugLevel, input.experiment, constants);
-    stairs = setupStaircase(input.delta_luminance_guess, expParams.nTrials);
-    feedbackFcn = makeFeedbackFcn(input.give_feedback);
+    % show initial prompt. Timing not super critical with this one
+    showPrompt(window, 'Initializing...', false);
+
+    [feedbackFcn, fb] = makeFeedbackFcn(input.give_feedback);
     keys = setupKeys(input.fMRI);
-    stim = setupStim(expParams, window, input);
+    stim = setupStim( window, input);
     
-    data = setupDataTable(expParams, input.subject, input.experiment, constants);
-    dimming_data = setupDataDimming(expParams, keys, data, constants, input.experiment, input.responder, input.subject);
-    tInfo = setupTInfo( expParams, stim, data, dimming_data, input, constants );
+    tInfo = setupTInfo( constants );
+        
+    index_dim = tInfo.trial_type == 'dim';
+    tInfo_dim = tInfo(index_dim,:);
+    index_grating = tInfo.trial_type == 'grating';
+    tInfo_grating = tInfo(index_grating,:);
     
-    [el, exit_flag] = setupEyeTracker( input.tracker, window, constants );
-    if strcmp(exit_flag, 'ESC')
+    sides = [{'left'}; {'right'}];
+    n_flip = max(tInfo.flip);
+    
+    stairs = setupStaircase(input.delta_luminance_guess);
+    
+    flip_schedule_offset = ((1/stim.update_phase_sec) - 0.5) * window.ifi;
+    
+    [el, exitflag] = setupEyeTracker( input.tracker, window, constants );
+    if strcmp(exitflag, 'ESC')
         return;
     end
     %%
-    switch input.responder
-        case 'setup'
+    
+    startup(eyetrackerFcn);
+    
+    % show initial prompt. Timing not super critical with this one
+    showPrompt(window, ['Attend to the + in the center \n', ...
+        'When the + dims, press your index finger.'], 1);
+    
+    % trigger sent isn't used until way later, when we're trying to show
+    % stimuli
+    [triggerSent, exitflag] = waitForStart(constants, keys, responseHandler);
+    switch exitflag{1}
+        case 'ESCAPE'
+            cleanup(eyetrackerFcn, constants);
             return
         otherwise
-            
-            
-            % Must be offline to draw to EyeLink screen
-            eyetrackerFcn('Command', 'set_idle_mode');
-            
-            % clear tracker display and draw background img to host pc
-            eyetrackerFcn('Command', 'clear_screen 0');
-            
-            % image file should be 24bit or 32bit bitmap
-            % parameters of ImageTransfer:
-            % imagePath, xPosition, yPosition, width, height, trackerXPosition, trackerYPosition, xferoptions
-            % VERY SLOW. Should only be done when not recording
-            eyetrackerFcn('ImageTransfer', stim.background_img_filename);
-            
-            %%
-            eyetrackerFcn('StartRecording');
-            
-            % get eye that's tracked
-%             expParams.eye_used = eyetrackerFcn('EyeAvailable');
-            
-            % record a few samples before we actually start displaying
-            % otherwise you may lose sca
-            % a few msec of data
-            WaitSecs(0.1);
-            
-            % show initial prompt. Timing not super critical with this one
-            showPrompt(window, ['Attend to the + in the center \n', ...
-                'When the + dims, press your index finger.'], 1);
-            
-            [triggerSent, exitFlag] = waitForStart(constants, keys, responseHandler);
-            Screen('Flip', window.pointer);
-            switch exitFlag{1}
-                case 'ESCAPE'
-                    return
-            end
-            
             % mark zero-plot time in data file
             eyetrackerFcn('message', 'SYNCTIME');
-          
-            % figure out when the first flip in each trial should happen
-            data.trial_start_fromTrigger = data.onset + triggerSent;
-
-            % when are the flips expected to finish?
-            tInfo.vbl_expected_fromTrigger = tInfo.vbl_expected_from0 + triggerSent;
-            
-            slack = .5;
-            % try to flip first frame of experiment immediately
-            tInfo.vbl_expected_fromTrigger(1) = tInfo.vbl_expected_fromTrigger(1) + ...
-                (slack * window.ifi);
-            % for every other frame, flip according to stimulus hz
-            tInfo.vbl_expected_fromTrigger(2:end) = tInfo.vbl_expected_fromTrigger(1:end-1) + ...
-                ((1/stim.update_phase_sec) - slack) * window.ifi;
-            
-            trial_dim = 0;
-            for trial = 1:expParams.nTrials
-                if trial > 1
-%                     eyetrackerFcn('EyelinkDoDriftCorrection', el);
-%                     eyetrackerFcn('Message', '!V IMGLOAD FILL', stim.background_img_filename);
-                end
-                
-                index_tInfo = find(tInfo.trial==trial);
-                index_dimming = find(dimming_data.trial_exp==trial);
-                index_data = find(data.trial == trial);
-                
-                eyetrackerFcn('Message', 'TRIALID %d', trial);
-                eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'trial', trial);
-                
-                switch input.experiment
-                    case 'contrast'
-                        angles = [repmat(tInfo.orientation_left(index_tInfo), [1, stim.n_gratings_per_side]),...
-                            repmat(tInfo.orientation_right(index_tInfo), [1, stim.n_gratings_per_side])];
-%                         contrasts = [tInfo.contrast_left(index_tInfo),...
-%                             tInfo.contrast_right(index_tInfo)];
-                        
-%                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'contrast_left', tInfo.contrast_left(index_tInfo(1)));
-%                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'contrast_right', tInfo.contrast_right(index_tInfo(2)));
-%                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'orientation_left', tInfo.orientation_right(index_tInfo(1)));
-%                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'orientation_right', tInfo.orientation_right(index_tInfo(2)));
-                    case 'localizer'
-                        angles = repmat([tInfo.orientation_1(index_tInfo), ...
-                            tInfo.orientation_2(index_tInfo)], ...
-                            [1, stim.n_gratings_per_side]);
-%                         contrasts = repmat(tInfo.contrast(index_tInfo), [1, 2]);
-                        
-%                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'contrast_left', tInfo.contrast(index_tInfo(1)));
-%                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'contrast_right', tInfo.contrast(index_tInfo(2)));
-%                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'orientation_left', tInfo.orientation_1(index_tInfo(1)));
-%                         eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'orientation_right', tInfo.orientation_1(index_tInfo(2)));
-                end
-                
-                texes = repmat(stim.tex, [stim.reps_per_grating, 1]);
-                spatial_frequency = repmat(stim.grating_freq_cpp, [1, stim.reps_per_grating]);
-                phases = repmat([tInfo{index_tInfo, contains(tInfo.Properties.VariableNames, 'phase_orientation_left_')},...
-                    tInfo{index_tInfo, contains(tInfo.Properties.VariableNames, 'phase_orientation_right_')}], [1, stim.reps_per_grating]);
-                contrasts = [tInfo.contrast_left(index_tInfo),...
-                    tInfo.contrast_right(index_tInfo)];
-
-                src_rects = [stim.srcRect_left, stim.srcRect_right];
-                
-                % get luminance differ to test on this trial
-                data.luminance_difference(index_data) = ...
-                    repelem(stairs.luminance_difference(trial), length(index_data))';
-                
-                
-                %%
-                % present stimuli and get responses (main task is here)
-                [dimming_data.response_given(index_dimming), ...
-                    dimming_data.rt_given(index_dimming), ...
-                    tInfo.vbl(index_tInfo), tInfo.missed(index_tInfo), ...
-                    data.exitFlag(index_data), trial_dim] = ...
-                    elicitContrastResp(...
-                    texes, spatial_frequency, src_rects, data.trial_start_fromTrigger(index_data(1)),...
-                    window, responseHandler, stim, keys, ...
-                    dimming_data.roboRT_expected(index_dimming),...
-                    dimming_data.roboResponse_expected(index_dimming),...
-                    constants, phases, angles, tInfo.dim(index_tInfo), ...
-                    [1, 1 - stairs.luminance_difference(trial)], contrasts,...
-                    input.experiment, trial_dim, stim.dstRects, trial, eyetrackerFcn, ...
-                    fb, feedbackFcn);
-                
-                stairs.correct(trial) = ...
-                    analyzeResp(dimming_data.response_given(index_dimming), ...
-                    dimming_data.answer(index_dimming));
-                data.correct(index_data) = repelem(stairs.correct(trial), length(index_data))';
-                
-                if any(strcmp(data.exitFlag(index_data), 'ESCAPE'))
-                    [data, dimming_data] = ...
-                        quick_clean(data, tInfo, dimming_data, trial, trial_dim, input.experiment);
-                    return
-                else
-                    
-                    % to end, update staircase values
-                    stairs = update_stairs(stairs, trial);
-                end
-            end
-            [data, dimming_data] = quick_clean(data, tInfo, dimming_data, trial, trial_dim, input.experiment);
     end
     
-    eyetrackerFcn('Command', 'set_idle_mode');
+    % little helper vectors for auxillary parameters in the procedural
+    % grating step. sacraficed clarity for what I hope will be a speed
+    % boost    
+    zz = zeros(1, stim.n_gratings_per_side);
+    oo = ones(1, stim.n_gratings_per_side);
+    
+    % open up response cue and allow response. these would go in the
+    % startup function, but ptb seemed to complain when the creation
+    % function wasn't called in the same environment as the checking
+    % function
+    KbQueueCreate(constants.device, keys.resp + keys.escape);
+    KbQueueStart(constants.device);
+
+    for flip = 1:n_flip
+        
+        
+        %% start flipping stims
+        
+        % we subset the larger dataframe when many sets of parameters will
+        % be pulled from that single subset
+        index_grating_flip = tInfo_grating.flip == flip;
+        
+        switch tInfo_dim.event{flip}
+            case 'trial_start'
+                index_dim_trial = flip:(flip+3);
+                tInfo_dim.contrast( index_dim_trial ) = ...
+                    repmat(1-stairs.luminance_difference, [4,1]);
+            case 'return_to_base_contrast'
+                result = any( tInfo_dim.correct(index_dim_trial) );
+                
+                fbwrapper(result, feedbackFcn, 'trial');
+                % update staircase values for next trial
+                stairs = update_stairs(stairs, result); 
+        end
+
+        for s = 1:2
+            side = sides(s);
+            index_grating_flip_side = (tInfo_grating.side == side) & index_grating_flip;
+            
+            % need to clear both canvases prior to drawing, given present blend
+            % function
+            [sourceFactorOld, destinationFactorOld] = Screen('BlendFunction', stim.fullWindowTex(s), 'GL_ONE', 'GL_ZERO');
+            Screen('FillRect', stim.fullWindowTex(s), window.gray);
+            Screen('BlendFunction', stim.fullWindowTex(s), sourceFactorOld, destinationFactorOld);
+            
+            % after clearing, draw gratings
+            Screen('DrawTextures', stim.fullWindowTex(s), stim.texes, [],...
+                stim.dst_rects, tInfo_grating.orientation(index_grating_flip_side), ...
+                [], [], [], [], kPsychUseTextureMatrixForRotation, ...
+                [tInfo_grating.phase(index_grating_flip_side,:); stim.spatial_frequency;...
+                oo * tInfo_grating.contrast(index_grating_flip_side,:); zz]);
+        end
+        
+        % Only draw required parts of gratings. Note that this happens in two
+        % stage process because of how orientation rotations interact with
+        % annulus shader
+        Screen('DrawTextures', window.pointer, stim.fullWindowTex, stim.src_rects, stim.src_rects);
+        
+        % always draw central fixation cross
+        drawFixation(window, stim.fixRect, stim.fixLineSize, tInfo_dim.contrast(flip));
+        
+        % signal that no more drawing will occur on this flip and let gpu
+        % get to work. meanwhile, handle other business before flipping
+        Screen('DrawingFinished', window.pointer);
+        
+        [keys_pressed, press_times] = ...
+            responseHandler(constants.device, tInfo_dim.answer{flip}, 1);
+        
+        if ~isempty(keys_pressed)
+            [tInfo_dim.response(flip), ...
+                tInfo_dim.press_time(flip), ...
+                tInfo_dim.exitflag(flip)] = ...
+                wrapper_keyProcess_noRT(keys_pressed, press_times);
+            
+            if strcmp(tInfo_dim.exitflag{flip}, 'ESCAPE')
+                tInfo = rebuild_tInfo(tInfo_grating, tInfo_dim);
+                cleanup(eyetrackerFcn, constants, fb);
+                return;
+            end
+        end
+        
+        % check for response on every flip (enables esc whenever). 
+        tInfo_dim.correct(flip) = ...
+            strcmp(tInfo_dim.response{flip}, tInfo_dim.answer{flip});
+      
+        % give feedback at this same rate. That is, play tone whenever
+        % participant does not have NO RESPONSE when there is a dim, or
+        % has a response when a dim has not happened
+        fbwrapper(tInfo_dim.correct(flip), feedbackFcn, tInfo_dim.event{flip});
+        
+        if flip == 1
+            % after trigger is sent, try to flip on next refresh cycle. All
+            % subsequent flips will be based on this event
+            flip_when = triggerSent + (1 - slack) * window.ifi;
+        else
+            flip_when = tInfo_dim.vbl(flip - 1) + flip_schedule_offset;
+        end
+        [tInfo_dim.vbl(flip), tInfo_dim.stimulus_onset_time(flip),...
+            tInfo_dim.flip_timestamp(flip), tInfo_dim.missed(flip)] = ...
+            Screen('Flip', window.pointer, flip_when);
+        
+        switch tInfo_grating.event{index_grating_flip_side}
+            case 'trial_start'                       
+                eyetrackerFcn('Message','Trial_onset');
+                eyetrackerFcn('Message', 'TRIALID %d', tInfo_grating.trial(index_grating_flip_side));
+                eyetrackerFcn('Message','!V TRIAL_VAR %s %d', 'trial', tInfo_grating.trial(index_grating_flip_side));                
+            case 'return_to_base_contrast'
+                % Sending a 'TRIAL_RESULT' message to mark the end of a trial in
+                % Data Viewer. This is different than the end of recording message
+                % END that is logged when the trial recording ends. The viewer will
+                % not parse any messages, events, or samples that exist in the data
+                % file after this message.
+                eyetrackerFcn('Message', 'TRIAL_RESULT 0');
+        end
+                
+    end
+    
+    tInfo = rebuild_tInfo(tInfo_grating, tInfo_dim);
+    cleanup(eyetrackerFcn, constants, fb);
 end
 
-function stairs = update_stairs(stairs, trial)
+function tInfo = rebuild_tInfo(tInfo_grating, tInfo_dim)
+
+tInfo_grating.vbl(tInfo_grating.side == 'left') = tInfo_dim.vbl;
+tInfo_grating.vbl(tInfo_grating.side == 'right') = tInfo_dim.vbl;
+
+tInfo = [tInfo_grating; tInfo_dim];
+
+end
+
+function stairs = update_stairs(stairs, result)
 
 step_more_difficult = 1;
 step_less_difficult = 3;
 
 n_options = length(stairs.options);
 
-if stairs.correct(trial)
+if result
     % make task more difficult
-    location = find(stairs.options == stairs.luminance_difference(trial));
+    location = find(stairs.options == stairs.luminance_difference);
     if location > 2
         location = location - step_more_difficult;
     elseif location <= 2
@@ -212,48 +209,58 @@ if stairs.correct(trial)
     end
 else
     % make task a bit easier (but only if there's room to do so)
-    location = find(stairs.options == stairs.luminance_difference(trial));
+    location = find(stairs.options == stairs.luminance_difference);
     if (location + step_less_difficult) < n_options
         location = location + step_less_difficult;
     else
         location = n_options;
     end
 end
-stairs.luminance_difference(trial+1) = stairs.options(location);
+
+stairs.luminance_difference = stairs.options(location);
 
 end
 
-function correct = analyzeResp( response, answer )
+function startup(eyetrackerFcn)
 
-correct = zeros([1,length(answer)]);
-for a = 1:length(answer)
-    switch answer{a}
-        case response{a}
-            correct(a) = 1;
-        otherwise
-            correct(a) = 0;
-    end
+% Must be offline to draw to EyeLink screen
+eyetrackerFcn('Command', 'set_idle_mode');
+
+% clear tracker display and draw background img to host pc
+eyetrackerFcn('Command', 'clear_screen 0');
+
+% image file should be 24bit or 32bit bitmap
+% parameters of ImageTransfer:
+% imagePath, xPosition, yPosition, width, height, trackerXPosition, trackerYPosition, xferoptions
+% VERY SLOW. Should only be done when not recording
+% eyetrackerFcn('ImageTransfer', stim.background_img_filename);
+
+eyetrackerFcn('StartRecording');
+
+% always wait a moment for recording to definitely start
+WaitSecs(0.1);
+
 end
-correct = all(correct);
+
+function cleanup(eyetrackerFcn, constants, fb)
+
+KbQueueStop(constants.device);
+KbQueueFlush(constants.device);
+KbQueueRelease(constants.device);
+eyetrackerFcn('Command', 'set_idle_mode');
+
+PsychPortAudio('Close', fb.handle);
+
 end
 
-function [data, dimming_data] = quick_clean(data, tInfo, dimming_data, trial, trial_dim, experiment)
+function fbwrapper(correct, feedbackFcn, event)
+% provide feedback after misses and false alarms only (errors)
 
-for t = 1:trial
-    index_data = find(data.trial == t);
+% the event flag is to help make sure that a miss is only indicated once
+% per opportunity, at the end of the dimming trial
+if ~correct && contains(event, 'base')
+    feedbackFcn();    
+end
     
-    data.tStart_realized(index_data) = ...
-        repelem(tInfo.vbl(find(tInfo.trial==t,1,'first')), length(index_data));
-    data.tEnd_realized(index_data) = ...
-        repelem(tInfo.vbl(find(tInfo.trial==t,1,'last')), length(index_data));
 end
 
-for t = 1:trial_dim
-    
-    dimming_data.tStart_realized(dimming_data.trial==t) = ...
-        tInfo.vbl(find(tInfo.trial_dim==t,1,'first'));
-    dimming_data.tEnd_realized(dimming_data.trial==t) = ...
-        tInfo.vbl(find(tInfo.trial_dim==t,1,'last'));
-end
-
-end

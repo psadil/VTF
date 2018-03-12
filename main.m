@@ -1,15 +1,15 @@
 function  main(varargin)
-
+Screen('Preference', 'ConserveVRAM', 4096);
 
 %% collect input
 % use the inputParser class to deal with arguments
 ip = inputParser;
 addParameter(ip, 'subject', 1, @isnumeric);
-addParameter(ip, 'responder', 'user', @(x) sum(strcmp(x, {'user','simpleKeypressRobot','setup'}))==1);
+addParameter(ip, 'responder', 'user', @(x) sum(strcmp(x, {'user','simpleKeypressRobot'}))==1);
 addParameter(ip, 'refreshRate', 60, @(x) x == 120 | x == 60);
 addParameter(ip, 'run', 0, @isnumeric);
 addParameter(ip, 'fMRI', true, @islogical);
-addParameter(ip, 'debugLevel', 0, @(x) isnumeric(x) && x >= 0);
+addParameter(ip, 'debugLevel', 0, @(x) x == 1 | x == 10 | x == 0);
 addParameter(ip, 'experiment', 'contrast',  @(x) sum(strcmp(x, {'contrast','localizer'}))==1);
 addParameter(ip, 'delta_luminance_guess', 0.3,  @isnumeric);
 addParameter(ip, 'TR', 1,  @isnumeric);
@@ -26,18 +26,16 @@ input = ip.Results;
 [constants, input, exit_stat] = setupConstants(input, ip);
 
 eyetrackerFcn = makeEyelinkFcn(input.tracker);
-fb = setupFeedback();
-
 
 if exit_stat==1
-    windowCleanup(constants, eyetrackerFcn, fb);
+    windowCleanup(constants, eyetrackerFcn);
     return
 end
 
 % gather demographics for practice run
-% if ~input.fMRI && input.run == 0 && strcmp(input.responder,'user') && input.debugLevel == 0
-%     demographics(constants.subDir);
-% end
+if ~input.fMRI && input.run == 0 && strcmp(input.responder,'user') && input.debugLevel == 0
+    demographics(constants.subDir);
+end
 
 %% run main experiment
 % try to fail gracefully (meaning automatically restore keyboard)
@@ -50,22 +48,20 @@ try
     window = setupWindow(constants, input);
     
     % main experiment function
-    [data, tInfo, expParams, stairs, stim, dimming_data, el] = ...
-        runContrast(input, constants, window, responseHandler, eyetrackerFcn, fb);
+    [tInfo, stairs, stim, el] = ...
+        runContrast(input, constants, window, responseHandler, eyetrackerFcn);
     
-    % save data
-    switch input.responder
-        case {'user', 'simpleKeypressRobot'}
-%             acc = checkAccuracy(data);
-            expt = input.experiment;
-            subject = input.subject;
-            run = input.run;
-            structureCleanup(expt, subject, run, data, constants, tInfo, expParams, stairs, stim, dimming_data, el);
-            save_BIDSevents(data, input, constants, dimming_data);
-            
-%             showPrompt(window, sprintf('You were %.0f%% correct', acc*100), 0);
-%             WaitSecs(3);
-    end
+    %% save data
+    %             acc = checkAccuracy(data);
+    expt = input.experiment;
+    subject = input.subject;
+    run = input.run;
+    
+    structureCleanup(expt, subject, run, tInfo, constants, stairs, stim, el);
+%     save_BIDSevents(tInfo, input, constants);
+    
+    %             showPrompt(window, sprintf('You were %.0f%% correct', acc*100), 0);
+    %             WaitSecs(3);
     
     
     switch input.tracker
@@ -88,10 +84,10 @@ try
             end
     end
     
-    windowCleanup(constants, eyetrackerFcn, fb);
+    windowCleanup(constants, eyetrackerFcn);
     
 catch msg
-    windowCleanup(constants, eyetrackerFcn, fb);
+    windowCleanup(constants, eyetrackerFcn);
     rethrow(msg)
 end
 

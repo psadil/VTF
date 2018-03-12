@@ -30,7 +30,7 @@ end
         % given by the participant) as well as the advance and redraw flags.
         
         % Check the KbQueue for presses
-        [ pressed, press_times]=KbQueueCheck(device);
+        [ pressed, press_times] = KbQueueCheck(device);
         if pressed
             % find the keycode for the keys pressed since last check
             keys_pressed = find(press_times);

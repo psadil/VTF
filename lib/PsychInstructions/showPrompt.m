@@ -1,7 +1,5 @@
 function [] = showPrompt(window, prompt, start)
 
-% Screen('Flip', window.pointer);
-
 DrawFormattedText(window.pointer, prompt, 'center', 'center');
 
 if start
