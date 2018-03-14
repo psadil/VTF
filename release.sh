@@ -16,7 +16,7 @@ git archive master --prefix=VTF/ | tar -x -C "$tmpdir"
 echo "$sha" >> "$tmpdir/VTF/version.txt"
 cd "$tmpdir"
 zip -rq "$zip_name" VTF
-rm -r ./visr2/
+rm -r ./VTF/
 cd - > /dev/null
 
 mount_path=$(mount | grep ' /tmp ')
