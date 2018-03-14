@@ -7,12 +7,11 @@ ip = inputParser;
 addParameter(ip, 'subject', 5, @isnumeric);
 addParameter(ip, 'responder', 'user', @(x) sum(strcmp(x, {'user','simpleKeypressRobot'}))==1);
 addParameter(ip, 'refreshRate', 60, @(x) x == 120 | x == 60);
-addParameter(ip, 'run', 0, @isnumeric);
+addParameter(ip, 'run', 1, @isnumeric);
 addParameter(ip, 'fMRI', true, @islogical);
 addParameter(ip, 'debugLevel', 0, @(x) x == 1 | x == 10 | x == 0);
 addParameter(ip, 'experiment', 'contrast',  @(x) sum(strcmp(x, {'contrast','localizer'}))==1);
 addParameter(ip, 'delta_luminance_guess', 0.3,  @isnumeric);
-addParameter(ip, 'TR', 1,  @isnumeric);
 addParameter(ip, 'sigma_scale', 1.5, @isnumeric); % by how much to scale sigma value
 addParameter(ip, 'tracker', 'none', @(x) sum(strcmp(x, {'T60', 'none'}))==1);
 addParameter(ip, 'dummymode', false, @(x) @islogical);
@@ -59,7 +58,6 @@ try
     run = input.run;
     
     structureCleanup(expt, subject, run, tInfo, constants, stairs, stim, el);
-%     save_BIDSevents(tInfo, input, constants);
     %             showPrompt(window, sprintf('You were %.0f%% correct', acc*100), 0);
     %             WaitSecs(3);
     

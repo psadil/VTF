@@ -5,9 +5,10 @@ date: "February 19, 2018"
 output: html_document
 params:
   save: 1
+  extras: 0
   sub: !r c(5)
-  task: "localizer"
-  type: "robo" # either data or robo (only robo for testing)
+  task: "contrast"
+  type: "data" # either data or robo (only robo for testing)
 ---
 
 ```{r setup, include=FALSE}
@@ -89,8 +90,8 @@ if (params$task == "contrast"){
          onset = map_dbl(data, ~ .x %>% filter(event == 'trial_start') %>%
                               use_series(vbl) - firstfliptime),
          duration = map_dbl(data, ~.x %>% filter(event == 'return_to_base_contrast') %>%
-                              use_series(vbl) - firstfliptime) - onset) %>%
-  select(onset, duration, trial, trial_type, side, orientation, contrast, subject, run, trial)  
+                              use_series(vbl) - firstfliptime) - onset)
+
 }else if (params$task == "localizer"){
   d <- d %>%
     mutate(orientation = "checkerboard",
@@ -98,8 +99,18 @@ if (params$task == "contrast"){
            onset = map_dbl(data, ~ .x %>% filter(event == 'trial_start') %>%
                              use_series(vbl) - firstfliptime),
            duration = map_dbl(data, ~.x %>% filter(event == 'return_to_base_contrast') %>%
-                                use_series(vbl) - firstfliptime) - onset) %>%
-    select(onset, duration, trial, trial_type, side, orientation, contrast, subject, run, trial)  
+                                use_series(vbl) - firstfliptime) - onset) 
+}
+
+if (not(params$extras)){
+  d <- d %>%
+      select(onset, duration, trial, trial_type, side, orientation, contrast, subject, run, trial)  
+} else {
+  d <- d %>%
+    mutate(onset_expected = map_dbl(data, ~ .x %>% filter(event == 'trial_start') %>%
+                              use_series(vbl_expected)),
+         duration_expected = map_dbl(data, ~.x %>% filter(event == 'return_to_base_contrast') %>%
+                              use_series(vbl_expected)) - onset_expected)
 }
 
   

@@ -27,14 +27,15 @@ if ~exist(constants.subDir, 'dir')
 end
 
 % instantiate the subject number validator function
-subjectValidator = makeSubjectDataChecker(constants.savePath, input.subject, input.debugLevel);
+runValidator = makeOverwriteChecker('run', constants.savePath, input.subject, input.debugLevel, input.experiment, input.run);
+taskValidator = makeOverwriteChecker('task', constants.savePath, input.subject, input.debugLevel, input.experiment, input.run);
 
 %% -------- GUI input option ----------------------------------------------------
 % call gui for input
 guiInput = getSubjectInfo('run', struct('title', 'Run Number', 'type', 'textinput',...
-    'validationFcn', subjectValidator),...
+    'validationFcn', runValidator),...
     'experiment', struct('title', 'Run Type', 'type', 'dropdown',...
-    'values', {{'contrast','localizer'}}) );
+    'values', {{'contrast','localizer'}},'validationFcn', taskValidator) );
 if isempty(guiInput)
     exit_stat = 1;
     return
@@ -74,42 +75,51 @@ constants.data_eyelink_filename = ['scan', num2str(input.scan, '%02d'), '.edf'];
 end
 
 
-function overwriteCheck = makeSubjectDataChecker(directory, subnum, debugLevel)
+function overwriteCheck = makeOverwriteChecker(type, savepath, sub, debugLevel, task, run)
 % makeSubjectDataChecker function closer factory, used for the purpose
 % of enclosing the directory where data will be stored. This way, the
 % function handle it returns can be used as a validation function with getSubjectInfo to
 % prevent accidentally overwritting any data.
-    function [valid, msg] = subjectDataChecker(value, ~)
+
+switch type
+    case 'task'
+        overwriteCheck = @taskGrabber;
+    case 'run'
+        overwriteCheck = @runGrabber;
+end
+
+    function [valid, msg] = taskGrabber(task, ~)
+        [valid, msg] = fileChecker(sub, run, task);
+    end
+
+    function [valid, msg] = runGrabber(run, ~)
+        [valid, msg] = fileChecker(sub, run, task);
+    end
+
+    function [valid, msg] = fileChecker(sub, run, task)
         % the actual validation logic
         valid = false;
-        msg = 'empty';
         
-        run = str2double(value);
-        if (~isnumeric(subnum) || isnan(subnum)) && ~isnumeric(value)
-            msg = 'Subject Number must be greater than 0';
-            return
-        end
+        sub = num2str(sub, '%02d');
+        run = num2str(run, '%02d');
         
         % directories often reused, so search for run folder
-        dirPathGlob = fullfile(directory, ['sub-', num2str(subnum, '%02d')]);
-        if exist(dirPathGlob,'dir')
-            
-            runPathGlob = dir(dirPathGlob);
-            foundFile = zeros([size(runPathGlob,1),1]);
-            for file = 1:size(runPathGlob,1)
-                foundFile(file) = contains(runPathGlob(file).name, ['run-', num2str(run, '%02d')]);
-            end
-            
-            if any(foundFile) && debugLevel <= 10
-                msg = strjoin({'Data file for Subject', num2str(subnum), 'run', value, 'already exists!'}, ' ');
-                return
-            else
-                valid = true;
-                msg = 'ok';
-            end
+        behPathGlob = fullfile(savepath, ['sub-', sub], 'beh');
+        runPathGlob = dir(behPathGlob);
+        
+        foundFile = zeros([size(runPathGlob,1),1]);
+        for file = 1:size(runPathGlob,1)
+            foundFile(file) = any(strfind(runPathGlob(file).name, ['task-', task, '_run-', run]));
+        end
+        
+        if any(foundFile) && debugLevel < 1
+            msg = strjoin({'data already exists!'}, ' ');
+            return
+        else
+            valid = true;
+            msg = 'ok';
         end
     end
 
-overwriteCheck = @subjectDataChecker;
 end
 
