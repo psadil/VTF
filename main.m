@@ -6,7 +6,7 @@ function  main(varargin)
 ip = inputParser;
 addParameter(ip, 'subject', 5, @isnumeric);
 addParameter(ip, 'responder', 'user', @(x) sum(strcmp(x, {'user','simpleKeypressRobot'}))==1);
-addParameter(ip, 'refreshRate', 60, @(x) x == 120 | x == 60);
+addParameter(ip, 'refreshRate', 120, @(x) x == 120 | x == 60);
 addParameter(ip, 'run', 1, @isnumeric);
 addParameter(ip, 'fMRI', true, @islogical);
 addParameter(ip, 'debugLevel', 0, @(x) x == 1 | x == 10 | x == 0);
