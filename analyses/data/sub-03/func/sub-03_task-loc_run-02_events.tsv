@@ -1,0 +1,16 @@
+onset	duration	trial_type	repetition	run	subject	task	filename
+1	5	checkerboard	1	2	3	loc	./AC/loc2/AC_loc2.prt
+11	5	checkerboard	2	2	3	loc	./AC/loc2/AC_loc2.prt
+21	5	checkerboard	3	2	3	loc	./AC/loc2/AC_loc2.prt
+31	5	checkerboard	4	2	3	loc	./AC/loc2/AC_loc2.prt
+41	5	checkerboard	5	2	3	loc	./AC/loc2/AC_loc2.prt
+51	5	checkerboard	6	2	3	loc	./AC/loc2/AC_loc2.prt
+61	5	checkerboard	7	2	3	loc	./AC/loc2/AC_loc2.prt
+71	5	checkerboard	8	2	3	loc	./AC/loc2/AC_loc2.prt
+81	5	checkerboard	9	2	3	loc	./AC/loc2/AC_loc2.prt
+91	5	checkerboard	10	2	3	loc	./AC/loc2/AC_loc2.prt
+101	5	checkerboard	11	2	3	loc	./AC/loc2/AC_loc2.prt
+111	5	checkerboard	12	2	3	loc	./AC/loc2/AC_loc2.prt
+121	5	checkerboard	13	2	3	loc	./AC/loc2/AC_loc2.prt
+131	5	checkerboard	14	2	3	loc	./AC/loc2/AC_loc2.prt
+141	5	checkerboard	15	2	3	loc	./AC/loc2/AC_loc2.prt

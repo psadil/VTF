@@ -1,0 +1,196 @@
+FileVersion:	1
+
+ResolutionOfTime:	Volumes
+
+Experiment: rosieContrast_RUN:4
+
+BackgroundColor:	0 0 0
+TextColor:	255 255 217
+
+TimeCourseColor:	255 255 255
+TimeCourseThick:	3
+ReferenceFuncColor:	255 255 51
+ReferenceFuncThick:	2
+
+NrOfConditions:	36
+
+LowContrast-0-Trial1
+1
+77  79
+Color: 255 0 0
+
+LowContrast-0-Trial2
+1
+110  112
+Color: 255 0 0
+
+LowContrast-20-Trial1
+1
+8  10
+Color: 255 42 0
+
+LowContrast-20-Trial2
+1
+54  56
+Color: 255 42 0
+
+LowContrast-40-Trial1
+1
+84  86
+Color: 255 85 0
+
+LowContrast-40-Trial2
+1
+133  135
+Color: 255 85 0
+
+LowContrast-60-Trial1
+1
+70  73
+Color: 255 128 0
+
+LowContrast-60-Trial2
+1
+123  125
+Color: 255 128 0
+
+LowContrast-80-Trial1
+1
+74  76
+Color: 255 170 0
+
+LowContrast-80-Trial2
+1
+80  83
+Color: 255 170 0
+
+LowContrast-100-Trial1
+1
+67  69
+Color: 255 213 0
+
+LowContrast-100-Trial2
+1
+113  116
+Color: 255 213 0
+
+LowContrast-120-Trial1
+1
+1  3
+Color: 255 255 0
+
+LowContrast-120-Trial2
+1
+37  40
+Color: 255 255 0
+
+LowContrast-140-Trial1
+1
+117  119
+Color: 212 255 0
+
+LowContrast-140-Trial2
+1
+130  132
+Color: 212 255 0
+
+LowContrast-160-Trial1
+1
+14  17
+Color: 170 255 0
+
+LowContrast-160-Trial2
+1
+44  46
+Color: 170 255 0
+
+HighContrast-0-Trial1
+1
+57  59
+Color: 255 0 0
+
+HighContrast-0-Trial2
+1
+120  122
+Color: 255 0 0
+
+HighContrast-20-Trial1
+1
+31  33
+Color: 255 42 0
+
+HighContrast-20-Trial2
+1
+97  99
+Color: 255 42 0
+
+HighContrast-40-Trial1
+1
+27  30
+Color: 255 85 0
+
+HighContrast-40-Trial2
+1
+107  109
+Color: 255 85 0
+
+HighContrast-60-Trial1
+1
+64  66
+Color: 255 128 0
+
+HighContrast-60-Trial2
+1
+140  142
+Color: 255 128 0
+
+HighContrast-80-Trial1
+1
+47  50
+Color: 255 170 0
+
+HighContrast-80-Trial2
+1
+87  89
+Color: 255 170 0
+
+HighContrast-100-Trial1
+1
+51  53
+Color: 255 213 0
+
+HighContrast-100-Trial2
+1
+103  106
+Color: 255 213 0
+
+HighContrast-120-Trial1
+1
+18  20
+Color: 255 255 0
+
+HighContrast-120-Trial2
+1
+93  96
+Color: 255 255 0
+
+HighContrast-140-Trial1
+1
+21  23
+Color: 212 255 0
+
+HighContrast-140-Trial2
+1
+143  145
+Color: 212 255 0
+
+HighContrast-160-Trial1
+1
+60  63
+Color: 170 255 0
+
+HighContrast-160-Trial2
+1
+100  102
+Color: 170 255 0
+

@@ -1,5 +1,4 @@
-
-function SPM = DconvMTX(stim_list, n_scan, n_stimtype, epoch_length, TR, onsets, dim_dur, dim_onsets)
+function SPM = DconvMTX(stim_list, n_scan, n_stimtype, epoch_length, TR, onsets, dim_dur)
 %
 % Generate the convolved model matrix
 
@@ -20,12 +19,11 @@ for cond = 1:n_stimtype
     matlabbatch{1}.spm.stats.fmri_design.sess.cond(cond).orth = 1;
 end
 matlabbatch{1}.spm.stats.fmri_design.sess.cond(n_stimtype+1).name = 'dimming';
-matlabbatch{1}.spm.stats.fmri_design.sess.cond(n_stimtype+1).onset = dim_onsets;
+matlabbatch{1}.spm.stats.fmri_design.sess.cond(n_stimtype+1).onset = onsets(stim_list == 99);
 matlabbatch{1}.spm.stats.fmri_design.sess.cond(n_stimtype+1).duration = dim_dur;
 matlabbatch{1}.spm.stats.fmri_design.sess.cond(n_stimtype+1).tmod = 0;
 matlabbatch{1}.spm.stats.fmri_design.sess.cond(n_stimtype+1).pmod = struct('name', {}, 'param', {}, 'poly', {});
 matlabbatch{1}.spm.stats.fmri_design.sess.cond(n_stimtype+1).orth = 1;
-
 
 matlabbatch{1}.spm.stats.fmri_design.sess.multi = {''};
 matlabbatch{1}.spm.stats.fmri_design.sess.regress = struct('name', {}, 'val', {});

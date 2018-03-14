@@ -1,0 +1,13 @@
+onset	duration	trial_type	repetition	run	subject	task	filename
+0	20	horizontal	1	1	2	ret	./AA/retMap1/TR2000_PRT.prt
+20	20	vertical	1	1	2	ret	./AA/retMap1/TR2000_PRT.prt
+40	20	horizontal	2	1	2	ret	./AA/retMap1/TR2000_PRT.prt
+60	20	vertical	2	1	2	ret	./AA/retMap1/TR2000_PRT.prt
+80	20	horizontal	3	1	2	ret	./AA/retMap1/TR2000_PRT.prt
+100	20	vertical	3	1	2	ret	./AA/retMap1/TR2000_PRT.prt
+120	20	horizontal	4	1	2	ret	./AA/retMap1/TR2000_PRT.prt
+140	20	vertical	4	1	2	ret	./AA/retMap1/TR2000_PRT.prt
+160	20	horizontal	5	1	2	ret	./AA/retMap1/TR2000_PRT.prt
+180	20	vertical	5	1	2	ret	./AA/retMap1/TR2000_PRT.prt
+200	20	horizontal	6	1	2	ret	./AA/retMap1/TR2000_PRT.prt
+220	20	vertical	6	1	2	ret	./AA/retMap1/TR2000_PRT.prt

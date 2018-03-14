@@ -1,0 +1,13 @@
+onset	duration	trial_type	repetition	run	subject	task	filename
+1	0	horizontal	1	2	3	ret	./AC/ret2/AC_ret2.prt
+11	0	vertical	1	2	3	ret	./AC/ret2/AC_ret2.prt
+21	0	horizontal	2	2	3	ret	./AC/ret2/AC_ret2.prt
+31	0	vertical	2	2	3	ret	./AC/ret2/AC_ret2.prt
+41	0	horizontal	3	2	3	ret	./AC/ret2/AC_ret2.prt
+51	0	vertical	3	2	3	ret	./AC/ret2/AC_ret2.prt
+61	0	horizontal	4	2	3	ret	./AC/ret2/AC_ret2.prt
+71	0	vertical	4	2	3	ret	./AC/ret2/AC_ret2.prt
+81	0	horizontal	5	2	3	ret	./AC/ret2/AC_ret2.prt
+91	0	vertical	5	2	3	ret	./AC/ret2/AC_ret2.prt
+101	0	horizontal	6	2	3	ret	./AC/ret2/AC_ret2.prt
+111	0	vertical	6	2	3	ret	./AC/ret2/AC_ret2.prt

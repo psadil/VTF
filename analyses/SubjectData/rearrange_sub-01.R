@@ -18,8 +18,12 @@ d <- tInfo %>%
   separate(trial_type, into = c("contrast", "orientation"), sep = "_") %>%
   mutate(contrast = plyr::mapvalues(contrast, c("low","high"), c(0.3,0.8)),
          contrast = as.numeric(contrast),
-         orientation = as.numeric(orientation)) %>%
-  select(onset, duration, contrast, orientation, run)
+         orientation = round(CircStats::deg(as.numeric(orientation))),
+         subject = 1) %>%
+  mutate(con = plyr::mapvalues(contrast, from = unique(contrast), to = str_c("con", unique(contrast), sep = "-")),
+         ori = plyr::mapvalues(orientation, from = unique(orientation), to = str_c("ori", unique(orientation), sep = "-"))) %>%
+  unite(trial_type, c(con, ori)) %>%
+  select(onset, duration, trial_type, contrast, orientation, run)
 
 
 for(r in 1:n_distinct(d$run)){

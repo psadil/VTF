@@ -1,0 +1,35 @@
+
+FileVersion:        2
+
+ResolutionOfTime:   Volumes
+
+Experiment:         rosieContrast_Ret
+
+BackgroundColor:    0 0 0
+TextColor:          255 255 255
+TimeCourseColor:    192 192 192
+TimeCourseThick:    2
+ReferenceFuncColor: 0 0 80
+ReferenceFuncThick: 2
+
+NrOfConditions:     2
+
+horizontal
+6
+      1           11
+     21           31
+     41           51
+     61           71
+     81           91
+    101          111
+Color:              255 0 0
+
+vertical
+6
+     11           21
+     31           41
+     51           61
+     71           81
+     91          101
+    111          121
+Color:              0 255 255

@@ -1,0 +1,36 @@
+FileVersion:	1
+
+ResolutionOfTime:	msec
+
+Experiment: flicker_RUN:1
+
+BackgroundColor:	0 0 0
+TextColor:	255 255 217
+
+TimeCourseColor:	255 255 255
+TimeCourseThick:	3
+ReferenceFuncColor:	255 255 51
+ReferenceFuncThick:	2
+
+NrOfConditions:	2
+
+HM
+6
+0 20000
+40000 60000
+80000 100000
+120000 140000
+160000 180000
+200000 220000
+color: 0 255 255
+
+VM
+6
+20000 40000
+60000 80000
+100000 120000
+140000 160000
+180000 200000
+220000 240000
+color: 255 0 0
+
