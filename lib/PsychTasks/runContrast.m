@@ -92,7 +92,7 @@ Overall Flow:
             case 'base_resp_close'
                 result = any(strcmp(tInfo_dim.response(index_dim_trial),...
                     tInfo_dim.answer{index_dim_trial(1)}));
-                        
+                
                 fbwrapper(result, feedbackFcn, 'fb');
                 % update staircase values for next trial
                 stairs = update_stairs(stairs, result);

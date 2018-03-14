@@ -30,7 +30,7 @@ PsychImaging('AddTask', 'General', 'NormalizedHighresColorRange', 1);
 % need 32Bit for proper alpha blending, which only barely happens here (and
 % maybe not at all). Though, this asks for the higher precision nicely, and
 % defaults to 16 if not possible
-PsychImaging('AddTask', 'General', 'FloatingPoint32BitIfPossible');
+PsychImaging('AddTask', 'General', 'FloatingPoint16BitIfPossible');
 PsychImaging('AddTask', 'General', 'UseFastOffscreenWindows');
 switch input.debugLevel
     case 1
