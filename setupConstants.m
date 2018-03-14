@@ -9,6 +9,8 @@ constants.device = [];
 constants.root_dir = fileparts(mfilename('fullpath'));
 constants.lib_dir = fullfile(constants.root_dir, 'lib');
 
+constants.version = get_version_string('verstion.txt');
+
 % add libraries to path
 path(path, constants.root_dir);
 path(path, genpath(constants.lib_dir));
