@@ -1,4 +1,4 @@
-function window = setupWindow(constants, input)
+function window = setupWindow(constants, input, eyetrackerFcn)
 
 
 % viewing distance and screen width, in CM...used to convert degrees visual
@@ -58,7 +58,7 @@ window.hertz = FrameRate(window.pointer); % hertz = 1 / ifi
 window.width = RectWidth(window.winRect);
 window.height = RectHeight(window.winRect);
 
-checkRefreshRate(window.hertz, input.refreshRate, constants);
+checkRefreshRate(window.hertz, input.refreshRate, constants, eyetrackerFcn);
 
 % Font Configuration
 window.fontSize = 24;
@@ -71,10 +71,10 @@ Screen('TextColor', window.pointer, window.white);
 
 end
 
-function checkRefreshRate(trueHertz, requestedHertz, constants)
+function checkRefreshRate(trueHertz, requestedHertz, constants, eyetrackerFcn)
 
 if abs(trueHertz - requestedHertz) > 2
-    windowCleanup(constants);
+    windowCleanup(constants, eyetrackerFcn);
     disp('Set the refresh rate to the requested rate')
 end
 

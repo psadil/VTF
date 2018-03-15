@@ -29,8 +29,8 @@ if ~exist(constants.subDir, 'dir')
 end
 
 % instantiate the subject number validator function
-runValidator = makeOverwriteChecker('run', constants.savePath, input.subject, input.debugLevel, input.experiment, input.run);
-taskValidator = makeOverwriteChecker('task', constants.savePath, input.subject, input.debugLevel, input.experiment, input.run);
+runValidator = makeOverwriteChecker('run', constants.subDir, input.debugLevel, input.experiment, input.run);
+taskValidator = makeOverwriteChecker('task', constants.subDir, input.debugLevel, input.experiment, input.run);
 
 %% -------- GUI input option ----------------------------------------------------
 % call gui for input
@@ -77,7 +77,7 @@ constants.data_eyelink_filename = ['scan', num2str(input.scan, '%02d'), '.edf'];
 end
 
 
-function overwriteCheck = makeOverwriteChecker(type, savepath, sub, debugLevel, task, run)
+function overwriteCheck = makeOverwriteChecker(type, savepath, debugLevel, task, run)
 % makeSubjectDataChecker function closer factory, used for the purpose
 % of enclosing the directory where data will be stored. This way, the
 % function handle it returns can be used as a validation function with getSubjectInfo to
@@ -91,23 +91,21 @@ switch type
 end
 
     function [valid, msg] = taskGrabber(task, ~)
-        [valid, msg] = fileChecker(sub, run, task);
+        [valid, msg] = fileChecker(run, task);
     end
 
     function [valid, msg] = runGrabber(run, ~)
-        [valid, msg] = fileChecker(sub, run, task);
+        [valid, msg] = fileChecker(run, task);
     end
 
-    function [valid, msg] = fileChecker(sub, run, task)
+    function [valid, msg] = fileChecker(run, task)
         % the actual validation logic
         valid = false;
         
-        sub = num2str(sub, '%02d');
         run = num2str(run, '%02d');
         
         % directories often reused, so search for run folder
-        behPathGlob = fullfile(savepath, ['sub-', sub], 'beh');
-        runPathGlob = dir(behPathGlob);
+        runPathGlob = dir(savepath);
         
         foundFile = zeros([size(runPathGlob,1),1]);
         for file = 1:size(runPathGlob,1)
@@ -115,7 +113,7 @@ end
         end
         
         if any(foundFile) && debugLevel < 1
-            msg = strjoin({'data already exists!'}, ' ');
+            msg = strjoin({'data already exist!'}, ' ');
             return
         else
             valid = true;

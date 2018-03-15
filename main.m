@@ -37,14 +37,14 @@ if ~input.fMRI && input.run == 0 && strcmp(input.responder,'user') && input.debu
 end
 
 %% run main experiment
-% try to fail gracefully (meaning automatically restore keyboard)
+% try to fail gracefully (automatically restore keyboard)
 try
     PsychDefaultSetup(2);
     ListenChar(-1);
     HideCursor;
     
     responseHandler = makeInputHandlerFcn(input.responder);
-    window = setupWindow(constants, input);
+    window = setupWindow(constants, input, eyetrackerFcn);
     
     % main experiment function
     [tInfo, stairs, stim, el] = ...
@@ -57,7 +57,7 @@ try
     subject = input.subject;
     run = input.run;
     
-    structureCleanup(expt, subject, run, tInfo, constants, stairs, stim, el, input);
+    structureCleanup(expt, subject, run, tInfo, constants, stairs, stim, el, input, window);
     %             showPrompt(window, sprintf('You were %.0f%% correct', acc*100), 0);
     %             WaitSecs(3);
     
