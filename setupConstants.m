@@ -1,4 +1,4 @@
-function [constants, input, exit_stat] = setupConstants(input, ip)
+function [constants, input, exit_stat] = setupConstants(input)
 exit_stat = 0;
 % defaults = ip.UsingDefaults;
 

@@ -18,8 +18,6 @@ end
 
 %%
 window.screenNumber = max(Screen('Screens')); % Choose a monitor to display on
-% get screen resolution, set refresh rate
-window.oldRes = Screen('Resolution',window.screenNumber,[],[],input.refreshRate);
 
 window.black = BlackIndex(window.screenNumber);
 window.white = WhiteIndex(window.screenNumber);

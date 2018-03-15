@@ -4,7 +4,7 @@ function  main(varargin)
 %% collect input
 % use the inputParser class to deal with arguments
 ip = inputParser;
-addParameter(ip, 'subject', 5, @isnumeric);
+addParameter(ip, 'subject', 6, @isnumeric);
 addParameter(ip, 'responder', 'user', @(x) sum(strcmp(x, {'user','simpleKeypressRobot'}))==1);
 addParameter(ip, 'refreshRate', 120, @(x) x == 120 | x == 60);
 addParameter(ip, 'run', 1, @isnumeric);
@@ -22,7 +22,7 @@ input = ip.Results;
 
 
 % setup folders (add everything to path)
-[constants, input, exit_stat] = setupConstants(input, ip);
+[constants, input, exit_stat] = setupConstants(input);
 
 eyetrackerFcn = makeEyelinkFcn(input.tracker);
 
