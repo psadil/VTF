@@ -5,8 +5,8 @@ date: "February 19, 2018"
 output: html_document
 params:
   save: 1
-  sub: !r c(5)
-  task: "contrast"
+  sub: !r c(6)
+  task: "localizer"
   flip_hz: 10 # how many flips should happen per second
   n_phase: 16
   dim_resp_sec: 1 # how long do participants have to respond

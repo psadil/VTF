@@ -80,7 +80,7 @@ for sub = input.participants
                 n_vars = (n_stim_events - 1) + (n_dim_events - 1);
                 
                 % capture cost and contraint function with extra parameters defined above
-                population_parser = make_population_parser4('dim');
+                population_parser = make_population_parser('dim');
                 
             else
                 % iti only
@@ -156,7 +156,7 @@ for sub = input.participants
                         end
                     end
                     
-                    population_parser = make_population_parser4('nodim');
+                    population_parser = make_population_parser('nodim');
                     
                     stim_iti = input.epoch_length_max_flip * ones([1,n_stim_events - 1]);
                     if side_to_save == 1

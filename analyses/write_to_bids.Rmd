@@ -7,7 +7,7 @@ params:
   save: 1
   extras: 0
   sub: !r c(5)
-  task: "contrast"
+  task: "localizer"
   type: "data" # either data or robo (only robo for testing)
 ---
 
@@ -75,31 +75,34 @@ tInfo <- file.info(files, extra_cols = FALSE) %>%
 
 ```{r main_data}
 
-firstfliptime <- min(tInfo$vbl, na.rm = TRUE)
-
-
-
 d <- tInfo %>%
+  group_by(run) %>%
+  nest() %>%
+  mutate(firstfliptime = map_dbl(data, ~min(.x$vbl, na.rm = TRUE))) %>%
+  unnest() %>%
   group_by(subject, run, trial_type, side, trial) %>%
   nest() 
 
+
+# in the following, the trial_resp_open vs. duration is because with sub-05, 
+# some of the dimming trials never had a 'return_to_base_contrast' event
 if (params$task == "contrast"){
   d <- d %>%
-  mutate(orientation = map_dbl(data, ~ unique(.x$orientation)),
-         contrast = map_dbl(data, ~max(.x$contrast)),
-         onset = map_dbl(data, ~ .x %>% filter(event == 'trial_start') %>%
-                              use_series(vbl) - firstfliptime),
-         duration = map_dbl(data, ~.x %>% filter(event == 'return_to_base_contrast') %>%
-                              use_series(vbl) - firstfliptime) - onset)
+    mutate(orientation = map_dbl(data, ~ unique(.x$orientation)),
+           contrast = map_dbl(data, ~max(.x$contrast)),
+           onset = map_dbl(data, ~ .x %>% filter(event == 'trial_start') %>%
+                             use_series(vbl) - unique(.x$firstfliptime)),
+           duration = map_dbl(data, ~.x[min(which(.x$event %in% c('return_to_base_contrast', "trial_resp_open"))),] %>%
+                                use_series(vbl) - unique(.x$firstfliptime)) - onset)
 
 }else if (params$task == "localizer"){
   d <- d %>%
     mutate(orientation = "checkerboard",
            contrast = map_dbl(data, ~max(.x$contrast)),
            onset = map_dbl(data, ~ .x %>% filter(event == 'trial_start') %>%
-                             use_series(vbl) - firstfliptime),
-           duration = map_dbl(data, ~.x %>% filter(event == 'return_to_base_contrast') %>%
-                                use_series(vbl) - firstfliptime) - onset) 
+                             use_series(vbl) - unique(.x$firstfliptime)),
+           duration = map_dbl(data, ~.x[min(which(.x$event %in% c('return_to_base_contrast', "trial_resp_open"))),] %>%
+                                use_series(vbl) - unique(.x$firstfliptime)) - onset) 
 }
 
 if (not(params$extras)){

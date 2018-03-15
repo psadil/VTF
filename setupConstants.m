@@ -30,14 +30,13 @@ end
 
 % instantiate the subject number validator function
 runValidator = makeOverwriteChecker('run', constants.subDir, input.debugLevel, input.experiment, input.run);
-taskValidator = makeOverwriteChecker('task', constants.subDir, input.debugLevel, input.experiment, input.run);
 
 %% -------- GUI input option ----------------------------------------------------
 % call gui for input
 guiInput = getSubjectInfo('run', struct('title', 'Run Number', 'type', 'textinput',...
     'validationFcn', runValidator),...
     'experiment', struct('title', 'Run Type', 'type', 'dropdown',...
-    'values', {{'contrast','localizer'}},'validationFcn', taskValidator) );
+    'values', {{input.experiment}}) );
 if isempty(guiInput)
     exit_stat = 1;
     return
@@ -102,7 +101,14 @@ end
         % the actual validation logic
         valid = false;
         
-        run = num2str(run, '%02d');
+        if isnumeric(run)
+            run = num2str(run, '%02d');
+        elseif ischar(run)
+            run = num2str(str2double(run), '%02d');
+        else
+            msg = 'unexpected type: run';
+            return
+        end
         
         % directories often reused, so search for run folder
         runPathGlob = dir(savepath);
@@ -112,7 +118,7 @@ end
             foundFile(file) = any(strfind(runPathGlob(file).name, ['task-', task, '_run-', run]));
         end
         
-        if any(foundFile) && debugLevel < 1
+        if any(foundFile) 
             msg = strjoin({'data already exist!'}, ' ');
             return
         else
