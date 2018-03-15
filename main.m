@@ -57,7 +57,7 @@ try
     subject = input.subject;
     run = input.run;
     
-    structureCleanup(expt, subject, run, tInfo, constants, stairs, stim, el);
+    structureCleanup(expt, subject, run, tInfo, constants, stairs, stim, el, input);
     %             showPrompt(window, sprintf('You were %.0f%% correct', acc*100), 0);
     %             WaitSecs(3);
     
