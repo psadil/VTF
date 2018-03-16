@@ -197,13 +197,14 @@ end
 function stairs = update_stairs(stairs, result)
 
 step_more_difficult = 1;
-step_less_difficult = 3;
+step_less_difficult = 5;
 
 n_options = length(stairs.options);
 
+location = find(is_close(stairs.options, stairs.luminance_difference));
+
 if result
     % make task more difficult
-    location = find(stairs.options == stairs.luminance_difference);
     if location > 2
         location = location - step_more_difficult;
     elseif location <= 2
@@ -211,7 +212,6 @@ if result
     end
 else
     % make task a bit easier (but only if there's room to do so)
-    location = find(stairs.options == stairs.luminance_difference);
     if (location + step_less_difficult) < n_options
         location = location + step_less_difficult;
     else
@@ -266,3 +266,10 @@ end
 
 end
 
+function out = is_close(a, b)
+
+tolerance = 0.0001;
+
+out = abs(a(:) - b(:)) < tolerance;
+
+end
