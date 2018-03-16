@@ -6,8 +6,8 @@ output: html_document
 params:
   save: 1
   extras: 0
-  sub: !r c(5)
-  task: "localizer"
+  sub: !r c(6)
+  task: "contrast"
   type: "data" # either data or robo (only robo for testing)
 ---
 
