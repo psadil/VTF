@@ -87,39 +87,55 @@ d <- tInfo %>%
 # in the following, the trial_resp_open vs. duration is because with sub-05, 
 # some of the dimming trials never had a 'return_to_base_contrast' event
 if (params$task == "contrast"){
-  d <- d %>%
+  d %<>%
     mutate(orientation = map_dbl(data, ~ unique(.x$orientation)),
            contrast = map_dbl(data, ~max(.x$contrast)),
            onset = map_dbl(data, ~ .x %>% filter(event == 'trial_start') %>%
                              use_series(vbl) - unique(.x$firstfliptime)),
            duration = map_dbl(data, ~.x[min(which(.x$event %in% c('return_to_base_contrast', "trial_resp_open"))),] %>%
-                                use_series(vbl) - unique(.x$firstfliptime)) - onset)
-
+                                use_series(vbl) - unique(.x$firstfliptime)) - onset) %>%
+    mutate(con = plyr::mapvalues(contrast, from = unique(contrast), to = str_c("con", unique(contrast), sep = "-")),
+           ori = plyr::mapvalues(orientation, from = unique(orientation), to = str_c("ori", unique(orientation), sep = "-")),
+           tmp = trial_type,
+           task = params$task) %>%
+    unite(trial_type, c(con,ori)) %>%
+    mutate(trial_type = if_else(tmp == "grating", trial_type, tmp)) %>%
+    select(onset, duration, trial_type, contrast, orientation, run, subject, task) %>%
+    arrange(onset)
+  
 }else if (params$task == "localizer"){
-  d <- d %>%
+  d %<>%
     mutate(orientation = "checkerboard",
            contrast = map_dbl(data, ~max(.x$contrast)),
            onset = map_dbl(data, ~ .x %>% filter(event == 'trial_start') %>%
                              use_series(vbl) - unique(.x$firstfliptime)),
            duration = map_dbl(data, ~.x[min(which(.x$event %in% c('return_to_base_contrast', "trial_resp_open"))),] %>%
-                                use_series(vbl) - unique(.x$firstfliptime)) - onset) 
+                                use_series(vbl) - unique(.x$firstfliptime)) - onset) %>%
+    mutate(tmp = trial_type,
+           task = params$task) %>%
+    mutate(trial_type = if_else(tmp == "grating", "checkerboard", tmp)) %>%
+    select(onset, duration, trial_type, contrast, orientation, run, subject, task) %>%
+    arrange(onset)
 }
 
-if (not(params$extras)){
-  d <- d %>%
-      select(onset, duration, trial, trial_type, side, orientation, contrast, subject, run, trial)  
-} else {
-  d <- d %>%
+# extras used just for checking
+if (params$extras){
+  d %<>%
     mutate(onset_expected = map_dbl(data, ~ .x %>% filter(event == 'trial_start') %>%
-                              use_series(vbl_expected)),
-         duration_expected = map_dbl(data, ~.x %>% filter(event == 'return_to_base_contrast') %>%
-                              use_series(vbl_expected)) - onset_expected)
+                                      use_series(vbl_expected)),
+           duration_expected = map_dbl(data, ~.x %>% filter(event == 'return_to_base_contrast') %>%
+                                         use_series(vbl_expected)) - onset_expected)
 }
 
-  
+
+# the screen failed during run 4 of sub-05. Probably only ~30s were lost, but were eliminating the last 1 min of events to be safe
+if ((params$sub == 5) & (params$task == "contrast")){
+  d %<>%
+    filter(not(run == 4 & onset > 360))
+}
   
 
-if(params$save){
+if(params$save & not(params$extras)){
   for(sub in params$sub){
     for(r in unique(d$run)){
       d %>%

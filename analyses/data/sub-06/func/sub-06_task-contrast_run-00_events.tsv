@@ -1,180 +1,180 @@
-onset	duration	trial	trial_type	side	orientation	contrast	subject	run
-0	4.6492427300981944	1	grating	left	75	0.8	6	0
-8.081817158905324	4.639905057105352	2	grating	left	45	0.2	6	0
-15.598716507098288	4.64420174001134	3	grating	left	165	0.2	6	0
-22.842029716004618	4.63761549499759	4	grating	left	150	0.2	6	0
-30.075528560802923	4.645976597297704	5	grating	left	90	0.2	6	0
-37.89444331670529	NaN	6	grating	left	90	0.8	6	0
-NaN	NaN	7	grating	left	135	0.8	6	0
-NaN	NaN	8	grating	left	45	0.8	6	0
-NaN	NaN	9	grating	left	135	0.2	6	0
-NaN	NaN	10	grating	left	30	0.8	6	0
-NaN	NaN	11	grating	left	60	0.8	6	0
-NaN	NaN	12	grating	left	90	0.8	6	0
-NaN	NaN	13	grating	left	75	0.2	6	0
-NaN	NaN	14	grating	left	30	0.2	6	0
-NaN	NaN	15	grating	left	150	0.8	6	0
-NaN	NaN	16	grating	left	30	0.2	6	0
-NaN	NaN	17	grating	left	150	0.8	6	0
-NaN	NaN	18	grating	left	0	0.2	6	0
-NaN	NaN	19	grating	left	135	0.2	6	0
-NaN	NaN	20	grating	left	15	0.8	6	0
-NaN	NaN	21	grating	left	45	0.2	6	0
-NaN	NaN	22	grating	left	105	0.2	6	0
-NaN	NaN	23	grating	left	150	0.2	6	0
-NaN	NaN	24	grating	left	105	0.8	6	0
-NaN	NaN	25	grating	left	165	0.8	6	0
-NaN	NaN	26	grating	left	120	0.8	6	0
-NaN	NaN	27	grating	left	75	0.8	6	0
-NaN	NaN	28	grating	left	75	0.2	6	0
-NaN	NaN	29	grating	left	105	0.2	6	0
-NaN	NaN	30	grating	left	120	0.8	6	0
-NaN	NaN	31	grating	left	120	0.2	6	0
-NaN	NaN	32	grating	left	165	0.8	6	0
-NaN	NaN	33	grating	left	60	0.2	6	0
-NaN	NaN	34	grating	left	15	0.2	6	0
-NaN	NaN	35	grating	left	45	0.8	6	0
-NaN	NaN	36	grating	left	0	0.2	6	0
-NaN	NaN	37	grating	left	120	0.2	6	0
-NaN	NaN	38	grating	left	15	0.8	6	0
-NaN	NaN	39	grating	left	30	0.8	6	0
-NaN	NaN	40	grating	left	165	0.2	6	0
-NaN	NaN	41	grating	left	0	0.2	6	0
-NaN	NaN	42	grating	left	90	0.2	6	0
-NaN	NaN	43	grating	left	60	0.2	6	0
-NaN	NaN	44	grating	left	105	0.8	6	0
-NaN	NaN	45	grating	left	135	0.8	6	0
-NaN	NaN	46	grating	left	15	0.2	6	0
-NaN	NaN	47	grating	left	0	0.2	6	0
-NaN	NaN	48	grating	left	60	0.8	6	0
-0	4.6492427300981944	1	grating	right	135	0.8	6	0
-7.896613896111376	4.638915181698394	2	grating	right	120	0.8	6	0
-14.948969716002466	4.642846173199359	3	grating	right	135	0.2	6	0
-22.65652044340095	4.6370122182997875	4	grating	right	60	0.8	6	0
-29.98302994640835	4.645760679690284	5	grating	right	120	0.2	6	0
-37.33140908239875	NaN	6	grating	right	105	0.8	6	0
-NaN	NaN	7	grating	right	150	0.8	6	0
-NaN	NaN	8	grating	right	135	0.2	6	0
-NaN	NaN	9	grating	right	150	0.2	6	0
-NaN	NaN	10	grating	right	165	0.2	6	0
-NaN	NaN	11	grating	right	150	0.2	6	0
-NaN	NaN	12	grating	right	15	0.2	6	0
-NaN	NaN	13	grating	right	165	0.8	6	0
-NaN	NaN	14	grating	right	90	0.2	6	0
-NaN	NaN	15	grating	right	120	0.2	6	0
-NaN	NaN	16	grating	right	165	0.8	6	0
-NaN	NaN	17	grating	right	120	0.8	6	0
-NaN	NaN	18	grating	right	75	0.2	6	0
-NaN	NaN	19	grating	right	15	0.2	6	0
-NaN	NaN	20	grating	right	135	0.8	6	0
-NaN	NaN	21	grating	right	15	0.8	6	0
-NaN	NaN	22	grating	right	60	0.2	6	0
-NaN	NaN	23	grating	right	0	0.2	6	0
-NaN	NaN	24	grating	right	105	0.2	6	0
-NaN	NaN	25	grating	right	0	0.2	6	0
-NaN	NaN	26	grating	right	30	0.8	6	0
-NaN	NaN	27	grating	right	60	0.8	6	0
-NaN	NaN	28	grating	right	75	0.8	6	0
-NaN	NaN	29	grating	right	45	0.8	6	0
-NaN	NaN	30	grating	right	45	0.8	6	0
-NaN	NaN	31	grating	right	45	0.2	6	0
-NaN	NaN	32	grating	right	90	0.2	6	0
-NaN	NaN	33	grating	right	30	0.2	6	0
-NaN	NaN	34	grating	right	60	0.2	6	0
-NaN	NaN	35	grating	right	15	0.8	6	0
-NaN	NaN	36	grating	right	90	0.8	6	0
-NaN	NaN	37	grating	right	165	0.2	6	0
-NaN	NaN	38	grating	right	0	0.2	6	0
-NaN	NaN	39	grating	right	0	0.2	6	0
-NaN	NaN	40	grating	right	75	0.2	6	0
-NaN	NaN	41	grating	right	30	0.8	6	0
-NaN	NaN	42	grating	right	105	0.8	6	0
-NaN	NaN	43	grating	right	30	0.2	6	0
-NaN	NaN	44	grating	right	45	0.2	6	0
-NaN	NaN	45	grating	right	150	0.8	6	0
-NaN	NaN	46	grating	right	75	0.8	6	0
-NaN	NaN	47	grating	right	105	0.2	6	0
-NaN	NaN	48	grating	right	90	0.8	6	0
-3.6273943848063936	0.3715530172048602	1	dim	middle	NaN	1	6	0
-6.319436303208931	0.3709961173008196	2	dim	middle	NaN	1	6	0
-11.236985076611745	0.370958103594603	3	dim	middle	NaN	1	6	0
-14.948969716002466	0.37162676380830817	4	dim	middle	NaN	1	6	0
-17.82808630920772	0.3716602157946909	5	dim	middle	NaN	1	6	0
-21.63507580300211	0.37073648411023896	6	dim	middle	NaN	1	6	0
-26.459200329700252	0.3710067611100385	7	dim	middle	NaN	1	6	0
-31.187409194899374	0.3706015356001444	8	dim	middle	NaN	1	6	0
-34.721505158100626	0.37217225960921496	9	dim	middle	NaN	1	6	0
-38.175960623906576	0.3759154637955362	10	dim	middle	NaN	1	6	0
-41.27930719360302	0.37732462970598135	11	dim	middle	NaN	1	6	0
-NaN	NaN	12	dim	middle	NaN	NaN	6	0
-NaN	NaN	13	dim	middle	NaN	NaN	6	0
-NaN	NaN	14	dim	middle	NaN	NaN	6	0
-NaN	NaN	15	dim	middle	NaN	NaN	6	0
-NaN	NaN	16	dim	middle	NaN	NaN	6	0
-NaN	NaN	17	dim	middle	NaN	NaN	6	0
-NaN	NaN	18	dim	middle	NaN	NaN	6	0
-NaN	NaN	19	dim	middle	NaN	NaN	6	0
-NaN	NaN	20	dim	middle	NaN	NaN	6	0
-NaN	NaN	21	dim	middle	NaN	NaN	6	0
-NaN	NaN	22	dim	middle	NaN	NaN	6	0
-NaN	NaN	23	dim	middle	NaN	NaN	6	0
-NaN	NaN	24	dim	middle	NaN	NaN	6	0
-NaN	NaN	25	dim	middle	NaN	NaN	6	0
-NaN	NaN	26	dim	middle	NaN	NaN	6	0
-NaN	NaN	27	dim	middle	NaN	NaN	6	0
-NaN	NaN	28	dim	middle	NaN	NaN	6	0
-NaN	NaN	29	dim	middle	NaN	NaN	6	0
-NaN	NaN	30	dim	middle	NaN	NaN	6	0
-NaN	NaN	31	dim	middle	NaN	NaN	6	0
-NaN	NaN	32	dim	middle	NaN	NaN	6	0
-NaN	NaN	33	dim	middle	NaN	NaN	6	0
-NaN	NaN	34	dim	middle	NaN	NaN	6	0
-NaN	NaN	35	dim	middle	NaN	NaN	6	0
-NaN	NaN	36	dim	middle	NaN	NaN	6	0
-NaN	NaN	37	dim	middle	NaN	NaN	6	0
-NaN	NaN	38	dim	middle	NaN	NaN	6	0
-NaN	NaN	39	dim	middle	NaN	NaN	6	0
-NaN	NaN	40	dim	middle	NaN	NaN	6	0
-NaN	NaN	41	dim	middle	NaN	NaN	6	0
-NaN	NaN	42	dim	middle	NaN	NaN	6	0
-NaN	NaN	43	dim	middle	NaN	NaN	6	0
-NaN	NaN	44	dim	middle	NaN	NaN	6	0
-NaN	NaN	45	dim	middle	NaN	NaN	6	0
-NaN	NaN	46	dim	middle	NaN	NaN	6	0
-NaN	NaN	47	dim	middle	NaN	NaN	6	0
-NaN	NaN	48	dim	middle	NaN	NaN	6	0
-NaN	NaN	49	dim	middle	NaN	NaN	6	0
-NaN	NaN	50	dim	middle	NaN	NaN	6	0
-NaN	NaN	51	dim	middle	NaN	NaN	6	0
-NaN	NaN	52	dim	middle	NaN	NaN	6	0
-NaN	NaN	53	dim	middle	NaN	NaN	6	0
-NaN	NaN	54	dim	middle	NaN	NaN	6	0
-NaN	NaN	55	dim	middle	NaN	NaN	6	0
-NaN	NaN	56	dim	middle	NaN	NaN	6	0
-NaN	NaN	57	dim	middle	NaN	NaN	6	0
-NaN	NaN	58	dim	middle	NaN	NaN	6	0
-NaN	NaN	59	dim	middle	NaN	NaN	6	0
-NaN	NaN	60	dim	middle	NaN	NaN	6	0
-NaN	NaN	61	dim	middle	NaN	NaN	6	0
-NaN	NaN	62	dim	middle	NaN	NaN	6	0
-NaN	NaN	63	dim	middle	NaN	NaN	6	0
-NaN	NaN	64	dim	middle	NaN	NaN	6	0
-NaN	NaN	65	dim	middle	NaN	NaN	6	0
-NaN	NaN	66	dim	middle	NaN	NaN	6	0
-NaN	NaN	67	dim	middle	NaN	NaN	6	0
-NaN	NaN	68	dim	middle	NaN	NaN	6	0
-NaN	NaN	69	dim	middle	NaN	NaN	6	0
-NaN	NaN	70	dim	middle	NaN	NaN	6	0
-NaN	NaN	71	dim	middle	NaN	NaN	6	0
-NaN	NaN	72	dim	middle	NaN	NaN	6	0
-NaN	NaN	73	dim	middle	NaN	NaN	6	0
-NaN	NaN	74	dim	middle	NaN	NaN	6	0
-NaN	NaN	75	dim	middle	NaN	NaN	6	0
-NaN	NaN	76	dim	middle	NaN	NaN	6	0
-NaN	NaN	77	dim	middle	NaN	NaN	6	0
-NaN	NaN	78	dim	middle	NaN	NaN	6	0
-NaN	NaN	79	dim	middle	NaN	NaN	6	0
-NaN	NaN	80	dim	middle	NaN	NaN	6	0
-NaN	NaN	81	dim	middle	NaN	NaN	6	0
-NaN	NaN	82	dim	middle	NaN	NaN	6	0
-NaN	NaN	83	dim	middle	NaN	NaN	6	0
+onset	duration	trial_type	contrast	orientation	run	subject	task
+0	4.6492427300981944	con-0.8_ori-75	0.8	75	0	6	contrast
+0	4.6492427300981944	con-0.8_ori-135	0.8	135	0	6	contrast
+3.6273943848063936	0.3715530172048602	dim	1	NaN	0	6	contrast
+6.319436303208931	0.3709961173008196	dim	1	NaN	0	6	contrast
+7.896613896111376	4.638915181698394	con-0.8_ori-120	0.8	120	0	6	contrast
+8.081817158905324	4.639905057105352	con-0.2_ori-45	0.2	45	0	6	contrast
+11.236985076611745	0.370958103594603	dim	1	NaN	0	6	contrast
+14.948969716002466	4.642846173199359	con-0.2_ori-135	0.2	135	0	6	contrast
+14.948969716002466	0.37162676380830817	dim	1	NaN	0	6	contrast
+15.598716507098288	4.64420174001134	con-0.2_ori-165	0.2	165	0	6	contrast
+17.82808630920772	0.3716602157946909	dim	1	NaN	0	6	contrast
+21.63507580300211	0.37073648411023896	dim	1	NaN	0	6	contrast
+22.65652044340095	4.6370122182997875	con-0.8_ori-60	0.8	60	0	6	contrast
+22.842029716004618	4.63761549499759	con-0.2_ori-150	0.2	150	0	6	contrast
+26.459200329700252	0.3710067611100385	dim	1	NaN	0	6	contrast
+29.98302994640835	4.645760679690284	con-0.2_ori-120	0.2	120	0	6	contrast
+30.075528560802923	4.645976597297704	con-0.2_ori-90	0.2	90	0	6	contrast
+31.187409194899374	0.3706015356001444	dim	1	NaN	0	6	contrast
+34.721505158100626	0.37217225960921496	dim	1	NaN	0	6	contrast
+37.33140908239875	NaN	con-0.8_ori-105	0.8	105	0	6	contrast
+37.89444331670529	NaN	con-0.8_ori-90	0.8	90	0	6	contrast
+38.175960623906576	0.3759154637955362	dim	1	NaN	0	6	contrast
+41.27930719360302	0.37732462970598135	dim	1	NaN	0	6	contrast
+NaN	NaN	con-0.8_ori-135	0.8	135	0	6	contrast
+NaN	NaN	con-0.8_ori-45	0.8	45	0	6	contrast
+NaN	NaN	con-0.2_ori-135	0.2	135	0	6	contrast
+NaN	NaN	con-0.8_ori-30	0.8	30	0	6	contrast
+NaN	NaN	con-0.8_ori-60	0.8	60	0	6	contrast
+NaN	NaN	con-0.8_ori-90	0.8	90	0	6	contrast
+NaN	NaN	con-0.2_ori-75	0.2	75	0	6	contrast
+NaN	NaN	con-0.2_ori-30	0.2	30	0	6	contrast
+NaN	NaN	con-0.8_ori-150	0.8	150	0	6	contrast
+NaN	NaN	con-0.2_ori-30	0.2	30	0	6	contrast
+NaN	NaN	con-0.8_ori-150	0.8	150	0	6	contrast
+NaN	NaN	con-0.2_ori-0	0.2	0	0	6	contrast
+NaN	NaN	con-0.2_ori-135	0.2	135	0	6	contrast
+NaN	NaN	con-0.8_ori-15	0.8	15	0	6	contrast
+NaN	NaN	con-0.2_ori-45	0.2	45	0	6	contrast
+NaN	NaN	con-0.2_ori-105	0.2	105	0	6	contrast
+NaN	NaN	con-0.2_ori-150	0.2	150	0	6	contrast
+NaN	NaN	con-0.8_ori-105	0.8	105	0	6	contrast
+NaN	NaN	con-0.8_ori-165	0.8	165	0	6	contrast
+NaN	NaN	con-0.8_ori-120	0.8	120	0	6	contrast
+NaN	NaN	con-0.8_ori-75	0.8	75	0	6	contrast
+NaN	NaN	con-0.2_ori-75	0.2	75	0	6	contrast
+NaN	NaN	con-0.2_ori-105	0.2	105	0	6	contrast
+NaN	NaN	con-0.8_ori-120	0.8	120	0	6	contrast
+NaN	NaN	con-0.2_ori-120	0.2	120	0	6	contrast
+NaN	NaN	con-0.8_ori-165	0.8	165	0	6	contrast
+NaN	NaN	con-0.2_ori-60	0.2	60	0	6	contrast
+NaN	NaN	con-0.2_ori-15	0.2	15	0	6	contrast
+NaN	NaN	con-0.8_ori-45	0.8	45	0	6	contrast
+NaN	NaN	con-0.2_ori-0	0.2	0	0	6	contrast
+NaN	NaN	con-0.2_ori-120	0.2	120	0	6	contrast
+NaN	NaN	con-0.8_ori-15	0.8	15	0	6	contrast
+NaN	NaN	con-0.8_ori-30	0.8	30	0	6	contrast
+NaN	NaN	con-0.2_ori-165	0.2	165	0	6	contrast
+NaN	NaN	con-0.2_ori-0	0.2	0	0	6	contrast
+NaN	NaN	con-0.2_ori-90	0.2	90	0	6	contrast
+NaN	NaN	con-0.2_ori-60	0.2	60	0	6	contrast
+NaN	NaN	con-0.8_ori-105	0.8	105	0	6	contrast
+NaN	NaN	con-0.8_ori-135	0.8	135	0	6	contrast
+NaN	NaN	con-0.2_ori-15	0.2	15	0	6	contrast
+NaN	NaN	con-0.2_ori-0	0.2	0	0	6	contrast
+NaN	NaN	con-0.8_ori-60	0.8	60	0	6	contrast
+NaN	NaN	con-0.8_ori-150	0.8	150	0	6	contrast
+NaN	NaN	con-0.2_ori-135	0.2	135	0	6	contrast
+NaN	NaN	con-0.2_ori-150	0.2	150	0	6	contrast
+NaN	NaN	con-0.2_ori-165	0.2	165	0	6	contrast
+NaN	NaN	con-0.2_ori-150	0.2	150	0	6	contrast
+NaN	NaN	con-0.2_ori-15	0.2	15	0	6	contrast
+NaN	NaN	con-0.8_ori-165	0.8	165	0	6	contrast
+NaN	NaN	con-0.2_ori-90	0.2	90	0	6	contrast
+NaN	NaN	con-0.2_ori-120	0.2	120	0	6	contrast
+NaN	NaN	con-0.8_ori-165	0.8	165	0	6	contrast
+NaN	NaN	con-0.8_ori-120	0.8	120	0	6	contrast
+NaN	NaN	con-0.2_ori-75	0.2	75	0	6	contrast
+NaN	NaN	con-0.2_ori-15	0.2	15	0	6	contrast
+NaN	NaN	con-0.8_ori-135	0.8	135	0	6	contrast
+NaN	NaN	con-0.8_ori-15	0.8	15	0	6	contrast
+NaN	NaN	con-0.2_ori-60	0.2	60	0	6	contrast
+NaN	NaN	con-0.2_ori-0	0.2	0	0	6	contrast
+NaN	NaN	con-0.2_ori-105	0.2	105	0	6	contrast
+NaN	NaN	con-0.2_ori-0	0.2	0	0	6	contrast
+NaN	NaN	con-0.8_ori-30	0.8	30	0	6	contrast
+NaN	NaN	con-0.8_ori-60	0.8	60	0	6	contrast
+NaN	NaN	con-0.8_ori-75	0.8	75	0	6	contrast
+NaN	NaN	con-0.8_ori-45	0.8	45	0	6	contrast
+NaN	NaN	con-0.8_ori-45	0.8	45	0	6	contrast
+NaN	NaN	con-0.2_ori-45	0.2	45	0	6	contrast
+NaN	NaN	con-0.2_ori-90	0.2	90	0	6	contrast
+NaN	NaN	con-0.2_ori-30	0.2	30	0	6	contrast
+NaN	NaN	con-0.2_ori-60	0.2	60	0	6	contrast
+NaN	NaN	con-0.8_ori-15	0.8	15	0	6	contrast
+NaN	NaN	con-0.8_ori-90	0.8	90	0	6	contrast
+NaN	NaN	con-0.2_ori-165	0.2	165	0	6	contrast
+NaN	NaN	con-0.2_ori-0	0.2	0	0	6	contrast
+NaN	NaN	con-0.2_ori-0	0.2	0	0	6	contrast
+NaN	NaN	con-0.2_ori-75	0.2	75	0	6	contrast
+NaN	NaN	con-0.8_ori-30	0.8	30	0	6	contrast
+NaN	NaN	con-0.8_ori-105	0.8	105	0	6	contrast
+NaN	NaN	con-0.2_ori-30	0.2	30	0	6	contrast
+NaN	NaN	con-0.2_ori-45	0.2	45	0	6	contrast
+NaN	NaN	con-0.8_ori-150	0.8	150	0	6	contrast
+NaN	NaN	con-0.8_ori-75	0.8	75	0	6	contrast
+NaN	NaN	con-0.2_ori-105	0.2	105	0	6	contrast
+NaN	NaN	con-0.8_ori-90	0.8	90	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
+NaN	NaN	dim	NaN	NaN	0	6	contrast
